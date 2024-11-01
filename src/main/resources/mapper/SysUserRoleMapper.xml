@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawk.system.mapper.SysUserRoleMapper">
+    <!--查询某个用户根据的用户角色能够查看的部门
+        根据部门表中的data_scope字段的不同值即对应不同的查询语句，将动态语句放入map中即可。
+        1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限
+    -->
+    <select id="selectUserIdsByRoleId" resultType="Long">
+        select u.user_id
+        from sys_user u
+                 inner join sys_user_role sur
+                            on u.user_id = sur.user_id and sur.role_id = #{roleId}
+    </select>
+</mapper>

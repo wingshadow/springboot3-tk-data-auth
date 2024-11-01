@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hawk.system.mapper.SysDeptMapper">
+    <!--查询某个用户根据的用户角色能够查看的部门
+        根据部门表中的data_scope字段的不同值即对应不同的查询语句，将动态语句放入map中即可。
+        1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限
+    -->
+    <select id="getAllDeptList" resultType="com.hawk.framework.entity.SysDept">
+        SELECT *
+        FROM sys_dept d
+        WHERE d.del_flag = '0'
+            ${params.data_scope}
+    </select>
+
+    <select id="selectPageDeptList" resultType="com.hawk.framework.entity.SysDept">
+        select *
+        from sys_dept
+        where d.del_flag = '0' ${ew.getCustomSqlSegment}
+    </select>
+
+    <select id="selectDeptListByRoleId" resultType="Long">
+        select d.dept_id
+        from sys_dept d
+        left join sys_role_dept rd on d.dept_id = rd.dept_id
+        where rd.role_id = #{roleId}
+        <if test="deptCheckStrictly">
+            and d.dept_id not in (select d.parent_id from sys_dept d inner join sys_role_dept rd on d.dept_id =
+            rd.dept_id and rd.role_id = #{roleId})
+        </if>
+        order by d.parent_id, d.order_num
+    </select>
+</mapper>
