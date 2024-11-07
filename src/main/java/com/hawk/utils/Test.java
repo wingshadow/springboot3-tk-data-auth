@@ -1,5 +1,6 @@
 package com.hawk.utils;
 
+import cn.hutool.core.lang.Validator;
 import cn.hutool.crypto.digest.BCrypt;
 
 /**
@@ -10,6 +11,7 @@ import cn.hutool.crypto.digest.BCrypt;
  */
 public class Test {
     public static void main(String[] args) {
-        System.out.println(BCrypt.hashpw("123456"));
+//        System.out.println(BCrypt.hashpw("123456"));
+        System.out.println(Validator.isNumber("2"));
     }
 }

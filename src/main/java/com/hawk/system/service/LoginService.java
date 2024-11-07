@@ -38,6 +38,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
+import static com.hawk.framework.common.constant.DataScopeType.*;
+
 /**
  * @program: springboot3-tk-data-auth
  * @description:
