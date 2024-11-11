@@ -8,7 +8,7 @@ import com.hawk.framework.helper.LoginHelper;
 import com.hawk.framework.model.LoginBody;
 import com.hawk.framework.model.LoginUser;
 import com.hawk.framework.web.resp.R;
-import com.hawk.system.service.LoginService;
+import com.hawk.system.common.LoginService;
 import com.hawk.system.service.SysMenuService;
 import com.hawk.system.service.SysUserService;
 import com.hawk.system.vo.RouterVo;

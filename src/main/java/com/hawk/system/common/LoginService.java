@@ -1,4 +1,4 @@
-package com.hawk.system.service;
+package com.hawk.system.common;
 
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.secure.BCrypt;
@@ -23,6 +23,9 @@ import com.hawk.framework.model.LoginUser;
 import com.hawk.framework.model.XcxLoginUser;
 import com.hawk.framework.service.DeptService;
 import com.hawk.system.mapper.SysUserMapper;
+import com.hawk.system.service.SysConfigService;
+import com.hawk.system.service.SysDeptService;
+import com.hawk.system.service.SysRoleService;
 import com.hawk.utils.SpringUtils;
 import com.hawk.utils.SqlUtils;
 import com.hawk.utils.StringUtils;

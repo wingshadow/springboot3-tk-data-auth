@@ -1,7 +1,9 @@
-package com.hawk.system.service;
+package com.hawk.system.common;
 
 import cn.hutool.core.collection.CollUtil;
 import com.hawk.framework.entity.SysUser;
+import com.hawk.system.service.SysMenuService;
+import com.hawk.system.service.SysRoleService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

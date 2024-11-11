@@ -4,7 +4,7 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.hawk.framework.annotation.DataScope;
+import com.hawk.framework.annotation.scope.DataScope;
 import com.hawk.framework.helper.LoginHelper;
 import com.hawk.framework.model.LoginUser;
 import com.hawk.utils.SqlBuilder;

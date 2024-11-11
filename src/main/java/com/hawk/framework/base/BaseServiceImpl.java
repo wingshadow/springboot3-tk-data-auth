@@ -1,6 +1,7 @@
 package com.hawk.framework.base;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -18,51 +19,55 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     @Override
     public T selectOne(T var) {
-        return null;
+        return baseMapper.selectOne(var);
     }
 
     @Override
     public List<T> select(T var1) {
-        return null;
+        return baseMapper.select(var1);
     }
 
     @Override
     public List<T> selectAll() {
-        return null;
+        return baseMapper.selectAll();
     }
 
     @Override
     public T selectByPrimaryKey(Long var1) {
-        return null;
+        return baseMapper.selectByPrimaryKey(var1);
     }
 
     @Override
     public int insert(T var1) {
-        return 0;
+        return baseMapper.insert(var1);
     }
 
     @Override
     public int insertSelective(T var1) {
-        return 0;
+        return baseMapper.insertSelective(var1);
     }
 
     @Override
     public int updateByPrimaryKey(T var1) {
-        return 0;
+        return baseMapper.updateByPrimaryKey(var1);
     }
 
     @Override
     public int updateByPrimaryKeySelective(T var1) {
-        return 0;
+        return baseMapper.updateByPrimaryKeySelective(var1);
     }
 
     @Override
     public int delete(T var1) {
-        return 0;
+        return baseMapper.delete(var1);
     }
 
     @Override
     public int deleteByPrimaryKey(Long var1) {
-        return 0;
+        return baseMapper.deleteByPrimaryKey(var1);
+    }
+    @Transactional(rollbackFor = RuntimeException.class)
+    public void deleteBatchByPrimaryKeys(List<Long> ids) {
+        ids.forEach(this::deleteByPrimaryKey);
     }
 }

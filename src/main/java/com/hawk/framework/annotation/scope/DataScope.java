@@ -1,4 +1,4 @@
-package com.hawk.framework.annotation;
+package com.hawk.framework.annotation.scope;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
