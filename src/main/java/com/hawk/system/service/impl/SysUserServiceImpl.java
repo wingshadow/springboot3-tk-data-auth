@@ -3,6 +3,7 @@ package com.hawk.system.service.impl;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
+import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
 import com.hawk.framework.common.constant.UserConstants;
@@ -61,12 +62,15 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     }
 
     private String buildQueryExample(SysUser user) {
-        Example deptExample = new Example(SysDept.class);
-        SqlUtils.builder(deptExample.createCriteria())
-                .and(DataBaseHelper.findInSet(user.getDeptId(), "ancestors"));
-        List<SysDept> deptList = deptMapper.selectByExample(deptExample);
-        List<Long> ids = StreamUtils.toList(deptList, SysDept::getDeptId);
-        ids.add(user.getDeptId());
+        List<Long> ids = null;
+        if (ObjectUtil.isNotNull(user.getDeptId())) {
+            Example deptExample = new Example(SysDept.class);
+            SqlUtils.builder(deptExample.createCriteria())
+                    .and(DataBaseHelper.findInSet(user.getDeptId(), "ancestors"));
+            List<SysDept> deptList = deptMapper.selectByExample(deptExample);
+            ids = StreamUtils.toList(deptList, SysDept::getDeptId);
+            ids.add(user.getDeptId());
+        }
 
         Map<String, Object> params = user.getParams();
         Example example = new Example(SysUser.class);
@@ -78,14 +82,14 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
                 .like(StringUtils.isNotBlank(user.getMobile()), SysUser::getMobile, user.getMobile())
                 .between(params.get("beginTime") != null && params.get("endTime") != null,
                         "u.create_time", params.get("beginTime"), params.get("endTime"))
-                .in(SysUser::getDeptId, ids);
+                .in(ObjectUtil.isNotNull(ids), SysUser::getDeptId, ids);
         return SqlBuilder.buildWhereClause(example, "u");
     }
 
     @Override
     public PageInfo<SysUser> selectPageUserList(SysUser sysUser, int pageNum, int pageSize) {
         String whereCause = buildQueryExample(sysUser);
-        PageMethod.startPage(pageNum, pageSize);
+        PageMethod.startPage(pageNum,pageSize);
         List<SysUser> list = baseMapper.selectUserList(whereCause);
         return new PageInfo<>(list);
     }

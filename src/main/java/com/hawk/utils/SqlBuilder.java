@@ -34,6 +34,7 @@ public class SqlBuilder {
                                 .map(SqlBuilder::formatValue)
                                 .collect(Collectors.joining(", "));
                         sql = condition + " (" + inClause + ")";
+
                     } else if (value instanceof Object[]) {
                         // 数组类型类似集合，处理 IN 语句
                         String inClause = Arrays.stream((Object[]) value)

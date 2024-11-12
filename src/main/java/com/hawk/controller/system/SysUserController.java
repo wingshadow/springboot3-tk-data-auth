@@ -5,6 +5,7 @@ import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageInfo;
 import com.hawk.controller.system.form.SysUserForm;
 import com.hawk.controller.system.form.UserAddForm;
@@ -19,6 +20,7 @@ import com.hawk.system.service.SysRoleService;
 import com.hawk.system.service.SysUserService;
 import com.hawk.utils.StreamUtils;
 import com.hawk.utils.StringUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -34,6 +36,7 @@ import java.util.Map;
  * @author: zhb
  * @create: 2023-02-14 15:06
  */
+@Slf4j
 @RestController
 @RequestMapping(value = "/system/user")
 public class SysUserController extends BaseController {
@@ -50,7 +53,9 @@ public class SysUserController extends BaseController {
     @GetMapping(value = "/list")
     private R<PageInfo<SysUser>> list(SysUserForm form) {
         SysUser sysUser = BeanUtil.copyProperties(form, SysUser.class);
-        return R.ok(userService.selectPageUserList(sysUser, form.getPageSize(), form.getPageNum()));
+        PageInfo<SysUser> pageInfo = userService.selectPageUserList(sysUser, form.getPageNum(), form.getPageSize());
+        log.info("{}", JSONUtil.toJsonStr(pageInfo));
+        return R.ok(pageInfo);
     }
 
     @GetMapping(value = {"/", "/{userId}"})
@@ -102,7 +107,7 @@ public class SysUserController extends BaseController {
             return R.fail("当前用户不能删除");
         }
         List<Long> idList = Arrays.asList(userIds);
-        userService.deleteByPrimaryKey(idList);
+        userService.deleteBatchByPrimaryKeys(idList);
         return R.ok();
     }
 

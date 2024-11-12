@@ -113,7 +113,7 @@ public class DataPermissionInterceptor implements Interceptor {
 
         Field sqlField = BoundSql.class.getDeclaredField("sql");
         sqlField.setAccessible(true);
-        sqlField.set(boundSql, modifiedSql + limit);
+        sqlField.set(boundSql, modifiedSql +" " + limit);
         return invocation.proceed();
     }
 

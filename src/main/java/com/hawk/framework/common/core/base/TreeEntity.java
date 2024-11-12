@@ -28,7 +28,7 @@ public class TreeEntity<T> extends BaseDataEntity {
     /**
      * 父菜单ID
      */
-    @Transient
+//    @Transient
     private Long parentId;
 
     /**

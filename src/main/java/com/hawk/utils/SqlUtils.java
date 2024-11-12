@@ -125,6 +125,12 @@ public class SqlUtils {
         return this;
     }
 
+    public <T> SqlUtils in(boolean condition,Func1<T, ?> func, Iterable value) {
+        if (condition) {
+            criteria.andIn(LambdaUtil.getFieldName(func), value);
+        }
+        return this;
+    }
     public <T> SqlUtils in(Func1<T, ?> func, Iterable value) {
         criteria.andIn(LambdaUtil.getFieldName(func), value);
         return this;

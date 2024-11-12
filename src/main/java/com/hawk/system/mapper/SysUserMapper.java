@@ -29,23 +29,23 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     SysUser selectUserByEmail(String email);
     @DataScope(deptAlias = "d")
-    @Select("select u.user_id," +
-            "               u.dept_id," +
-            "               u.user_name," +
-            "               u.nick_name," +
-            "               u.user_account," +
-            "               u.email," +
-            "               u.avatar," +
-            "               u.mobile," +
-            "               u.gender," +
-            "               u.user_type," +
-            "               u.status," +
-            "               u.del_flag," +
-            "               u.create_by," +
-            "               u.create_time," +
-            "               d.dept_name " +
-            "        from sys_user u " +
-            "                 left join sys_dept d on u.dept_id = d.dept_id ")
+//    @Select("select u.user_id," +
+//            "               u.dept_id," +
+//            "               u.user_name," +
+//            "               u.nick_name," +
+//            "               u.user_account," +
+//            "               u.email," +
+//            "               u.avatar," +
+//            "               u.mobile," +
+//            "               u.gender," +
+//            "               u.user_type," +
+//            "               u.status," +
+//            "               u.del_flag," +
+//            "               u.create_by," +
+//            "               u.create_time," +
+//            "               d.dept_name " +
+//            "        from sys_user u " +
+//            "                 left join sys_dept d on u.dept_id = d.dept_id ")
     List<SysUser> selectUserList(@Param("param1") String param1);
 
     @DataScope(deptAlias = "d")
