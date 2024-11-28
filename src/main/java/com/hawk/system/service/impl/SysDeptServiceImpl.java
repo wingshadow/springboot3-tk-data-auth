@@ -76,7 +76,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
         List<Long> deptList = CollUtil.newArrayList(parentDeptId);
         Example example = new Example(SysDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria)
+        CriteriaUtils.builder(criteria)
                 .eq(SysDept::getParentId, parentDeptId)
                 .eq(SysDept::getDelFlag, "0");
 
@@ -89,7 +89,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
     public List<Long> deptByAncestors(String ancestors) {
         Example example = new Example(SysDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria)
+        CriteriaUtils.builder(criteria)
                 .leftLike(SysDept::getAncestors, ancestors)
                 .eq(SysDept::getDelFlag, "0");
 
@@ -117,7 +117,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
     public String getDeptAndChild(Long deptId) {
         Example example = new Example(SysDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).and(DataBaseHelper.findInSet(deptId, "ancestors"));
+        CriteriaUtils.builder(criteria).and(DataBaseHelper.findInSet(deptId, "ancestors"));
         List<SysDept> deptList = sysDeptMapper.selectByExample(example);
 
         List<Long> ids = StreamUtils.toList(deptList, SysDept::getDeptId);
@@ -125,7 +125,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
 
         example = new Example(SysDept.class);
         criteria = example.createCriteria();
-        SqlUtils.builder(criteria).in(SysDept::getDeptId, ids);
+        CriteriaUtils.builder(criteria).in(SysDept::getDeptId, ids);
         List<SysDept> list = sysDeptMapper.selectByExample(example);
 
         if (CollUtil.isNotEmpty(list)) {
@@ -139,7 +139,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
     public List<SysDept> selectDeptList(SysDept dept) {
         Example example = new Example(SysDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria)
+        CriteriaUtils.builder(criteria)
                 .eq(ObjectUtil.isNotNull(dept.getDeptId()), SysDept::getDeptId, dept.getDeptId())
                 .eq(ObjectUtil.isNotNull(dept.getParentId()), SysDept::getParentId, dept.getParentId())
                 .like(StringUtils.isNotBlank(dept.getDeptName()), SysDept::getDeptName, dept.getDeptName())
@@ -155,7 +155,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
     public PageInfo<SysDept> selectPageList(SysDept dept, int pageNum, int pageSize) {
         Example example = new Example(SysDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria)
+        CriteriaUtils.builder(criteria)
                 .eq(ObjectUtil.isNotNull(dept.getDeptId()), SysDept::getDeptId, dept.getDeptId())
                 .eq(ObjectUtil.isNotNull(dept.getParentId()), SysDept::getParentId, dept.getParentId())
                 .like(StringUtils.isNotBlank(dept.getDeptName()), SysDept::getDeptName, dept.getDeptName())
@@ -211,7 +211,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
     public boolean checkDeptNameUnique(SysDept dept) {
         Example example = new Example(SysDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria)
+        CriteriaUtils.builder(criteria)
                 .eq(SysDept::getDeptName, dept.getDeptName())
                 .eq(SysDept::getParentId, dept.getParentId())
                 .ne(ObjectUtil.isNotNull(dept.getDeptId()), SysDept::getDeptId, dept.getDeptId());
@@ -235,7 +235,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
     public long selectNormalChildrenDeptById(Long deptId) {
         Example example = new Example(SysDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria)
+        CriteriaUtils.builder(criteria)
                 .eq(SysDept::getStatus, UserConstants.DEPT_NORMAL)
                 .and(DataBaseHelper.findInSet(deptId, "ancestors"));
 
@@ -270,7 +270,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
 
         Example example = new Example(SysDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).in(SysDept::getDeptId, Arrays.asList(deptIds));
+        CriteriaUtils.builder(criteria).in(SysDept::getDeptId, Arrays.asList(deptIds));
         // 批量更新指定字段
         sysDeptMapper.updateByExample(sysDept, example);
     }
@@ -278,7 +278,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
     public void updateDeptChildren(Long deptId, String newAncestors, String oldAncestors) {
         Example example = new Example(SysDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).and(DataBaseHelper.findInSet(deptId, "ancestors"));
+        CriteriaUtils.builder(criteria).and(DataBaseHelper.findInSet(deptId, "ancestors"));
         List<SysDept> children = sysDeptMapper.selectByExample(example);
         List<SysDept> list = new ArrayList<>();
         for (SysDept child : children) {
@@ -298,14 +298,14 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
     public boolean hasChildByDeptId(Long deptId) {
         Example example = new Example(SysDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).eq(SysDept::getParentId, deptId);
+        CriteriaUtils.builder(criteria).eq(SysDept::getParentId, deptId);
         return sysDeptMapper.exists(example);
     }
 
     @Override
     public boolean checkDeptExistUser(Long deptId) {
         Example example = new Example(SysUser.class);
-        SqlUtils.builder(example.createCriteria()).eq(SysUser::getDeptId, deptId).build();
+        CriteriaUtils.builder(example.createCriteria()).eq(SysUser::getDeptId, deptId).build();
         return userMapper.exists(example);
     }
 

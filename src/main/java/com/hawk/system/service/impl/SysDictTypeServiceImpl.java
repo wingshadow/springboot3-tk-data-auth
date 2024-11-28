@@ -16,7 +16,7 @@ import com.hawk.system.mapper.SysDictDataMapper;
 import com.hawk.system.mapper.SysDictTypeMapper;
 import com.hawk.system.service.SysDictTypeService;
 import com.hawk.utils.SpringUtils;
-import com.hawk.utils.SqlUtils;
+import com.hawk.utils.CriteriaUtils;
 import com.hawk.utils.StreamUtils;
 import com.hawk.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +43,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
     public PageInfo<SysDictType> selectPageDictTypeList(SysDictType dictType, int pageNum, int pageSize) {
         Map<String, Object> params = dictType.getParams();
         Example example = new Example(SysDictType.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .like(StringUtils.isNotBlank(dictType.getDictName()), SysDictType::getDictName, dictType.getDictName())
                 .eq(StringUtils.isNotBlank(dictType.getStatus()), SysDictType::getStatus, dictType.getStatus())
                 .like(StringUtils.isNotBlank(dictType.getDictType()), SysDictType::getDictType, dictType.getDictType())
@@ -65,7 +65,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
     public List<SysDictType> selectDictTypeList(SysDictType dictType) {
         Map<String, Object> params = dictType.getParams();
         Example example = new Example(SysDictType.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .like(StringUtils.isNotBlank(dictType.getDictName()), SysDictType::getDictName, dictType.getDictName())
                 .eq(StringUtils.isNotBlank(dictType.getStatus()), SysDictType::getStatus, dictType.getStatus())
                 .like(StringUtils.isNotBlank(dictType.getDictType()), SysDictType::getDictType, dictType.getDictType())
@@ -122,7 +122,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
     @Override
     public SysDictType selectDictTypeByType(String dictType) {
         Example example = new Example(SysDictType.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysDictType::getDictType, dictType);
         return baseMapper.selectOneByExample(example);
     }
@@ -137,7 +137,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
         for (Long dictId : dictIds) {
             SysDictType dictType = selectDictTypeById(dictId);
             Example example = new Example(SysDictData.class);
-            SqlUtils.builder(example.createCriteria())
+            CriteriaUtils.builder(example.createCriteria())
                     .eq(SysDictData::getDictType, dictType.getDictType());
 
             if (dictDataMapper.exists(example)) {
@@ -157,7 +157,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
     @Override
     public void loadingDictCache() {
         Example example = new Example(SysDictData.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysDictData::getStatus, UserConstants.DICT_NORMAL);
         List<SysDictData> dictDataList = dictDataMapper.selectByExample(example);
         Map<String, List<SysDictData>> dictDataMap = StreamUtils.groupByKey(dictDataList, SysDictData::getDictType);
@@ -214,7 +214,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
         SysDictType oldDict = baseMapper.selectByPrimaryKey(dict.getDictId());
 
         Example example = new Example(SysDictData.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysDictData::getDictType, oldDict.getDictType());
         SysDictData sysDictData = new SysDictData();
         sysDictData.setDictType(dict.getDictType());
@@ -236,7 +236,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
     @Override
     public boolean checkDictTypeUnique(SysDictType dict) {
         Example example = new Example(SysDictType.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysDictType::getDictType, dict.getDictType())
                 .ne(ObjectUtil.isNotNull(dict.getDictId()), SysDictType::getDictId, dict.getDictId());
         boolean exist = baseMapper.exists(example);

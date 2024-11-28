@@ -12,7 +12,7 @@ import com.hawk.framework.service.ConfigService;
 import com.hawk.system.mapper.SysConfigMapper;
 import com.hawk.system.service.SysConfigService;
 import com.hawk.utils.SpringUtils;
-import com.hawk.utils.SqlUtils;
+import com.hawk.utils.CriteriaUtils;
 import com.hawk.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,7 +38,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfig> implements 
         Map<String, Object> params = config.getParams();
         Example example = new Example(SysConfig.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).rightLike(StringUtils.isNotBlank(config.getConfigName()),
+        CriteriaUtils.builder(criteria).rightLike(StringUtils.isNotBlank(config.getConfigName()),
                         SysConfig::getConfigName, config.getConfigName())
                 .eq(StringUtils.isNotBlank(config.getConfigType()),
                         SysConfig::getConfigType, config.getConfigType())

@@ -18,7 +18,7 @@ import com.hawk.system.mapper.SysRoleMenuMapper;
 import com.hawk.system.service.SysMenuService;
 import com.hawk.system.vo.MetaVo;
 import com.hawk.system.vo.RouterVo;
-import com.hawk.utils.SqlUtils;
+import com.hawk.utils.CriteriaUtils;
 import com.hawk.utils.StreamUtils;
 import com.hawk.utils.StringUtils;
 import com.hawk.utils.TreeBuildUtils;
@@ -67,7 +67,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
         // 管理员显示所有菜单信息
         if (LoginHelper.isAdmin(userId)) {
             Example example = new Example(SysMenu.class);
-            SqlUtils.builder(example.createCriteria())
+            CriteriaUtils.builder(example.createCriteria())
                     .like(StringUtils.isNotBlank(menu.getMenuName()), SysMenu::getMenuName, menu.getMenuName())
                     .eq(StringUtils.isNotBlank(menu.getVisible()), SysMenu::getVisible, menu.getVisible())
                     .eq(StringUtils.isNotBlank(menu.getStatus()), SysMenu::getStatus, menu.getStatus());
@@ -238,7 +238,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
     @Override
     public boolean hasChildByMenuId(Long menuId) {
         Example example = new Example(SysMenu.class);
-        SqlUtils.builder(example.createCriteria()).eq(SysMenu::getParentId, menuId);
+        CriteriaUtils.builder(example.createCriteria()).eq(SysMenu::getParentId, menuId);
         return baseMapper.exists(example);
     }
 
@@ -251,7 +251,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
     @Override
     public boolean checkMenuExistRole(Long menuId) {
         Example example = new Example(SysRoleMenu.class);
-        SqlUtils.builder(example.createCriteria()).eq(SysRoleMenu::getMenuId, menuId);
+        CriteriaUtils.builder(example.createCriteria()).eq(SysRoleMenu::getMenuId, menuId);
         return roleMenuMapper.exists(example);
     }
 
@@ -297,7 +297,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
     @Override
     public boolean checkMenuNameUnique(SysMenu menu) {
         Example example = new Example(SysMenu.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysMenu::getMenuName, menu.getMenuName())
                 .eq(SysMenu::getParentId, menu.getParentId())
                 .ne(ObjectUtil.isNotNull(menu.getMenuId()), SysMenu::getMenuId, menu.getMenuId());

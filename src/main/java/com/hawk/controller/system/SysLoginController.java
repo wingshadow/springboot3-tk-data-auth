@@ -12,6 +12,8 @@ import com.hawk.system.common.LoginService;
 import com.hawk.system.service.SysMenuService;
 import com.hawk.system.service.SysUserService;
 import com.hawk.system.vo.RouterVo;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,6 +31,7 @@ import java.util.Map;
  * @author: zhb
  * @create: 2024-04-28 16:18
  */
+@Slf4j
 @RestController
 public class SysLoginController {
 

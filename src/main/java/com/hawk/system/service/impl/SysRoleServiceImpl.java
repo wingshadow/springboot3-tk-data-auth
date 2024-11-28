@@ -12,7 +12,7 @@ import com.hawk.system.mapper.SysRoleMapper;
 import com.hawk.system.mapper.SysRoleMenuMapper;
 import com.hawk.system.mapper.SysUserRoleMapper;
 import com.hawk.system.service.SysRoleService;
-import com.hawk.utils.SqlUtils;
+import com.hawk.utils.CriteriaUtils;
 import com.hawk.utils.StreamUtils;
 import com.hawk.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,7 +76,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     private Example buildQueryExample(SysRole sysRole) {
         Example example = new Example(SysRole.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria)
+        CriteriaUtils.builder(criteria)
                 .eq(SysRole::getDelFlag, UserConstants.USER_RETAIN)
                 .eq(ObjectUtil.isNotNull(sysRole.getRoleId()), SysRole::getRoleId, sysRole.getRoleId())
                 .like(StringUtils.isNotBlank(sysRole.getRoleName()), SysRole::getRoleName, sysRole.getRoleName());
@@ -113,7 +113,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     public boolean checkRoleNameUnique(SysRole role) {
         Example example = new Example(SysRole.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).eq(SysRole::getRoleName, role.getRoleName())
+        CriteriaUtils.builder(criteria).eq(SysRole::getRoleName, role.getRoleName())
                 .ne(ObjectUtil.isNotNull(role.getRoleId()), SysRole::getRoleId, role.getRoleId());
         boolean exist = sysRoleMapper.exists(example);
         return !exist;
@@ -123,7 +123,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     public boolean checkRoleKeyUnique(SysRole role) {
         Example example = new Example(SysRole.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).eq(SysRole::getRoleName, role.getRoleName())
+        CriteriaUtils.builder(criteria).eq(SysRole::getRoleName, role.getRoleName())
                 .ne(ObjectUtil.isNotNull(role.getRoleId()), SysRole::getRoleId, role.getRoleId());
         boolean exist = sysRoleMapper.exists(example);
         return !exist;
@@ -182,7 +182,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
         // 删除角色与菜单关联
         Example example = new Example(SysRoleMenu.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).eq(SysRoleMenu::getRoleId, role.getRoleId());
+        CriteriaUtils.builder(criteria).eq(SysRoleMenu::getRoleId, role.getRoleId());
         roleMenuMapper.deleteByExample(example);
         return insertRoleMenu(role);
     }
@@ -199,7 +199,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
         // 删除角色与部门关联
         Example example = new Example(SysRoleDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).eq(SysRoleDept::getRoleId, role.getRoleId());
+        CriteriaUtils.builder(criteria).eq(SysRoleDept::getRoleId, role.getRoleId());
         roleDeptMapper.deleteByExample(example);
         // 新增角色和部门信息（数据权限）
         return insertRoleDept(role);
@@ -209,13 +209,13 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     public int deleteRoleById(Long roleId) {
         Example example = new Example(SysRoleMenu.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).eq(SysRoleMenu::getRoleId, roleId);
+        CriteriaUtils.builder(criteria).eq(SysRoleMenu::getRoleId, roleId);
         // 删除角色与菜单关联
         roleMenuMapper.deleteByExample(example);
         // 删除角色与部门关联
         Example example2 = new Example(SysRoleDept.class);
         Example.Criteria criteria2 = example.createCriteria();
-        SqlUtils.builder(criteria2).eq(SysRoleMenu::getRoleId, roleId);
+        CriteriaUtils.builder(criteria2).eq(SysRoleMenu::getRoleId, roleId);
         roleDeptMapper.deleteByExample(example2);
         return sysRoleMapper.deleteByPrimaryKey(roleId);
     }
@@ -235,17 +235,17 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
         // 删除角色与菜单关联
         Example example = new Example(SysRoleMenu.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).in(SysRoleMenu::getRoleId, ids);
+        CriteriaUtils.builder(criteria).in(SysRoleMenu::getRoleId, ids);
         roleMenuMapper.deleteByExample(example);
         // 删除角色与部门关联
         Example example2 = new Example(SysRoleDept.class);
         Example.Criteria criteria2 = example.createCriteria();
-        SqlUtils.builder(criteria2).in(SysRoleMenu::getRoleId, ids);
+        CriteriaUtils.builder(criteria2).in(SysRoleMenu::getRoleId, ids);
         roleDeptMapper.deleteByExample(example2);
 
         Example example3 = new Example(SysRole.class);
         Example.Criteria criteria3 = example3.createCriteria();
-        SqlUtils.builder(criteria3).in(SysRoleMenu::getRoleId, ids);
+        CriteriaUtils.builder(criteria3).in(SysRoleMenu::getRoleId, ids);
         return sysRoleMapper.deleteByExample(example3);
     }
 
@@ -253,7 +253,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     public long countUserRoleByRoleId(Long roleId) {
         Example example = new Example(SysUserRole.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).eq(SysUserRole::getRoleId, roleId);
+        CriteriaUtils.builder(criteria).eq(SysUserRole::getRoleId, roleId);
         return userRoleMapper.selectCountByExample(example);
     }
 
@@ -273,7 +273,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     public int deleteAuthUser(SysUserRole userRole) {
         Example example = new Example(SysUserRole.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).eq(SysUserRole::getRoleId, userRole.getRoleId()).eq(SysUserRole::getUserId, userRole.getUserId());
+        CriteriaUtils.builder(criteria).eq(SysUserRole::getRoleId, userRole.getRoleId()).eq(SysUserRole::getUserId, userRole.getUserId());
         int rows = userRoleMapper.deleteByExample(example);
         if (rows > 0) {
             cleanOnlineUserByRole(userRole.getRoleId());
@@ -285,7 +285,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     public int deleteAuthUsers(Long roleId, Long[] userIds) {
         Example example = new Example(SysUserRole.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).eq(SysUserRole::getRoleId, roleId).in(SysUserRole::getUserId, Arrays.asList(userIds));
+        CriteriaUtils.builder(criteria).eq(SysUserRole::getRoleId, roleId).in(SysUserRole::getUserId, Arrays.asList(userIds));
         int rows = userRoleMapper.deleteByExample(example);
         if (rows > 0) {
             cleanOnlineUserByRole(roleId);

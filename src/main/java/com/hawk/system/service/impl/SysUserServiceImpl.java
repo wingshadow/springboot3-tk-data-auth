@@ -18,10 +18,7 @@ import com.hawk.system.mapper.SysDeptMapper;
 import com.hawk.system.mapper.SysUserMapper;
 import com.hawk.system.mapper.SysUserRoleMapper;
 import com.hawk.system.service.SysUserService;
-import com.hawk.utils.SqlBuilder;
-import com.hawk.utils.SqlUtils;
-import com.hawk.utils.StreamUtils;
-import com.hawk.utils.StringUtils;
+import com.hawk.utils.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,7 +62,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
         List<Long> ids = null;
         if (ObjectUtil.isNotNull(user.getDeptId())) {
             Example deptExample = new Example(SysDept.class);
-            SqlUtils.builder(deptExample.createCriteria())
+            CriteriaUtils.builder(deptExample.createCriteria())
                     .and(DataBaseHelper.findInSet(user.getDeptId(), "ancestors"));
             List<SysDept> deptList = deptMapper.selectByExample(deptExample);
             ids = StreamUtils.toList(deptList, SysDept::getDeptId);
@@ -74,7 +71,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
 
         Map<String, Object> params = user.getParams();
         Example example = new Example(SysUser.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysUser::getDelFlag, UserConstants.USER_RETAIN)
                 .eq(ObjectUtil.isNotNull(user.getUserId()), SysUser::getUserId, user.getUserId())
                 .like(StringUtils.isNotBlank(user.getUserName()), SysUser::getUserName, user.getUserName())
@@ -89,7 +86,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Override
     public PageInfo<SysUser> selectPageUserList(SysUser sysUser, int pageNum, int pageSize) {
         String whereCause = buildQueryExample(sysUser);
-        PageMethod.startPage(pageNum,pageSize);
+        PageMethod.startPage(pageNum, pageSize);
         List<SysUser> list = baseMapper.selectUserList(whereCause);
         return new PageInfo<>(list);
     }
@@ -97,13 +94,21 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Override
     public PageInfo<SysUser> selectAllocatedList(SysUser user, int pageSize, int pageNum) {
         Example example = new Example(SysUser.class);
-        SqlUtils.builder(example.createCriteria())
-                .eq("u.del_flag", UserConstants.USER_RETAIN)
+        Example.Criteria criteria = example.createCriteria();
+//        CriteriaUtils.builder(example.createCriteria())
+//                .eq("u.del_flag", UserConstants.USER_RETAIN)
+//                .eq(ObjectUtil.isNotNull(user.getRoleId()), "r.role_id", user.getRoleId())
+//                .like(StringUtils.isNotBlank(user.getUserName()), "u.user_name", user.getUserName())
+//                .eq(ObjectUtil.isNotEmpty(user.getStatus()), "u.status", user.getStatus())
+//                .like(StringUtils.isNotBlank(user.getMobile()), "u.mobile", user.getMobile());
+//        String whereCause = SqlBuilder.buildWhereClause(example, "");
+        String whereCause =  SqlUtils.build().eq("u.del_flag", UserConstants.USER_RETAIN)
                 .eq(ObjectUtil.isNotNull(user.getRoleId()), "r.role_id", user.getRoleId())
                 .like(StringUtils.isNotBlank(user.getUserName()), "u.user_name", user.getUserName())
                 .eq(ObjectUtil.isNotEmpty(user.getStatus()), "u.status", user.getStatus())
-                .like(StringUtils.isNotBlank(user.getMobile()), "u.mobile", user.getMobile());
-        String whereCause = SqlBuilder.buildWhereClause(example, "");
+                .like(StringUtils.isNotBlank(user.getMobile()), "u.mobile", user.getMobile())
+                .toSQL();
+
         List<SysUser> list = baseMapper.selectAllocatedList(whereCause);
         return new PageInfo<>(list);
     }
@@ -113,7 +118,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
 
         List<Long> userIds = userRoleMapper.selectUserIdsByRoleId(user.getRoleId());
         Example example = new Example(SysUser.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq("u.del_flag", UserConstants.USER_RETAIN)
                 .and("(r.role_id !=" + user.getRoleId() + " OR r.role_id IS NULL)")
                 .eq(ObjectUtil.isNotNull(user.getRoleId()), "r.role_id", user.getRoleId())
@@ -148,7 +153,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Override
     public boolean checkUserAccountUnique(SysUser user) {
         Example example = new Example(SysUser.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysUser::getUserAccount, user.getUserAccount())
                 .ne(ObjectUtil.isNotNull(user.getUserId()), SysUser::getUserId, user.getUserId());
         boolean exist = baseMapper.exists(example);
@@ -158,7 +163,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Override
     public boolean checkPhoneUnique(SysUser user) {
         Example example = new Example(SysUser.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysUser::getMobile, user.getMobile())
                 .ne(ObjectUtil.isNotNull(user.getUserId()), SysUser::getUserId, user.getUserId());
         boolean exist = baseMapper.exists(example);
@@ -168,7 +173,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Override
     public boolean checkEmailUnique(SysUser user) {
         Example example = new Example(SysUser.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysUser::getEmail, user.getEmail())
                 .ne(ObjectUtil.isNotNull(user.getUserId()), SysUser::getUserId, user.getUserId());
         boolean exist = baseMapper.exists(example);
@@ -196,7 +201,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Transactional(rollbackFor = Exception.class)
     public void insertUserAuth(Long userId, Long[] roleIds) {
         Example example = new Example(SysUserRole.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysUserRole::getUserId, userId);
         userRoleMapper.deleteByExample(example);
         insertUserRole(userId, roleIds);

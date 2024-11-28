@@ -7,7 +7,7 @@ import com.hawk.framework.base.BaseServiceImpl;
 import com.hawk.framework.entity.SysDictData;
 import com.hawk.system.mapper.SysDictDataMapper;
 import com.hawk.system.service.SysDictDataService;
-import com.hawk.utils.SqlUtils;
+import com.hawk.utils.CriteriaUtils;
 import com.hawk.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CachePut;
@@ -30,7 +30,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictData> impleme
     @Override
     public PageInfo<SysDictData> selectPageDictDataList(SysDictData dictData, int pageNum,int pageSize) {
         Example example = new Example(SysDictData.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(StringUtils.isNotBlank(dictData.getDictType()), SysDictData::getDictType, dictData.getDictType())
                 .like(StringUtils.isNotBlank(dictData.getDictLabel()), SysDictData::getDictLabel, dictData.getDictLabel())
                 .eq(StringUtils.isNotBlank(dictData.getStatus()), SysDictData::getStatus, dictData.getStatus());
@@ -49,7 +49,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictData> impleme
     @Override
     public List<SysDictData> selectDictDataList(SysDictData dictData) {
         Example example = new Example(SysDictData.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(StringUtils.isNotBlank(dictData.getDictType()), SysDictData::getDictType, dictData.getDictType())
                 .like(StringUtils.isNotBlank(dictData.getDictLabel()), SysDictData::getDictLabel, dictData.getDictLabel())
                 .eq(StringUtils.isNotBlank(dictData.getStatus()), SysDictData::getStatus, dictData.getStatus());
@@ -67,7 +67,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictData> impleme
     @Override
     public String selectDictLabel(String dictType, String dictValue) {
         Example example = new Example(SysDictData.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysDictData::getDictType, dictType)
                 .eq(SysDictData::getDictValue, dictValue);
         return baseMapper.selectOneByExample(example).getDictLabel();

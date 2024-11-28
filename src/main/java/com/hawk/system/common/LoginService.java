@@ -6,6 +6,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
+import cn.hutool.core.util.StrUtil;
 import com.hawk.framework.common.constant.CacheConstants;
 import com.hawk.framework.common.constant.Constants;
 import com.hawk.framework.dto.RoleDTO;
@@ -27,11 +28,12 @@ import com.hawk.system.service.SysConfigService;
 import com.hawk.system.service.SysDeptService;
 import com.hawk.system.service.SysRoleService;
 import com.hawk.utils.SpringUtils;
-import com.hawk.utils.SqlUtils;
+import com.hawk.utils.CriteriaUtils;
 import com.hawk.utils.StringUtils;
 import com.hawk.utils.redis.RedisUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
@@ -98,11 +100,10 @@ public class LoginService {
         return StpUtil.getTokenValue();
     }
 
-    public String smsLogin(String phonenumber, String smsCode) {
+    public String smsLogin(String mobile, String smsCode) {
         // 通过手机号查找用户
-        SysUser user = loadUserByMobile(phonenumber);
-
-        checkLogin(LoginType.SMS, user.getUserName(), () -> !validateSmsCode(phonenumber, smsCode));
+        SysUser user = loadUserByMobile(mobile);
+        checkLogin(LoginType.SMS, user.getUserName(), () -> !validateSmsCode(mobile, smsCode));
         // 此处可根据登录用户的数据不同 自行创建 loginUser
         LoginUser loginUser = buildLoginUser(user);
         // 生成token
@@ -113,7 +114,6 @@ public class LoginService {
     public String emailLogin(String email, String emailCode) {
         // 通过手机号查找用户
         SysUser user = loadUserByEmail(email);
-
         checkLogin(LoginType.EMAIL, user.getUserName(), () -> !validateEmailCode(email, emailCode));
         // 此处可根据登录用户的数据不同 自行创建 loginUser
         LoginUser loginUser = buildLoginUser(user);
@@ -144,6 +144,8 @@ public class LoginService {
      * 退出登录
      */
     public void logout() {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.start();
         try {
             LoginUser loginUser = LoginHelper.getLoginUser();
             StpUtil.logout();
@@ -152,6 +154,8 @@ public class LoginService {
             }
         } catch (NotLoginException ignored) {
         }
+        stopWatch.stop();
+        log.info("logout:{}", stopWatch.getTime());
     }
 
     /**
@@ -213,9 +217,8 @@ public class LoginService {
 
     private SysUser loadUserByUsername(String username) {
         Example example = new Example(SysUser.class);
-        SqlUtils.builder(example.createCriteria())
-                .eq(SysUser::getUserAccount, username)
-                .orEq(SysUser::getMobile, username);
+        CriteriaUtils.builder(example.createCriteria())
+                .eq(SysUser::getUserAccount, username);
 
         SysUser user = userMapper.selectOneByExample(example);
         if (ObjectUtil.isNull(user)) {
@@ -230,7 +233,7 @@ public class LoginService {
 
     private SysUser loadUserByMobile(String mobile) {
         Example example = new Example(SysUser.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysUser::getMobile, mobile);
         SysUser user = userMapper.selectOneByExample(example);
         if (ObjectUtil.isNull(user)) {
@@ -245,7 +248,7 @@ public class LoginService {
 
     private SysUser loadUserByEmail(String email) {
         Example example = new Example(SysUser.class);
-        SqlUtils.builder(example.createCriteria())
+        CriteriaUtils.builder(example.createCriteria())
                 .eq(SysUser::getEmail, email);
         SysUser user = userMapper.selectOneByExample(example);
         if (ObjectUtil.isNull(user)) {
@@ -272,7 +275,7 @@ public class LoginService {
         return addUserAttribute(user);
     }
 
-    private SysUser addUserAttribute(SysUser sysUser){
+    private SysUser addUserAttribute(SysUser sysUser) {
         if (!sysUser.isAdmin()) {
             SysDept sysDept = deptService.selectByPrimaryKey(sysUser.getDeptId());
             List<SysRole> roles = roleService.getRoleByUserId(sysUser.getUserId());
@@ -281,6 +284,7 @@ public class LoginService {
         }
         return sysUser;
     }
+
     /**
      * 构建登录用户
      */

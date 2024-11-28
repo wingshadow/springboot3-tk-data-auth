@@ -41,7 +41,8 @@ public class SysRoleController extends BaseController {
     @GetMapping("/list")
     public R<PageInfo<SysRole>> list(SysRoleForm form) {
         SysRole sysRole = BeanUtil.copyProperties(form, SysRole.class);
-        return R.ok(roleService.selectRoleList(sysRole, form.getPageSize(),form.getPageNum()));
+        PageInfo<SysRole> pageInfo = roleService.selectRoleList(sysRole, form.getPageSize(),form.getPageNum());
+        return R.ok(pageInfo);
     }
 
     @GetMapping(value = "/{roleId}")
