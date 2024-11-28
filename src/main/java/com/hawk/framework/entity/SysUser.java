@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hawk.framework.common.constant.UserConstants;
 import com.hawk.framework.common.core.base.BaseDataEntity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Getter;
@@ -22,6 +23,7 @@ import java.util.List;
 @Table(name = "sys_user")
 public class SysUser extends BaseDataEntity {
 
+    @Id
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long userId;
 
@@ -70,6 +72,7 @@ public class SysUser extends BaseDataEntity {
     private List<SysRole> roles;
 
     @Transient
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long roleId;
 
     public boolean isAdmin() {

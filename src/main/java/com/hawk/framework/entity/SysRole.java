@@ -3,6 +3,7 @@ package com.hawk.framework.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hawk.framework.common.constant.UserConstants;
 import com.hawk.framework.common.core.base.BaseEntity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Getter;
@@ -21,6 +22,7 @@ import lombok.Setter;
 @Table(name = "sys_role")
 public class SysRole extends BaseEntity {
 
+    @Id
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long roleId;
 

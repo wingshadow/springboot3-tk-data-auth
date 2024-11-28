@@ -1,7 +1,9 @@
 package com.hawk.framework.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.hawk.framework.common.core.base.TreeEntity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -21,6 +23,8 @@ public class SysMenu extends TreeEntity<SysMenu> {
     /**
      * 菜单ID
      */
+    @Id
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long menuId;
 
     /**

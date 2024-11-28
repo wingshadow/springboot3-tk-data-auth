@@ -2,6 +2,7 @@ package com.hawk.framework.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hawk.framework.common.core.base.TreeEntity;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,7 @@ import lombok.Setter;
 @Table(name = "sys_dept")
 public class SysDept extends TreeEntity<SysDept> {
 
+    @Id
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long deptId;
 
