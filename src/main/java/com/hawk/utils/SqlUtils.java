@@ -3,8 +3,10 @@ package com.hawk.utils;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.StringJoiner;
+import java.util.stream.Collectors;
 
 public class SqlUtils {
 
@@ -77,6 +79,24 @@ public class SqlUtils {
         validate(field);
         if (flag) {
             String condition = field + " LIKE " + formatValue("%" + value + "%");
+            sqlConditions.add(condition);
+        }
+        return this;
+    }
+
+    public SqlUtils and(String condition) {
+        validate(condition);
+        sqlConditions.add(condition);
+        return this;
+    }
+
+    public SqlUtils notIn(boolean flag, String field, Collection<?> values) {
+        validate(field);
+        if (flag) {
+            String placeholders = values.stream()
+                    .map(value -> value instanceof String ? "'" + value + "'" : value.toString())
+                    .collect(Collectors.joining(", "));
+            String condition = field + " NOT IN (" + placeholders + ")";
             sqlConditions.add(condition);
         }
         return this;

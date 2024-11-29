@@ -93,16 +93,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
 
     @Override
     public PageInfo<SysUser> selectAllocatedList(SysUser user, int pageSize, int pageNum) {
-        Example example = new Example(SysUser.class);
-        Example.Criteria criteria = example.createCriteria();
-//        CriteriaUtils.builder(example.createCriteria())
-//                .eq("u.del_flag", UserConstants.USER_RETAIN)
-//                .eq(ObjectUtil.isNotNull(user.getRoleId()), "r.role_id", user.getRoleId())
-//                .like(StringUtils.isNotBlank(user.getUserName()), "u.user_name", user.getUserName())
-//                .eq(ObjectUtil.isNotEmpty(user.getStatus()), "u.status", user.getStatus())
-//                .like(StringUtils.isNotBlank(user.getMobile()), "u.mobile", user.getMobile());
-//        String whereCause = SqlBuilder.buildWhereClause(example, "");
-        String whereCause =  SqlUtils.build().eq("u.del_flag", UserConstants.USER_RETAIN)
+        String whereCause = SqlUtils.build().eq("u.del_flag", UserConstants.USER_RETAIN)
                 .eq(ObjectUtil.isNotNull(user.getRoleId()), "r.role_id", user.getRoleId())
                 .like(StringUtils.isNotBlank(user.getUserName()), "u.user_name", user.getUserName())
                 .eq(ObjectUtil.isNotEmpty(user.getStatus()), "u.status", user.getStatus())
@@ -115,18 +106,14 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
 
     @Override
     public PageInfo<SysUser> selectUnallocatedList(SysUser user, int pageSize, int pageNum) {
-
         List<Long> userIds = userRoleMapper.selectUserIdsByRoleId(user.getRoleId());
-        Example example = new Example(SysUser.class);
-        CriteriaUtils.builder(example.createCriteria())
-                .eq("u.del_flag", UserConstants.USER_RETAIN)
+        String whereCause = SqlUtils.build().eq("u.del_flag", UserConstants.USER_RETAIN)
                 .and("(r.role_id !=" + user.getRoleId() + " OR r.role_id IS NULL)")
                 .eq(ObjectUtil.isNotNull(user.getRoleId()), "r.role_id", user.getRoleId())
                 .notIn(CollUtil.isNotEmpty(userIds), "u.user_id", userIds)
                 .like(StringUtils.isNotBlank(user.getUserAccount()), "u.user_account", user.getUserAccount())
-                .like(StringUtils.isNotBlank(user.getMobile()), "u.mobile", user.getMobile());
+                .like(StringUtils.isNotBlank(user.getMobile()), "u.mobile", user.getMobile()).toSQL();
 
-        String whereCause = SqlBuilder.buildWhereClause(example, "");
         PageMethod.startPage(pageNum, pageSize);
         List<SysUser> list = baseMapper.selectUnallocatedList(whereCause);
         return new PageInfo<>(list);
