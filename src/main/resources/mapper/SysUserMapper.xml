@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hawk.system.mapper.SysUserMapper">
-    <resultMap type="com.hawk.framework.entity.SysUser" id="SysUserResult">
+    <resultMap type="com.hawk.system.entity.SysUser" id="SysUserResult">
         <id property="userId" column="user_id"/>
         <result property="deptId" column="dept_id"/>
         <result property="userAccount" column="user_account"/>
@@ -19,12 +19,12 @@
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
-        <association property="dept" column="dept_id" javaType="com.hawk.framework.entity.SysDept"
+        <association property="dept" column="dept_id" javaType="com.hawk.system.entity.SysDept"
                      resultMap="deptResult"/>
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
     </resultMap>
 
-    <resultMap id="deptResult" type="com.hawk.framework.entity.SysDept">
+    <resultMap id="deptResult" type="com.hawk.system.entity.SysDept">
         <id property="deptId" column="dept_id"/>
         <result property="parentId" column="parent_id"/>
         <result property="deptName" column="dept_name"/>
@@ -33,7 +33,7 @@
         <result property="status" column="dept_status"/>
     </resultMap>
 
-    <resultMap id="RoleResult" type="com.hawk.framework.entity.SysRole">
+    <resultMap id="RoleResult" type="com.hawk.system.entity.SysRole">
         <id property="roleId" column="role_id"/>
         <result property="roleName" column="role_name"/>
         <result property="dataScope" column="data_scope"/>
@@ -76,7 +76,7 @@
 
 
     <!--根据用户id查询用户角色信息-->
-    <select id="selectRoleByUserId" resultType="com.hawk.framework.entity.SysRole">
+    <select id="selectRoleByUserId" resultType="com.hawk.system.entity.SysRole">
         SELECT sr.*
         FROM sys_role sr,
              sys_role_user sur
@@ -84,7 +84,7 @@
           AND sur.user_id = #{userId}
     </select>
 
-    <select id="getAllUser" resultType="com.hawk.framework.entity.SysUser">
+    <select id="getAllUser" resultType="com.hawk.system.entity.SysUser">
         SELECT u.*
         FROM sys_user u
                  LEFT JOIN sys_dept d ON u.dept_id = d.dept_id

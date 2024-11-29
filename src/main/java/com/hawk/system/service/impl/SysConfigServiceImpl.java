@@ -7,7 +7,7 @@ import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
 import com.hawk.framework.common.constant.UserConstants;
 import com.hawk.framework.base.BaseServiceImpl;
-import com.hawk.framework.entity.SysConfig;
+import com.hawk.system.entity.SysConfig;
 import com.hawk.framework.service.ConfigService;
 import com.hawk.system.mapper.SysConfigMapper;
 import com.hawk.system.service.SysConfigService;

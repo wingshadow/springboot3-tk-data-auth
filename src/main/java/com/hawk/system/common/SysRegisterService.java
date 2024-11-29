@@ -3,7 +3,7 @@ package com.hawk.system.common;
 import cn.dev33.satoken.secure.BCrypt;
 import com.hawk.framework.common.constant.CacheConstants;
 import com.hawk.framework.common.constant.Constants;
-import com.hawk.framework.entity.SysUser;
+import com.hawk.system.entity.SysUser;
 import com.hawk.framework.enums.UserType;
 import com.hawk.framework.exception.user.CaptchaException;
 import com.hawk.framework.exception.user.CaptchaExpireException;

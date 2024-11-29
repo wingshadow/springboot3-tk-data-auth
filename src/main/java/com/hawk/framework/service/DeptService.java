@@ -2,7 +2,7 @@ package com.hawk.framework.service;
 
 
 
-import com.hawk.framework.entity.SysDept;
+import com.hawk.system.entity.SysDept;
 
 import java.util.List;
 

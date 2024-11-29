@@ -3,8 +3,7 @@ package com.hawk.system.service;
 import cn.hutool.core.lang.tree.Tree;
 import com.github.pagehelper.PageInfo;
 import com.hawk.framework.base.BaseService;
-import com.hawk.framework.entity.SysDept;
-import com.hawk.system.mapper.SysDeptMapper;
+import com.hawk.system.entity.SysDept;
 
 import java.util.List;
 

@@ -1,9 +1,8 @@
 package com.hawk.system.mapper;
 
 import com.hawk.framework.base.BaseMapper;
-import com.hawk.framework.entity.SysDept;
-import com.hawk.framework.entity.SysRole;
-import lombok.extern.slf4j.Slf4j;
+import com.hawk.system.entity.SysDept;
+import com.hawk.system.entity.SysRole;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.entity.Example;

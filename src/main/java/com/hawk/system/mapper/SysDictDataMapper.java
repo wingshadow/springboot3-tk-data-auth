@@ -3,7 +3,7 @@ package com.hawk.system.mapper;
 import cn.hutool.core.lang.func.LambdaUtil;
 import com.hawk.framework.common.constant.UserConstants;
 import com.hawk.framework.base.BaseMapper;
-import com.hawk.framework.entity.SysDictData;
+import com.hawk.system.entity.SysDictData;
 import org.apache.ibatis.annotations.Mapper;
 import tk.mybatis.mapper.entity.Example;
 

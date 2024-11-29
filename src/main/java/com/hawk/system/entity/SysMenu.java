@@ -1,4 +1,4 @@
-package com.hawk.framework.entity;
+package com.hawk.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;

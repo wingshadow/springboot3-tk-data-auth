@@ -4,13 +4,12 @@ import cn.hutool.core.lang.func.LambdaUtil;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
 import com.hawk.framework.base.BaseServiceImpl;
-import com.hawk.framework.entity.SysDictData;
+import com.hawk.system.entity.SysDictData;
 import com.hawk.system.mapper.SysDictDataMapper;
 import com.hawk.system.service.SysDictDataService;
 import com.hawk.utils.CriteriaUtils;
 import com.hawk.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 

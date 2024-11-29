@@ -2,7 +2,7 @@ package com.hawk.system.mapper;
 
 
 import com.hawk.framework.base.BaseMapper;
-import com.hawk.framework.entity.SysUserRole;
+import com.hawk.system.entity.SysUserRole;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

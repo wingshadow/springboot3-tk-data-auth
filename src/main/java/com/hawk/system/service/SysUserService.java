@@ -2,8 +2,8 @@ package com.hawk.system.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hawk.framework.base.BaseService;
-import com.hawk.framework.entity.SysRole;
-import com.hawk.framework.entity.SysUser;
+import com.hawk.system.entity.SysRole;
+import com.hawk.system.entity.SysUser;
 
 import java.util.List;
 

@@ -6,7 +6,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageInfo;
 import com.hawk.controller.system.form.SysDictDataForm;
 import com.hawk.framework.base.BaseController;
-import com.hawk.framework.entity.SysDictData;
+import com.hawk.system.entity.SysDictData;
 import com.hawk.framework.web.resp.R;
 import com.hawk.system.service.SysDictDataService;
 import com.hawk.system.service.SysDictTypeService;

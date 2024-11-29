@@ -1,8 +1,7 @@
 package com.hawk.framework.model;
 
 import com.hawk.framework.dto.RoleDTO;
-import com.hawk.framework.entity.SysDept;
-import com.hawk.framework.entity.SysRole;
+import com.hawk.system.entity.SysDept;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

@@ -5,14 +5,14 @@
         根据部门表中的data_scope字段的不同值即对应不同的查询语句，将动态语句放入map中即可。
         1：全部数据权限 2：自定数据权限 3：本部门数据权限 4：本部门及以下数据权限
     -->
-    <select id="getAllDeptList" resultType="com.hawk.framework.entity.SysDept">
+    <select id="getAllDeptList" resultType="com.hawk.system.entity.SysDept">
         SELECT *
         FROM sys_dept d
         WHERE d.del_flag = '0'
             ${params.data_scope}
     </select>
 
-    <select id="selectPageDeptList" resultType="com.hawk.framework.entity.SysDept">
+    <select id="selectPageDeptList" resultType="com.hawk.system.entity.SysDept">
         select *
         from sys_dept
         where d.del_flag = '0' ${ew.getCustomSqlSegment}

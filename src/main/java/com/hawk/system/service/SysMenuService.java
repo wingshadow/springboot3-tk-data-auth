@@ -2,9 +2,8 @@ package com.hawk.system.service;
 
 import cn.hutool.core.lang.tree.Tree;
 import com.hawk.framework.base.BaseService;
-import com.hawk.framework.entity.SysMenu;
-import com.hawk.framework.entity.SysUser;
-import com.hawk.system.mapper.SysMenuMapper;
+import com.hawk.system.entity.SysMenu;
+import com.hawk.system.entity.SysUser;
 import com.hawk.system.vo.RouterVo;
 
 import java.util.List;

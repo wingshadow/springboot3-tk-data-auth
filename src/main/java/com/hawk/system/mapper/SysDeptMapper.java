@@ -2,7 +2,7 @@ package com.hawk.system.mapper;
 
 import com.hawk.framework.annotation.scope.DataScope;
 import com.hawk.framework.base.BaseMapper;
-import com.hawk.framework.entity.SysDept;
+import com.hawk.system.entity.SysDept;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;

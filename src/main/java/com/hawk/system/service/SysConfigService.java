@@ -3,8 +3,7 @@ package com.hawk.system.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hawk.framework.base.BaseService;
-import com.hawk.framework.entity.SysConfig;
-import com.hawk.system.mapper.SysConfigMapper;
+import com.hawk.system.entity.SysConfig;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hawk.system.mapper.SysMenuMapper">
-    <resultMap type="com.hawk.framework.entity.SysMenu" id="SysMenuResult">
+    <resultMap type="com.hawk.system.entity.SysMenu" id="SysMenuResult">
         <id property="menuId" column="menu_id"/>
         <result property="menuName" column="menu_name"/>
         <result property="parentName" column="parent_name"/>
@@ -26,7 +26,7 @@
         <result property="remark" column="remark"/>
     </resultMap>
 
-    <select id="selectMenuListByUserId" parameterType="com.hawk.framework.entity.SysMenu"
+    <select id="selectMenuListByUserId" parameterType="com.hawk.system.entity.SysMenu"
             resultMap="SysMenuResult">
         select distinct m.menu_id,
         m.parent_id,

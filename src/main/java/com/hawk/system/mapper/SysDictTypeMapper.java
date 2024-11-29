@@ -2,7 +2,7 @@ package com.hawk.system.mapper;
 
 
 import com.hawk.framework.base.BaseMapper;
-import com.hawk.framework.entity.SysDictType;
+import com.hawk.system.entity.SysDictType;
 import org.apache.ibatis.annotations.Mapper;
 import tk.mybatis.mapper.entity.Example;
 

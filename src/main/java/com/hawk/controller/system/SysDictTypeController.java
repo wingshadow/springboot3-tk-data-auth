@@ -5,7 +5,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageInfo;
 import com.hawk.controller.system.form.SysDictTypeForm;
 import com.hawk.framework.base.BaseController;
-import com.hawk.framework.entity.SysDictType;
+import com.hawk.system.entity.SysDictType;
 import com.hawk.framework.web.resp.R;
 import com.hawk.system.service.SysDictTypeService;
 import com.hawk.utils.ExcelUtil;

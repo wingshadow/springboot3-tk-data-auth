@@ -2,7 +2,7 @@ package com.hawk.system.mapper;
 
 
 import com.hawk.framework.base.BaseMapper;
-import com.hawk.framework.entity.SysConfig;
+import com.hawk.system.entity.SysConfig;
 import org.apache.ibatis.annotations.Mapper;
 
 /**

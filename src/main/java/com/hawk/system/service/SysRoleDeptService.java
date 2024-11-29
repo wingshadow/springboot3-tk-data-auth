@@ -1,8 +1,7 @@
 package com.hawk.system.service;
 
 import com.hawk.framework.base.BaseService;
-import com.hawk.framework.entity.SysRoleDept;
-import com.hawk.system.mapper.SysRoleDeptMapper;
+import com.hawk.system.entity.SysRoleDept;
 
 /**
  * @program: springboot3-mybatis

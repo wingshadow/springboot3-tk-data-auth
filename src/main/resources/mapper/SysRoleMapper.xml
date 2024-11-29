@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hawk.system.mapper.SysRoleMapper">
-    <select id="getAllRoleList" resultType="com.hawk.framework.entity.SysRole">
+    <select id="getAllRoleList" resultType="com.hawk.system.entity.SysRole">
         SELECT sr.*
         FROM sys_role sr
                  LEFT JOIN sys_user_role sur ON sr.role_id = sur.role_id
@@ -11,7 +11,7 @@
             ${params.data_scope}
     </select>
 
-    <select id="selectDeptByRoleId" resultType="com.hawk.framework.entity.SysDept">
+    <select id="selectDeptByRoleId" resultType="com.hawk.system.entity.SysDept">
         select *
         from sys_dept d
                  left join sys_role_dept rd on rd.dept_id = d.dept_id
@@ -19,7 +19,7 @@
         where r.role_id = #{roleId}
     </select>
 
-    <select id="selectRoleByUserId" resultType="com.hawk.framework.entity.SysRole">
+    <select id="selectRoleByUserId" resultType="com.hawk.system.entity.SysRole">
         SELECT r.*
         FROM sys_role r
                  LEFT JOIN sys_user_role sur ON r.role_id = sur.role_id
@@ -45,7 +45,7 @@
                  left join sys_dept d on u.dept_id = d.dept_id
     </sql>
 
-    <select id="selectRoleList" resultType="com.hawk.framework.entity.SysRole">
+    <select id="selectRoleList" resultType="com.hawk.system.entity.SysRole">
         <include refid="selectRole"/>
         ${ew.customSqlSegment}
     </select>

@@ -1,8 +1,7 @@
 package com.hawk.system.service.impl;
 
 import com.hawk.framework.base.BaseServiceImpl;
-import com.hawk.framework.entity.SysUserRole;
-import com.hawk.system.mapper.SysUserRoleMapper;
+import com.hawk.system.entity.SysUserRole;
 import com.hawk.system.service.SysUserRoleService;
 import org.springframework.stereotype.Service;
 

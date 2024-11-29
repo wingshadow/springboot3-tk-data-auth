@@ -5,7 +5,7 @@ import cn.hutool.core.bean.BeanUtil;
 import com.github.pagehelper.PageInfo;
 import com.hawk.controller.system.form.SysConfigForm;
 import com.hawk.framework.base.BaseController;
-import com.hawk.framework.entity.SysConfig;
+import com.hawk.system.entity.SysConfig;
 import com.hawk.framework.web.resp.R;
 import com.hawk.system.service.SysConfigService;
 import com.hawk.utils.ExcelUtil;

@@ -5,7 +5,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Validator;
 import cn.hutool.core.lang.func.LambdaUtil;
 import cn.hutool.core.util.StrUtil;
-import com.hawk.framework.entity.SysConfig;
+import com.hawk.system.entity.SysConfig;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.util.AntPathMatcher;

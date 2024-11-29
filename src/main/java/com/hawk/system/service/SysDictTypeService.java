@@ -3,9 +3,8 @@ package com.hawk.system.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hawk.framework.base.BaseService;
-import com.hawk.framework.entity.SysDictData;
-import com.hawk.framework.entity.SysDictType;
-import com.hawk.system.mapper.SysDictTypeMapper;
+import com.hawk.system.entity.SysDictData;
+import com.hawk.system.entity.SysDictType;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@ package com.hawk.controller.system;
 import cn.hutool.core.convert.Convert;
 import com.hawk.framework.common.constant.UserConstants;
 import com.hawk.framework.base.BaseController;
-import com.hawk.framework.entity.SysDept;
+import com.hawk.system.entity.SysDept;
 import com.hawk.framework.web.resp.R;
 import com.hawk.system.service.SysDeptService;
 import com.hawk.utils.StringUtils;

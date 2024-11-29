@@ -7,6 +7,7 @@ import com.github.pagehelper.page.PageMethod;
 import com.hawk.framework.common.constant.UserConstants;
 import com.hawk.framework.base.BaseServiceImpl;
 import com.hawk.framework.entity.*;
+import com.hawk.system.entity.*;
 import com.hawk.system.mapper.SysRoleDeptMapper;
 import com.hawk.system.mapper.SysRoleMapper;
 import com.hawk.system.mapper.SysRoleMenuMapper;

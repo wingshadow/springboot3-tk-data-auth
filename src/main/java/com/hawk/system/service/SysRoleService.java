@@ -2,11 +2,10 @@ package com.hawk.system.service;
 
 import com.github.pagehelper.PageInfo;
 import com.hawk.framework.base.BaseService;
-import com.hawk.framework.entity.SysDept;
-import com.hawk.framework.entity.SysRole;
-import com.hawk.framework.entity.SysUser;
-import com.hawk.framework.entity.SysUserRole;
-import com.hawk.system.mapper.SysRoleMapper;
+import com.hawk.system.entity.SysDept;
+import com.hawk.system.entity.SysRole;
+import com.hawk.system.entity.SysUser;
+import com.hawk.system.entity.SysUserRole;
 
 import java.util.List;
 import java.util.Set;

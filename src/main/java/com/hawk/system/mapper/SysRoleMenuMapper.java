@@ -2,7 +2,7 @@ package com.hawk.system.mapper;
 
 
 import com.hawk.framework.base.BaseMapper;
-import com.hawk.framework.entity.SysRoleMenu;
+import com.hawk.system.entity.SysRoleMenu;
 import org.apache.ibatis.annotations.Mapper;
 import tk.mybatis.mapper.entity.Example;
 
