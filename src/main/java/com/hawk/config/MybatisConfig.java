@@ -17,6 +17,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @Title: MybatisConfig
@@ -36,7 +37,7 @@ public class MybatisConfig {
         sessionFactory.setTypeAliasesPackage("com.hawk.**.entity");
 
         sessionFactory.setMapperLocations(resolveMapperLocations());
-        sessionFactory.getObject().getConfiguration().setMapUnderscoreToCamelCase(true);
+        Objects.requireNonNull(sessionFactory.getObject()).getConfiguration().setMapUnderscoreToCamelCase(true);
         sessionFactory.getObject().getConfiguration().addInterceptor(new DataPermissionInterceptor());
         return sessionFactory.getObject();
     }
@@ -46,7 +47,7 @@ public class MybatisConfig {
         List<String> mapperLocations = new ArrayList<>();
         mapperLocations.add("classpath*:mapper/*.xml");
         mapperLocations.add("classpath*:mapper/**/*.xml");
-        List<org.springframework.core.io.Resource> resources = new ArrayList();
+        List<org.springframework.core.io.Resource> resources = new ArrayList<>();
         for (String mapperLocation : mapperLocations) {
             try {
                 org.springframework.core.io.Resource[] mappers = resourceResolver.getResources(mapperLocation);

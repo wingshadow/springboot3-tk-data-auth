@@ -19,6 +19,7 @@ import com.hawk.system.mapper.SysUserMapper;
 import com.hawk.system.mapper.SysUserRoleMapper;
 import com.hawk.system.service.SysUserService;
 import com.hawk.utils.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,16 +38,11 @@ import java.util.Map;
  */
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysUserService {
-
-    @Autowired
-    private SysUserRoleMapper userRoleMapper;
-
-    @Autowired
-    private SysDeptMapper deptMapper;
-
-    @Autowired
-    private SysUserMapper baseMapper;
+    private final SysUserRoleMapper userRoleMapper;
+    private final SysDeptMapper deptMapper;
+    private final SysUserMapper baseMapper;
 
     @Override
     public List<SysUser> getAllUser(SysUser sysUser) {
