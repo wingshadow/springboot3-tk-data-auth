@@ -1,9 +1,8 @@
 package com.hawk.config;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInterceptor;
+import com.hawk.framework.genid.IdentifierGenerator;
 import com.hawk.framework.interceptor.DataPermissionInterceptor;
-import org.apache.ibatis.plugin.Interceptor;
+import com.hawk.framework.interceptor.IdentifierInterceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +38,7 @@ public class MybatisConfig {
         sessionFactory.setMapperLocations(resolveMapperLocations());
         Objects.requireNonNull(sessionFactory.getObject()).getConfiguration().setMapUnderscoreToCamelCase(true);
         sessionFactory.getObject().getConfiguration().addInterceptor(new DataPermissionInterceptor());
+        sessionFactory.getObject().getConfiguration().addInterceptor(new IdentifierInterceptor(new IdentifierGenerator()));
         return sessionFactory.getObject();
     }
 
@@ -57,5 +57,10 @@ public class MybatisConfig {
             }
         }
         return resources.toArray(new org.springframework.core.io.Resource[resources.size()]);
+    }
+
+    @Bean
+    public IdentifierGenerator snowflakeIdGen(){
+        return new IdentifierGenerator();
     }
 }

@@ -1,5 +1,6 @@
 package com.hawk.generator.entity;
 
+import com.hawk.framework.common.core.base.BaseDataEntity;
 import com.hawk.framework.common.core.base.BaseEntity;
 import com.hawk.utils.StringUtils;
 import jakarta.persistence.Id;
@@ -19,7 +20,7 @@ import javax.validation.constraints.NotBlank;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "gen_table_column")
-public class GenTableColumn extends BaseEntity {
+public class GenTableColumn extends BaseDataEntity {
 
     /**
      * 编号

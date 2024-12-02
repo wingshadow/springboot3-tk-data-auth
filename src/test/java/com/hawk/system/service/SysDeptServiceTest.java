@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.hawk.App;
 import com.hawk.system.entity.SysDept;
 import com.hawk.system.mapper.SysDeptMapper;
+import com.hawk.utils.CriteriaUtils;
 import com.hawk.utils.SqlBuilder;
 import com.hawk.utils.SqlUtils;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +48,7 @@ public class SysDeptServiceTest {
     public void test2(){
         Example example = new Example(SysDept.class);
         Example.Criteria criteria = example.createCriteria();
-        SqlUtils.builder(criteria).eq(SysDept::getDeptName,"销售部")
+        CriteriaUtils.builder(criteria).eq(SysDept::getDeptName,"销售部")
                         .in(SysDept::getDeptId, Arrays.asList("q","w"));
         System.out.println(SqlBuilder.buildWhereClause(example,"d"));
     }
@@ -57,8 +58,8 @@ public class SysDeptServiceTest {
 //        SysRoleService roleService = SpringUtils.getBean(SysRoleService.class);
 //        List<SysRole> sysRoleList = roleService.getRoleByUserId(1783753327736221697L);
         Example example = new Example(SysDept.class);
-        SqlUtils.builder(example.createCriteria()).eq(SysDept::getDeptId,1L);
-        SqlUtils.builder(example.or()).eq(SysDept::getDeptId,1784405825652178946L);
+        CriteriaUtils.builder(example.createCriteria()).eq(SysDept::getDeptId,1L);
+        CriteriaUtils.builder(example.or()).eq(SysDept::getDeptId,1784405825652178946L);
         List<SysDept> list = deptMapper.selectByExample(example);
     }
 }

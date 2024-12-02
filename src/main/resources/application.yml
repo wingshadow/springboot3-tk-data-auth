@@ -81,3 +81,7 @@ security:
     # 日常配置
     - /**
 # Spring配置
+
+snowflake:
+  worker-id: 1
+  datacenter-id: 1
