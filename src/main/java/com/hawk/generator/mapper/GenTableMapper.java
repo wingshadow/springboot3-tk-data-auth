@@ -16,7 +16,7 @@ import java.util.List;
 @Mapper
 public interface GenTableMapper extends BaseMapper<GenTable> {
 
-    List<GenTable> selectPageDbTableList(GenTable genTable);
+    List<GenTable> selectPageDbTableList(@Param("genTable") GenTable genTable);
     /**
      * 查询据库列表
      *

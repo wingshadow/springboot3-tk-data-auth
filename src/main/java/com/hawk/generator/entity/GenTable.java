@@ -1,5 +1,6 @@
 package com.hawk.generator.entity;
 
+import com.hawk.framework.annotation.database.TableId;
 import com.hawk.framework.common.core.base.BaseDataEntity;
 import com.hawk.generator.constant.GenConstants;
 import com.hawk.utils.StringUtils;
@@ -8,6 +9,8 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.validation.Valid;
@@ -20,7 +23,8 @@ import java.util.List;
  * @author Lion Li
  */
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "gen_table")
 public class GenTable extends BaseDataEntity {
@@ -28,7 +32,7 @@ public class GenTable extends BaseDataEntity {
     /**
      * 编号
      */
-    @Id
+    @TableId
     private Long tableId;
 
     /**

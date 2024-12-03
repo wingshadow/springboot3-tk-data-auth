@@ -1,5 +1,6 @@
 package com.hawk.framework.interceptor;
 
+import com.hawk.framework.annotation.database.TableId;
 import com.hawk.framework.genid.IdentifierGenerator;
 import jakarta.persistence.Id;
 import org.apache.ibatis.executor.Executor;
@@ -8,6 +9,8 @@ import org.apache.ibatis.plugin.*;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
+import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 @Intercepts({
@@ -24,25 +27,66 @@ public class IdentifierInterceptor implements Interceptor {
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
+        // 获取方法参数
+        MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
         Object parameter = invocation.getArgs()[1];
+        // 判断是否是插入操作
+        if (isInsertMethod(mappedStatement.getId())) {
+            if (parameter instanceof Map) {
+                // 如果参数是 Map，可能是批量操作
+                handleBatchInsert((Map<?, ?>) parameter);
+            } else {
+                // 单个实体类插入
+                handleSingleInsert(parameter);
+            }
+        }
+        // 执行原方法
+        return invocation.proceed();
+    }
 
-        if (parameter != null) {
-            Class<?> clazz = parameter.getClass();
-            Field[] fields = clazz.getDeclaredFields();
+    /**
+     * 判断是否为插入方法
+     */
+    private boolean isInsertMethod(String methodName) {
+        return methodName.endsWith("insert") || methodName.endsWith("insertSelective") || methodName.endsWith("insertList");
+    }
 
-            for (Field field : fields) {
-                if (field.isAnnotationPresent(Id.class)) {
-                    field.setAccessible(true);
-                    Object value = field.get(parameter);
+    /**
+     * 处理单个实体类插入
+     */
+    private void handleSingleInsert(Object parameter) {
+        if (parameter == null) {
+            return;
+        }
 
-                    if (value == null) { // 如果主键为空，自动生成
+        // 反射设置主键
+        for (Field field : parameter.getClass().getDeclaredFields()) {
+            if (field.isAnnotationPresent(TableId.class)) {
+                field.setAccessible(true);
+                try {
+                    // 检查主键是否为空
+                    if (field.get(parameter) == null) {
+                        // 设置主键（例如使用雪花算法）
                         field.set(parameter, snowflakeIdGen.genId());
+                        System.out.println("Generated ID for " + parameter.getClass().getSimpleName());
                     }
+                } catch (IllegalAccessException e) {
+                    throw new RuntimeException("Failed to set ID field", e);
                 }
             }
         }
+    }
 
-        return invocation.proceed();
+    /**
+     * 处理批量插入
+     */
+    private void handleBatchInsert(Map<?, ?> parameterMap) {
+        Object listParam = parameterMap.get("list");
+        if (listParam instanceof Iterable) {
+            for (Object entity : (Iterable<?>) listParam) {
+                handleSingleInsert(entity);
+            }
+        }
     }
 
     @Override

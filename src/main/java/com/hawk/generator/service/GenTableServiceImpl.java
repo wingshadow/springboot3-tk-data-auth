@@ -163,6 +163,7 @@ public class GenTableServiceImpl implements GenTableService {
                 }
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw new ServiceException("导入失败：" + e.getMessage());
         }
     }

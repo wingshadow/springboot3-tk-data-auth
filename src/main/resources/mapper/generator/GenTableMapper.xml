@@ -28,7 +28,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         <collection  property="columns"  javaType="java.util.List"  resultMap="GenTableColumnResult" />
     </resultMap>
 
-    <resultMap type="GenTableColumn" id="GenTableColumnResult">
+    <resultMap type="com.hawk.generator.entity.GenTableColumn" id="GenTableColumnResult">
         <id     property="columnId"       column="column_id"      />
         <result property="tableId"        column="table_id"       />
         <result property="columnName"     column="column_name"    />
@@ -54,11 +54,10 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </resultMap>
 
     <select id="selectPageDbTableList" resultMap="GenTableResult">
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isMySql()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isMySql()">
             select table_name, table_comment, create_time, update_time
             from information_schema.tables
             where table_schema = (select database())
-            AND table_name NOT LIKE 'xxl_job_%' AND table_name NOT LIKE 'gen_%'
             AND table_name NOT IN (select table_name from gen_table)
             <if test="genTable.tableName != null and genTable.tableName != ''">
                 AND lower(table_name) like lower(concat('%', #{genTable.tableName}, '%'))
@@ -68,13 +67,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             order by create_time desc
         </if>
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isOracle()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isOracle()">
             select lower(dt.table_name) as table_name, dtc.comments as table_comment, uo.created as create_time, uo.last_ddl_time as update_time
             from user_tables dt, user_tab_comments dtc, user_objects uo
             where dt.table_name = dtc.table_name
             and dt.table_name = uo.object_name
             and uo.object_type = 'TABLE'
-            AND dt.table_name NOT LIKE 'XXL_JOB_%' AND dt.table_name NOT LIKE 'GEN_%'
             AND lower(dt.table_name) NOT IN (select table_name from gen_table)
             <if test="genTable.tableName != null and genTable.tableName != ''">
                 AND lower(dt.table_name) like lower(concat(concat('%', #{genTable.tableName}), '%'))
@@ -84,7 +82,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             order by create_time desc
         </if>
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isPostgerSql()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isPostgerSql()">
             select table_name, table_comment, create_time, update_time
             from (
                 SELECT c.relname AS table_name,
@@ -98,8 +96,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     AND n.nspname = 'public'::name
                     AND n.nspname <![CDATA[ <> ]]> ''::name
             ) list_table
-            where table_name NOT LIKE 'xxl_job_%' AND table_name NOT LIKE 'gen_%'
-            AND table_name NOT IN (select table_name from gen_table)
+            where
+            table_name NOT IN (select table_name from gen_table)
             <if test="genTable.tableName != null and genTable.tableName != ''">
                 AND lower(table_name) like lower(concat('%', #{genTable.tableName}, '%'))
             </if>
@@ -108,7 +106,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             </if>
             order by create_time desc
         </if>
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isSqlServer()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isSqlServer()">
             SELECT cast(D.NAME as nvarchar) as table_name,
                    cast(F.VALUE as nvarchar) as table_comment,
                    crdate as create_time,
@@ -116,7 +114,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             FROM SYSOBJECTS D
                 INNER JOIN SYS.EXTENDED_PROPERTIES F ON D.ID = F.MAJOR_ID
                     AND F.MINOR_ID = 0 AND D.XTYPE = 'U' AND D.NAME != 'DTPROPERTIES'
-                    AND D.NAME NOT LIKE 'xxl_job_%' AND D.NAME NOT LIKE 'gen_%'
                     AND D.NAME NOT IN (select table_name from gen_table)
             <if test="genTable.tableName != null and genTable.tableName != ''">
                 AND lower(D.NAME) like lower(concat(N'%', N'${genTable.tableName}', N'%'))
@@ -129,28 +126,27 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectDbTableListByNames" resultMap="GenTableResult">
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isMySql()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isMySql()">
             select table_name, table_comment, create_time, update_time from information_schema.tables
-            where table_name NOT LIKE 'xxl_job_%' and table_name NOT LIKE 'gen_%' and table_schema = (select database())
+            where table_schema = (select database())
             and table_name in
             <foreach collection="array" item="name" open="(" separator="," close=")">
                  #{name}
             </foreach>
         </if>
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isOracle()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isOracle()">
             select lower(dt.table_name) as table_name, dtc.comments as table_comment, uo.created as create_time, uo.last_ddl_time as update_time
             from user_tables dt, user_tab_comments dtc, user_objects uo
             where dt.table_name = dtc.table_name
             and dt.table_name = uo.object_name
             and uo.object_type = 'TABLE'
-            AND dt.table_name NOT LIKE 'XXL_JOB_%' AND dt.table_name NOT LIKE 'GEN_%'
             AND dt.table_name NOT IN (select table_name from gen_table)
             and lower(dt.table_name) in
             <foreach collection="array" item="name" open="(" separator="," close=")">
                 #{name}
             </foreach>
         </if>
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isPostgerSql()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isPostgerSql()">
             select table_name, table_comment, create_time, update_time
             from (
                 SELECT c.relname AS table_name,
@@ -170,7 +166,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                 #{name}
             </foreach>
         </if>
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isSqlServer()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isSqlServer()">
             SELECT cast(D.NAME as nvarchar) as table_name,
                    cast(F.VALUE as nvarchar) as table_comment,
                    crdate as create_time,
@@ -178,7 +174,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             FROM SYSOBJECTS D
                 INNER JOIN SYS.EXTENDED_PROPERTIES F ON D.ID = F.MAJOR_ID
                     AND F.MINOR_ID = 0 AND D.XTYPE = 'U' AND D.NAME != 'DTPROPERTIES'
-                    AND D.NAME NOT LIKE 'xxl_job_%' AND D.NAME NOT LIKE 'gen_%'
                     AND D.NAME in
             <foreach collection="array" item="name" open="(" separator="," close=")">
                 #{name}
@@ -187,22 +182,21 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </select>
 
     <select id="selectTableByName" parameterType="String" resultMap="GenTableResult">
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isMySql()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isMySql()">
             select table_name, table_comment, create_time, update_time from information_schema.tables
             where table_name NOT LIKE 'xxl_job_%' and table_name NOT LIKE 'gen_%' and table_schema = (select database())
             and table_name = #{tableName}
         </if>
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isOracle()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isOracle()">
             select lower(dt.table_name) as table_name, dtc.comments as table_comment, uo.created as create_time, uo.last_ddl_time as update_time
             from user_tables dt, user_tab_comments dtc, user_objects uo
             where dt.table_name = dtc.table_name
             and dt.table_name = uo.object_name
             and uo.object_type = 'TABLE'
-            AND dt.table_name NOT LIKE 'XXL_JOB_%' AND dt.table_name NOT LIKE 'GEN_%'
             AND dt.table_name NOT IN (select table_name from gen_table)
             and lower(dt.table_name) = #{tableName}
         </if>
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isPostgerSql()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isPostgerSql()">
             select table_name, table_comment, create_time, update_time
             from (
                 SELECT c.relname AS table_name,
@@ -216,10 +210,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
                     AND n.nspname = 'public'::name
                     AND n.nspname <![CDATA[ <> ]]> ''::name
             ) list_table
-            where table_name NOT LIKE 'xxl_job_%' and table_name NOT LIKE 'gen_%'
-            and table_name = #{tableName}
+            where table_name = #{tableName}
         </if>
-        <if test="@com.ruoyi.common.helper.DataBaseHelper@isSqlServer()">
+        <if test="@com.hawk.framework.helper.DataBaseHelper@isSqlServer()">
             SELECT cast(D.NAME as nvarchar) as table_name,
                    cast(F.VALUE as nvarchar) as table_comment,
                    crdate as create_time,
@@ -227,7 +220,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
             FROM SYSOBJECTS D
                 INNER JOIN SYS.EXTENDED_PROPERTIES F ON D.ID = F.MAJOR_ID
                     AND F.MINOR_ID = 0 AND D.XTYPE = 'U' AND D.NAME != 'DTPROPERTIES'
-                    AND D.NAME NOT LIKE 'xxl_job_%' AND D.NAME NOT LIKE 'gen_%'
                     AND D.NAME = #{tableName}
         </if>
     </select>

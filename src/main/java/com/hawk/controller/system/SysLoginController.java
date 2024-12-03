@@ -2,6 +2,7 @@ package com.hawk.controller.system;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.hawk.framework.common.constant.Constants;
+import com.hawk.framework.web.resp.RespCode;
 import com.hawk.system.entity.SysMenu;
 import com.hawk.system.entity.SysUser;
 import com.hawk.framework.helper.LoginHelper;
@@ -64,6 +65,9 @@ public class SysLoginController {
     @GetMapping("getInfo")
     public R<Map<String, Object>> getInfo() {
         LoginUser loginUser = LoginHelper.getLoginUser();
+        if(loginUser == null){
+            return R.fail("请用户重新登陆");
+        }
         SysUser user = new SysUser();
         user.setUserId(loginUser.getUserId());
         user = userService.selectOne(user);

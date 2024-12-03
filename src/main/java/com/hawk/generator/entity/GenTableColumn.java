@@ -1,13 +1,14 @@
 package com.hawk.generator.entity;
 
+import com.hawk.framework.annotation.database.TableId;
 import com.hawk.framework.common.core.base.BaseDataEntity;
-import com.hawk.framework.common.core.base.BaseEntity;
 import com.hawk.utils.StringUtils;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
-import org.apache.ibatis.type.JdbcType;
+import lombok.Getter;
+import lombok.Setter;
+import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.validation.constraints.NotBlank;
 
@@ -17,15 +18,18 @@ import javax.validation.constraints.NotBlank;
  * @author Lion Li
  */
 
-@Data
+@Getter
+@Setter
 @EqualsAndHashCode(callSuper = true)
 @Table(name = "gen_table_column")
 public class GenTableColumn extends BaseDataEntity {
 
     /**
      * 编号
+     * jakarta.persistence.Id 使用 jpa注解mybatis批处理插入时默认数据库字段自增，生成插入sql语句中
+     * 不包含主键字段名称，因此为了统一主键赋值，新增主键新注解，方便批处理插入。
      */
-    @Id
+    @TableId
     private Long columnId;
 
     /**
@@ -180,10 +184,10 @@ public class GenTableColumn extends BaseDataEntity {
 
     public static boolean isSuperColumn(String javaField) {
         return StringUtils.equalsAnyIgnoreCase(javaField,
-            // BaseEntity
-            "createBy", "createTime", "updateBy", "updateTime",
-            // TreeEntity
-            "parentName", "parentId");
+                // BaseEntity
+                "createBy", "createTime", "updateBy", "updateTime",
+                // TreeEntity
+                "parentName", "parentId");
     }
 
     public boolean isUsableColumn() {
