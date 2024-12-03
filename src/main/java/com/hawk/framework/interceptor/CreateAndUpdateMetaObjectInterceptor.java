@@ -25,7 +25,6 @@ import java.util.Date;
  * @author: zhb
  * @create: 2024-12-03 15:28
  */
-@Component
 @Intercepts({
         @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})
 })

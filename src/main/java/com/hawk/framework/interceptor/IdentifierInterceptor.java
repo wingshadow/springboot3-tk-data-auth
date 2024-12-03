@@ -16,7 +16,6 @@ import java.util.Properties;
 @Intercepts({
         @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})
 })
-@Component
 public class IdentifierInterceptor implements Interceptor {
 
     private final IdentifierGenerator snowflakeIdGen;

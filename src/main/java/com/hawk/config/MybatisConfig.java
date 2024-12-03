@@ -1,6 +1,7 @@
 package com.hawk.config;
 
 import com.hawk.framework.genid.IdentifierGenerator;
+import com.hawk.framework.interceptor.CreateAndUpdateMetaObjectInterceptor;
 import com.hawk.framework.interceptor.DataPermissionInterceptor;
 import com.hawk.framework.interceptor.IdentifierInterceptor;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -39,6 +40,7 @@ public class MybatisConfig {
         Objects.requireNonNull(sessionFactory.getObject()).getConfiguration().setMapUnderscoreToCamelCase(true);
         sessionFactory.getObject().getConfiguration().addInterceptor(new DataPermissionInterceptor());
         sessionFactory.getObject().getConfiguration().addInterceptor(new IdentifierInterceptor(new IdentifierGenerator()));
+        sessionFactory.getObject().getConfiguration().addInterceptor(new CreateAndUpdateMetaObjectInterceptor());
         return sessionFactory.getObject();
     }
 
