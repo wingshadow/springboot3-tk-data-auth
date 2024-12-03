@@ -2,17 +2,20 @@ package com.hawk.framework.interceptor;
 
 import com.hawk.framework.annotation.database.TableId;
 import com.hawk.framework.genid.IdentifierGenerator;
-import jakarta.persistence.Id;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Field;
-import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+/**
+ * @program: springboot3-tk-data-auth
+ * @description: 主键自动填充拦截器
+ * @author: zhb
+ * @create: 2024-12-03 15:28
+ */
 @Intercepts({
         @Signature(type = Executor.class, method = "update", args = {MappedStatement.class, Object.class})
 })

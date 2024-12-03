@@ -14,14 +14,12 @@ import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
-import org.apache.ibatis.reflection.MetaObject;
-import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 /**
  * @program: springboot3-tk-data-auth
- * @description:
+ * @description: 创建时间和创建人、更新时间和更新人自己插入拦截器
  * @author: zhb
  * @create: 2024-12-03 15:28
  */
