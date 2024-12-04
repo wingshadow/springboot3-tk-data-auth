@@ -1,0 +1,56 @@
+package ${packageName}.domain;
+
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import java.io.Serializable;
+import java.util.Date;
+import java.math.BigDecimal;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+
+#foreach ($import in $importList)
+import ${import};
+#end
+#if($table.crud || $table.sub)
+import com.hawk.framework.common.core.base.BaseDataEntity;
+#elseif($table.tree)
+import com.hawk.framework.common.core.base.TreeEntity;
+#end
+
+/**
+ * ${functionName}对象 ${tableName}
+ *
+ * @author ${author}
+ * @date ${datetime}
+ */
+#if($table.crud || $table.sub)
+    #set($Entity="BaseDataEntity")
+#elseif($table.tree)
+    #set($Entity="TreeEntity<${ClassName}>")
+#end
+@Data
+@EqualsAndHashCode(callSuper = true)
+@Table("${tableName}")
+public class ${ClassName} extends ${Entity} {
+
+    private static final long serialVersionUID=1L;
+
+#foreach ($column in $columns)
+#if(!$table.isSuperColumn($column.javaField))
+    /**
+     * $column.columnComment
+     */
+#if($column.javaField=='delFlag')
+    @TableLogic
+#end
+#if($column.javaField=='version')
+    @Version
+#end
+#if($column.pk)
+    @Id(value = "$column.columnName")
+#end
+    private $column.javaType $column.javaField;
+#end
+#end
+
+}

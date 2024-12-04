@@ -2,6 +2,7 @@ package com.hawk.framework.interceptor;
 
 import com.hawk.framework.annotation.database.TableId;
 import com.hawk.framework.genid.IdentifierGenerator;
+import jakarta.persistence.Id;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
@@ -63,14 +64,13 @@ public class IdentifierInterceptor implements Interceptor {
 
         // 反射设置主键
         for (Field field : parameter.getClass().getDeclaredFields()) {
-            if (field.isAnnotationPresent(TableId.class)) {
+            if (field.isAnnotationPresent(Id.class)) {
                 field.setAccessible(true);
                 try {
                     // 检查主键是否为空
                     if (field.get(parameter) == null) {
                         // 设置主键（例如使用雪花算法）
                         field.set(parameter, snowflakeIdGen.genId());
-                        System.out.println("Generated ID for " + parameter.getClass().getSimpleName());
                     }
                 } catch (IllegalAccessException e) {
                     throw new RuntimeException("Failed to set ID field", e);

@@ -1,6 +1,5 @@
 package com.hawk.generator.entity;
 
-import com.hawk.framework.annotation.database.TableId;
 import com.hawk.framework.common.core.base.BaseDataEntity;
 import com.hawk.utils.StringUtils;
 import jakarta.persistence.Id;
@@ -8,7 +7,6 @@ import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
-import tk.mybatis.mapper.annotation.KeySql;
 
 import javax.validation.constraints.NotBlank;
 
@@ -29,7 +27,7 @@ public class GenTableColumn extends BaseDataEntity {
      * jakarta.persistence.Id 使用 jpa注解mybatis批处理插入时默认数据库字段自增，生成插入sql语句中
      * 不包含主键字段名称，因此为了统一主键赋值，新增主键新注解，方便批处理插入。
      */
-    @TableId
+    @Id
     private Long columnId;
 
     /**

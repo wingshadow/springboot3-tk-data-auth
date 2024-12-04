@@ -1,13 +1,11 @@
 package com.hawk.generator.entity;
 
-import com.hawk.framework.annotation.database.TableId;
 import com.hawk.framework.common.core.base.BaseDataEntity;
 import com.hawk.generator.constant.GenConstants;
 import com.hawk.utils.StringUtils;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,7 +30,7 @@ public class GenTable extends BaseDataEntity {
     /**
      * 编号
      */
-    @TableId
+    @Id
     private Long tableId;
 
     /**
