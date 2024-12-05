@@ -21,6 +21,7 @@ public class BatchUpdateProvider extends MapperTemplate {
 
     public String updateBatchSelective(MappedStatement ms) {
         final Class<?> entityClass = getEntityClass(ms);
+
         // 开始拼接 SQL
         StringBuilder sql = new StringBuilder();
         sql.append(SqlHelper.updateTable(entityClass, tableName(entityClass)));
@@ -28,33 +29,49 @@ public class BatchUpdateProvider extends MapperTemplate {
 
         // 获取全部列
         Set<EntityColumn> allColumns = EntityHelper.getColumns(entityClass);
-        // 找到主键列
+        // 获取主键列
         Set<EntityColumn> pkColumns = EntityHelper.getPKColumns(entityClass);
 
+        // 拼接可更新列的 CASE 语句
         for (EntityColumn column : allColumns) {
             if (!column.isId() && column.isUpdatable()) {
-                sql.append("  <trim prefix=\"").append(column.getColumn()).append(" = case\" suffix=\"end,\">");
-                sql.append("     <foreach collection=\"list\" item=\"i\" index=\"index\">");
-                sql.append(this.getIfNotNull("i", column, true));
-                sql.append("         when ");
-                int count = 0;
-                for (EntityColumn pk : pkColumns) {
-                    if (count != 0) {
-                        sql.append("and ");
-                    }
-                    sql.append(pk.getColumn()).append("=#{i.").append(pk.getProperty()).append("} ");
-                    count++;
-                }
-                sql.append("then ").append(column.getColumnHolder("i"));
-                sql.append("        </if>");
-                sql.append("        </foreach>");
-                sql.append("    </trim>");
+                appendCaseStatement(sql, column, pkColumns);
             }
         }
         sql.append("</trim>");
 
         // WHERE 子句
         sql.append("WHERE ");
+        appendPrimaryKeyWhereClause(sql, pkColumns);
+        return sql.toString();
+    }
+
+    /**
+     * 拼接 CASE 语句
+     */
+    private void appendCaseStatement(StringBuilder sql, EntityColumn column, Set<EntityColumn> pkColumns) {
+        sql.append("  <trim prefix=\"").append(column.getColumn()).append(" = CASE\" suffix=\"END,\">");
+        sql.append("     <foreach collection=\"list\" item=\"i\" index=\"index\">");
+        sql.append(this.getIfNotNull("i", column, true));
+        sql.append("         WHEN ");
+        int count = 0;
+        for (EntityColumn pk : pkColumns) {
+            if (count != 0) {
+                sql.append(" AND ");
+            }
+            sql.append(pk.getColumn()).append(" = #{i.").append(pk.getProperty()).append("}");
+            count++;
+        }
+        sql.append(" THEN ").append(column.getColumnHolder("i")).append(" ");
+        sql.append("     </if>");
+        sql.append("     </foreach>");
+        sql.append("  </trim>");
+    }
+
+    /**
+     * 拼接主键 WHERE 子句
+     */
+    private void appendPrimaryKeyWhereClause(StringBuilder sql, Set<EntityColumn> pkColumns) {
         int count = 0;
         for (EntityColumn pk : pkColumns) {
             sql.append(pk.getColumn());
@@ -63,21 +80,15 @@ public class BatchUpdateProvider extends MapperTemplate {
             }
             count++;
         }
-        sql.append(" IN");
-        sql.append("<trim prefix=\"(\" suffix=\")\">");
-        sql.append("<foreach collection=\"list\" separator=\",\" item=\"i\" index=\"index\"  >");
-        count = 0;
+        sql.append(" IN (");
+        sql.append("  <foreach collection=\"list\" separator=\",\" item=\"i\" index=\"index\">");
         for (EntityColumn pk : pkColumns) {
-            sql.append("#{i.").append(pk.getProperty()).append("}");
-            if (count < pkColumns.size() - 1) {
-                sql.append(", ");
-            }
-            count++;
+            sql.append("  #{i.").append(pk.getProperty()).append("}");
         }
-        sql.append("</foreach>");
-        sql.append("</trim>");
-        return sql.toString();
+        sql.append("  </foreach>");
+        sql.append(")");
     }
+
 
     private String getIfNotNull(String entityName, EntityColumn column, boolean empty) {
         StringBuilder sql = new StringBuilder();
