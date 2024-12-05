@@ -65,9 +65,6 @@ public class SysLoginController {
     @GetMapping("getInfo")
     public R<Map<String, Object>> getInfo() {
         LoginUser loginUser = LoginHelper.getLoginUser();
-        if(loginUser == null){
-            return R.fail("请用户重新登陆");
-        }
         SysUser user = new SysUser();
         user.setUserId(loginUser.getUserId());
         user = userService.selectOne(user);

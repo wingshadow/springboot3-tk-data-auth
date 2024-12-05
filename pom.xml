@@ -48,7 +48,7 @@
         <dependency>
             <groupId>tk.mybatis</groupId>
             <artifactId>mapper-spring-boot-starter</artifactId>
-            <version>5.0.1-beta</version>
+            <version>5.0.0</version>
         </dependency>
 
 

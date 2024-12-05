@@ -158,7 +158,7 @@ public class GenTableServiceImpl implements GenTableService {
                         saveColumns.add(column);
                     }
                     if (CollUtil.isNotEmpty(saveColumns)) {
-                        genTableColumnMapper.insertList(saveColumns);
+                        genTableColumnMapper.insertAllFieldBatch(saveColumns);
                     }
                 }
             }

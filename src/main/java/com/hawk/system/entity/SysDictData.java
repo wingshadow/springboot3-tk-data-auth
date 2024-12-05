@@ -25,7 +25,6 @@ public class SysDictData extends BaseDataEntity {
      * 字典编码
      */
     @Id
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long dictCode;
 
     /**

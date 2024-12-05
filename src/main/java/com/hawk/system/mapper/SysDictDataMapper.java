@@ -3,6 +3,7 @@ package com.hawk.system.mapper;
 import cn.hutool.core.lang.func.LambdaUtil;
 import com.hawk.framework.common.constant.UserConstants;
 import com.hawk.framework.base.BaseMapper;
+import com.hawk.framework.plus.batch.update.BatchUpdateMapper;
 import com.hawk.system.entity.SysDictData;
 import org.apache.ibatis.annotations.Mapper;
 import tk.mybatis.mapper.entity.Example;
@@ -15,7 +16,7 @@ import java.util.List;
  * @author Lion Li
  */
 @Mapper
-public interface SysDictDataMapper extends BaseMapper<SysDictData> {
+public interface SysDictDataMapper extends BaseMapper<SysDictData>, BatchUpdateMapper<SysDictData> {
 
     default List<SysDictData> selectDictDataByType(String dictType) {
         Example example = new Example(SysDictData.class);
