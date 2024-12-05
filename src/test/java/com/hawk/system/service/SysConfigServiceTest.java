@@ -42,20 +42,20 @@ public class SysConfigServiceTest {
 //        GenTable gentable = genTableMapper.selectByPrimaryKey(1863844597178748928L);
 //        log.info("{}", JSONUtil.toJsonStr(gentable));
 
-//        SysDictData data = new SysDictData();
-//        data.setDictCode(1L);
-//        data.setStatus("1");
-//
-//        SysDictData data2 = new SysDictData();
-//        data2.setDictCode(2L);
-//        data2.setStatus("1");
-//
-//        List<SysDictData> list = new ArrayList<>();
-//        list.add(data2);
-//        list.add(data);
-//        sysDictDataMapper.updateBatchSelective(list);
+        SysDictData data = new SysDictData();
+        data.setDictCode(1L);
+        data.setStatus("1");
 
-        List<Long> list = Arrays.asList(98L,99L);
-        sysDictDataMapper.deleteBatch(list);
+        SysDictData data2 = new SysDictData();
+        data2.setDictCode(2L);
+        data2.setStatus("1");
+
+        List<SysDictData> list = new ArrayList<>();
+        list.add(data2);
+        list.add(data);
+        sysDictDataMapper.updateBatchSelectiveLimit(list,100);
+
+//        List<Long> list = Arrays.asList(98L,99L);
+//        sysDictDataMapper.deleteBatch(list);
     }
 }
