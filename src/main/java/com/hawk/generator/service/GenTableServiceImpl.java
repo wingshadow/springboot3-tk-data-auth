@@ -1,5 +1,6 @@
 package com.hawk.generator.service;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.Dict;
@@ -64,7 +65,7 @@ public class GenTableServiceImpl implements GenTableService {
     }
 
     @Override
-    public PageInfo<GenTableColumn> selectPageGenTableColumnListByTableId(Long tableId, int pageNum, int pageSize){
+    public PageInfo<GenTableColumn> selectPageGenTableColumnListByTableId(Long tableId, int pageNum, int pageSize) {
         Example example = new Example(GenTableColumn.class);
         CriteriaUtils.builder(example.createCriteria())
                 .eq(GenTableColumn::getTableId, tableId);
@@ -103,14 +104,18 @@ public class GenTableServiceImpl implements GenTableService {
 
     @Override
     public List<GenTable> selectGenTableAll() {
-        return genTableMapper.selectGenTableAll();
+        return genTableMapper.selectAll();
     }
 
     @Override
     public GenTable selectGenTableById(Long id) {
-        GenTable genTable = genTableMapper.selectGenTableById(id);
-        setTableFromOptions(genTable);
-        return genTable;
+        GenTable table = genTableMapper.selectByPrimaryKey(id);
+        Example example = new Example(GenTableColumn.class);
+        CriteriaUtils.builder(example.createCriteria()).eq(GenTableColumn::getTableId, id);
+        List<GenTableColumn> columns = genTableColumnMapper.selectByExample(example);
+        table.setColumns(columns);
+        setTableFromOptions(table);
+        return table;
     }
 
     @Override
@@ -172,7 +177,12 @@ public class GenTableServiceImpl implements GenTableService {
     public Map<String, String> previewCode(Long tableId) {
         Map<String, String> dataMap = new LinkedHashMap<>();
         // 查询表信息
-        GenTable table = genTableMapper.selectGenTableById(tableId);
+        GenTable table = genTableMapper.selectByPrimaryKey(tableId);
+        Example example = new Example(GenTableColumn.class);
+        CriteriaUtils.builder(example.createCriteria()).eq(GenTableColumn::getTableId, tableId);
+        List<GenTableColumn> columns = genTableColumnMapper.selectByExample(example);
+        table.setColumns(columns);
+
         List<Long> menuIds = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             menuIds.add(IdUtil.getSnowflakeNextId());
@@ -210,7 +220,14 @@ public class GenTableServiceImpl implements GenTableService {
     @Override
     public void generatorCode(String tableName) {
         // 查询表信息
-        GenTable table = genTableMapper.selectGenTableByName(tableName);
+        Example example = new Example(GenTable.class);
+        CriteriaUtils.builder(example.createCriteria()).eq(GenTable::getTableName, tableName);
+        GenTable table = genTableMapper.selectOneByExample(example);
+
+        Example columnExample = new Example(GenTableColumn.class);
+        CriteriaUtils.builder(columnExample.createCriteria()).eq(GenTable::getTableId, table.getTableId());
+        List<GenTableColumn> columns = genTableColumnMapper.selectByExample(columnExample);
+        table.setColumns(columns);
         // 设置主子表信息
         setSubTable(table);
         // 设置主键列信息
@@ -241,7 +258,15 @@ public class GenTableServiceImpl implements GenTableService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void synchDb(String tableName) {
-        GenTable table = genTableMapper.selectGenTableByName(tableName);
+        Example example = new Example(GenTable.class);
+        CriteriaUtils.builder(example.createCriteria()).eq(GenTable::getTableName, tableName);
+        GenTable table = genTableMapper.selectOneByExample(example);
+
+        Example columnExample = new Example(GenTableColumn.class);
+        CriteriaUtils.builder(columnExample.createCriteria()).eq(GenTable::getTableId, table.getTableId());
+        List<GenTableColumn> columns = genTableColumnMapper.selectByExample(columnExample);
+        table.setColumns(columns);
+
         List<GenTableColumn> tableColumns = table.getColumns();
         Map<String, GenTableColumn> tableColumnMap = StreamUtils.toIdentityMap(tableColumns, GenTableColumn::getColumnName);
 
@@ -273,10 +298,10 @@ public class GenTableServiceImpl implements GenTableService {
             saveColumns.add(column);
         });
         if (CollUtil.isNotEmpty(saveColumns)) {
-            for(GenTableColumn column : saveColumns){
-                if(column.getColumnId()!=null){
+            for (GenTableColumn column : saveColumns) {
+                if (column.getColumnId() != null) {
                     genTableColumnMapper.updateByPrimaryKey(column);
-                }else{
+                } else {
                     genTableColumnMapper.insert(column);
                 }
             }
@@ -284,7 +309,7 @@ public class GenTableServiceImpl implements GenTableService {
         List<GenTableColumn> delColumns = StreamUtils.filter(tableColumns, column -> !dbTableColumnNames.contains(column.getColumnName()));
         if (CollUtil.isNotEmpty(delColumns)) {
             List<Long> ids = StreamUtils.toList(delColumns, GenTableColumn::getColumnId);
-            for(Long id : ids){
+            for (Long id : ids) {
                 genTableColumnMapper.deleteByPrimaryKey(id);
             }
         }
@@ -306,7 +331,14 @@ public class GenTableServiceImpl implements GenTableService {
      */
     private void generatorCode(String tableName, ZipOutputStream zip) {
         // 查询表信息
-        GenTable table = genTableMapper.selectGenTableByName(tableName);
+        Example example = new Example(GenTable.class);
+        CriteriaUtils.builder(example.createCriteria()).eq(GenTable::getTableName, tableName);
+        GenTable table = genTableMapper.selectOneByExample(example);
+
+        Example columnExample = new Example(GenTableColumn.class);
+        CriteriaUtils.builder(columnExample.createCriteria()).eq(GenTable::getTableId, table.getTableId());
+        List<GenTableColumn> columns = genTableColumnMapper.selectByExample(columnExample);
+        table.setColumns(columns);
         List<Long> menuIds = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             menuIds.add(IdUtil.getSnowflake().nextId());

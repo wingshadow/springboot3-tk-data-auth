@@ -51,7 +51,7 @@ public class IdentifierInterceptor implements Interceptor {
      * 判断是否为插入方法
      */
     private boolean isInsertMethod(String methodName) {
-        return methodName.endsWith("insert") || methodName.endsWith("insertSelective") || methodName.endsWith("insertList");
+        return methodName.endsWith("insert") || methodName.endsWith("insertSelective") || methodName.endsWith("insertAllFieldBatch");
     }
 
     /**
