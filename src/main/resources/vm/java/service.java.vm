@@ -1,8 +1,6 @@
 package ${packageName}.service;
 
 import ${packageName}.domain.${ClassName};
-import ${packageName}.domain.vo.${ClassName}Vo;
-import ${packageName}.domain.bo.${ClassName}Bo;
 #if($table.crud || $table.sub)
 import com.github.pagehelper.PageInfo;
 #end
@@ -28,26 +26,19 @@ public interface I${ClassName}Service extends BaseService<${ClassName}>  {
     /**
      * 查询${functionName}列表
      */
-    PageInfo<${ClassName}Vo> queryPageList(${ClassName}Bo bo, PageQuery pageQuery);
+    PageInfo<${ClassName}> queryPageList(${ClassName} entity,  int pageNum, int pageSize);
 #end
 
     /**
      * 查询${functionName}列表
      */
-    List<${ClassName}Vo> queryList(${ClassName}Bo bo);
+    List<${ClassName}> queryList(${ClassName} entity);
 
-    /**
-     * 新增${functionName}
-     */
-    Boolean insertByBo(${ClassName}Bo bo);
+    void deleteBatch(List<Long> ids);
 
-    /**
-     * 修改${functionName}
-     */
-    Boolean updateByBo(${ClassName}Bo bo);
+    int updateBatchSelective(List<${ClassName}> list);
 
-    /**
-     * 校验并批量删除${functionName}信息
-     */
-    Boolean deleteWithValidByIds(Collection<${pkColumn.javaType}> ids, Boolean isValid);
+    int updateBatchSelectiveLimit(List<${ClassName}> list,int size);
+
+    int insertAllFieldBatch(List<${ClassName}> list);
 }

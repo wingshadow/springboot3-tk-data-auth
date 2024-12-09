@@ -106,9 +106,10 @@ public class GenController extends BaseController {
      */
     @SaCheckPermission("tool:gen:edit")
     @PutMapping
-    public R<Void> editSave(@Validated @RequestBody GenTable genTable) {
-        genTableService.validateEdit(genTable);
-        genTableService.updateGenTable(genTable);
+    public R<Void> editSave(@RequestBody GenTableForm form) {
+        GenTable table = BeanUtil.copyProperties(form,GenTable.class);
+        genTableService.validateEdit(table);
+        genTableService.updateGenTable(table);
         return R.ok();
     }
 

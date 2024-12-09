@@ -14,5 +14,5 @@ import java.util.List;
 @RegisterMapper
 public interface BatchLogicDeleteMapper<T> {
     @InsertProvider(type = BatchLogicDeleteProvider.class, method = "dynamicSQL")
-    void deleteLogicBatch(List<Long> list);
+    int deleteLogicBatch(List<Long> list);
 }

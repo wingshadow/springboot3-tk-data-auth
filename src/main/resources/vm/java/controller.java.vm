@@ -18,7 +18,6 @@ import com.hawk.framework.validateEditGroup;
 import com.hawk.framework.validate.QueryGroup;
 import com.hawk.utils.ExcelUtil;
 import ${packageName}.domain.vo.${ClassName}Vo;
-import ${packageName}.domain.bo.${ClassName}Bo;
 import ${packageName}.service.I${ClassName}Service;
 #if($table.crud || $table.sub)
 import com.github.pagehelper.PageInfo;
@@ -45,12 +44,14 @@ public class ${ClassName}Controller extends BaseController {
     //@SaCheckPermission("${permissionPrefix}:list")
     @GetMapping("/list")
 #if($table.crud || $table.sub)
-    public R<PageInfo<${ClassName}Vo>> list(${ClassName}Bo bo, PageQuery pageQuery) {
-        return i${ClassName}Service.queryPageList(bo, pageQuery);
+    public R<PageInfo<${ClassName}Vo>> list(${ClassName}Form form) {
+        ${ClassName} entity = BeanUtil.copyProperties(form,${ClassName}.class);
+        return ${ClassName}Service.queryPageList(entity, orm.getPageSize(),form.getPageNum());
     }
 #elseif($table.tree)
-    public R<List<${ClassName}Vo>> list(${ClassName}Bo bo) {
-        List<${ClassName}Vo> list = i${ClassName}Service.queryList(bo);
+    public R<List<${ClassName}Vo>> list(${ClassName}Form form) {
+        ${ClassName} entity = BeanUtil.copyProperties(form,${ClassName}.class);
+        List<${ClassName}Vo> list = i${ClassName}Service.queryList(entity);
         return R.ok(list);
     }
 #end
@@ -60,8 +61,9 @@ public class ${ClassName}Controller extends BaseController {
      */
     //@SaCheckPermission("${permissionPrefix}:export")
     @PostMapping("/export")
-    public void export(${ClassName}Bo bo, HttpServletResponse response) {
-        List<${ClassName}Vo> list = i${ClassName}Service.queryList(bo);
+    public void export(${ClassName}Form form, HttpServletResponse response) {
+        ${ClassName} entity = BeanUtil.copyProperties(form,${ClassName}.class);
+        List<${ClassName}Vo> list = ${ClassName}Service.queryList(entity);
         ExcelUtil.exportExcel(list, "${functionName}", ${ClassName}Vo.class, response);
     }
 
@@ -74,7 +76,7 @@ public class ${ClassName}Controller extends BaseController {
     @GetMapping("/{${pkColumn.javaField}}")
     public R<${ClassName}Vo> getInfo(@NotNull(message = "主键不能为空")
                                      @PathVariable ${pkColumn.javaType} ${pkColumn.javaField}) {
-        return R.ok(i${ClassName}Service.queryById(${pkColumn.javaField}));
+        return R.ok(${ClassName}Service.selectByPrimaryKey(${pkColumn.javaField}));
     }
 
     /**
@@ -82,8 +84,9 @@ public class ${ClassName}Controller extends BaseController {
      */
     //@SaCheckPermission("${permissionPrefix}:add")
     @PostMapping()
-    public R<Void> add(@Validated(AddGroup.class) @RequestBody ${ClassName}Bo bo) {
-        return toAjax(i${ClassName}Service.insertByBo(bo));
+    public R<Void> add(@Validated(AddGroup.class) @RequestBody ${ClassName}Form form) {
+        ${ClassName} entity = BeanUtil.copyProperties(form,${ClassName}.class);
+        return toAjax(${ClassName}Service.insert(entity));
     }
 
     /**
@@ -91,7 +94,7 @@ public class ${ClassName}Controller extends BaseController {
      */
     //@SaCheckPermission("${permissionPrefix}:edit")
     @PutMapping()
-    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ${ClassName}Bo bo) {
+    public R<Void> edit(@Validated(EditGroup.class) @RequestBody ${ClassName}Form form) {
         return toAjax(i${ClassName}Service.updateByBo(bo));
     }
 

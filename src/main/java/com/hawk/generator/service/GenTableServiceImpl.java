@@ -1,6 +1,5 @@
 package com.hawk.generator.service;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.lang.Dict;
@@ -20,7 +19,6 @@ import com.hawk.generator.mapper.GenTableMapper;
 import com.hawk.generator.utils.GenUtils;
 import com.hawk.generator.utils.VelocityInitializer;
 import com.hawk.generator.utils.VelocityUtils;
-import com.hawk.system.entity.SysDictData;
 import com.hawk.utils.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -177,11 +175,7 @@ public class GenTableServiceImpl implements GenTableService {
     public Map<String, String> previewCode(Long tableId) {
         Map<String, String> dataMap = new LinkedHashMap<>();
         // 查询表信息
-        GenTable table = genTableMapper.selectByPrimaryKey(tableId);
-        Example example = new Example(GenTableColumn.class);
-        CriteriaUtils.builder(example.createCriteria()).eq(GenTableColumn::getTableId, tableId);
-        List<GenTableColumn> columns = genTableColumnMapper.selectByExample(example);
-        table.setColumns(columns);
+        GenTable table = getGenTableById(tableId);
 
         List<Long> menuIds = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
@@ -220,14 +214,7 @@ public class GenTableServiceImpl implements GenTableService {
     @Override
     public void generatorCode(String tableName) {
         // 查询表信息
-        Example example = new Example(GenTable.class);
-        CriteriaUtils.builder(example.createCriteria()).eq(GenTable::getTableName, tableName);
-        GenTable table = genTableMapper.selectOneByExample(example);
-
-        Example columnExample = new Example(GenTableColumn.class);
-        CriteriaUtils.builder(columnExample.createCriteria()).eq(GenTable::getTableId, table.getTableId());
-        List<GenTableColumn> columns = genTableColumnMapper.selectByExample(columnExample);
-        table.setColumns(columns);
+        GenTable table = getGenTableByName(tableName);
         // 设置主子表信息
         setSubTable(table);
         // 设置主键列信息
@@ -258,15 +245,7 @@ public class GenTableServiceImpl implements GenTableService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void synchDb(String tableName) {
-        Example example = new Example(GenTable.class);
-        CriteriaUtils.builder(example.createCriteria()).eq(GenTable::getTableName, tableName);
-        GenTable table = genTableMapper.selectOneByExample(example);
-
-        Example columnExample = new Example(GenTableColumn.class);
-        CriteriaUtils.builder(columnExample.createCriteria()).eq(GenTable::getTableId, table.getTableId());
-        List<GenTableColumn> columns = genTableColumnMapper.selectByExample(columnExample);
-        table.setColumns(columns);
-
+        GenTable table = getGenTableByName(tableName);
         List<GenTableColumn> tableColumns = table.getColumns();
         Map<String, GenTableColumn> tableColumnMap = StreamUtils.toIdentityMap(tableColumns, GenTableColumn::getColumnName);
 
@@ -331,14 +310,7 @@ public class GenTableServiceImpl implements GenTableService {
      */
     private void generatorCode(String tableName, ZipOutputStream zip) {
         // 查询表信息
-        Example example = new Example(GenTable.class);
-        CriteriaUtils.builder(example.createCriteria()).eq(GenTable::getTableName, tableName);
-        GenTable table = genTableMapper.selectOneByExample(example);
-
-        Example columnExample = new Example(GenTableColumn.class);
-        CriteriaUtils.builder(columnExample.createCriteria()).eq(GenTable::getTableId, table.getTableId());
-        List<GenTableColumn> columns = genTableColumnMapper.selectByExample(columnExample);
-        table.setColumns(columns);
+        GenTable table = getGenTableByName(tableName);
         List<Long> menuIds = new ArrayList<>();
         for (int i = 0; i < 6; i++) {
             menuIds.add(IdUtil.getSnowflake().nextId());
@@ -452,7 +424,7 @@ public class GenTableServiceImpl implements GenTableService {
     public void setSubTable(GenTable table) {
         String subTableName = table.getSubTableName();
         if (StringUtils.isNotEmpty(subTableName)) {
-            table.setSubTable(genTableMapper.selectGenTableByName(subTableName));
+            table.setSubTable(getGenTableByName(subTableName));
         }
     }
 
@@ -470,5 +442,27 @@ public class GenTableServiceImpl implements GenTableService {
             return System.getProperty("user.dir") + File.separator + "src" + File.separator + VelocityUtils.getFileName(template, table);
         }
         return genPath + File.separator + VelocityUtils.getFileName(template, table);
+    }
+
+    private GenTable getGenTableByName(String tableName){
+        Example example = new Example(GenTable.class);
+        CriteriaUtils.builder(example.createCriteria()).eq(GenTable::getTableName, tableName);
+        GenTable table = genTableMapper.selectOneByExample(example);
+
+        Example columnExample = new Example(GenTableColumn.class);
+        CriteriaUtils.builder(columnExample.createCriteria()).eq(GenTable::getTableId, table.getTableId());
+        List<GenTableColumn> columns = genTableColumnMapper.selectByExample(columnExample);
+        table.setColumns(columns);
+        return table;
+    }
+
+    private GenTable getGenTableById(Long tableId){
+        GenTable table = genTableMapper.selectByPrimaryKey(tableId);
+
+        Example columnExample = new Example(GenTableColumn.class);
+        CriteriaUtils.builder(columnExample.createCriteria()).eq(GenTable::getTableId, table.getTableId());
+        List<GenTableColumn> columns = genTableColumnMapper.selectByExample(columnExample);
+        table.setColumns(columns);
+        return table;
     }
 }

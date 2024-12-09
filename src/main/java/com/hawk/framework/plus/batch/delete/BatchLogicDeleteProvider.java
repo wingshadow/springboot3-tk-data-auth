@@ -27,6 +27,9 @@ public class BatchLogicDeleteProvider extends MapperTemplate {
         Set<EntityColumn> pkColumns = EntityHelper.getPKColumns(entityClass);
 
         EntityColumn deleteColumn = SqlHelper.getLogicDeleteColumn(entityClass);
+        if(deleteColumn == null){
+            return "";
+        }
         // 开始拼接 SQL
         StringBuilder sql = new StringBuilder();
         sql.append(SqlHelper.updateTable(entityClass, tableName(entityClass)));

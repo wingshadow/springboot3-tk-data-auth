@@ -2,6 +2,7 @@ package com.hawk.framework.base;
 
 
 import com.hawk.framework.plus.batch.delete.BatchDeleteMapper;
+import com.hawk.framework.plus.batch.delete.BatchLogicDeleteMapper;
 import com.hawk.framework.plus.batch.insert.BatchInsertMapper;
 import com.hawk.framework.plus.batch.update.BatchUpdateLimitMapper;
 import com.hawk.framework.plus.batch.update.BatchUpdateMapper;
@@ -14,5 +15,7 @@ import tk.mybatis.mapper.common.MySqlMapper;
  * @author: zhb
  * @create: 2024-10-17 15:02
  */
-public interface BaseMapper<T> extends Mapper<T>, MySqlMapper<T>, BatchInsertMapper<T>, BatchUpdateMapper<T>, BatchDeleteMapper<T>, BatchUpdateLimitMapper<T> {
+public interface BaseMapper<T> extends Mapper<T>, MySqlMapper<T>,
+        BatchInsertMapper<T>, BatchUpdateMapper<T>, BatchDeleteMapper<T>, BatchUpdateLimitMapper<T>,
+        BatchLogicDeleteMapper<T> {
 }

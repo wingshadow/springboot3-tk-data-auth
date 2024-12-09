@@ -25,27 +25,4 @@ public interface GenTableMapper extends BaseMapper<GenTable> {
      */
     List<GenTable> selectDbTableListByNames(String[] tableNames);
 
-    /**
-     * 查询所有表信息
-     *
-     * @return 表信息集合
-     */
-    List<GenTable> selectGenTableAll();
-
-    /**
-     * 查询表ID业务信息
-     *
-     * @param id 业务ID
-     * @return 业务信息
-     */
-    GenTable selectGenTableById(Long id);
-
-    /**
-     * 查询表名称业务信息
-     *
-     * @param tableName 表名称
-     * @return 业务信息
-     */
-    GenTable selectGenTableByName(String tableName);
-
 }

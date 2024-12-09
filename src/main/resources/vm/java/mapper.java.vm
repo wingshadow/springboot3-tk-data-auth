@@ -3,6 +3,7 @@ package ${packageName}.mapper;
 import ${packageName}.domain.${ClassName};
 import ${packageName}.domain.vo.${ClassName}Vo;
 import com.hawk.framework.base.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
 
 /**
  * ${functionName}Mapper接口
@@ -10,6 +11,7 @@ import com.hawk.framework.base.BaseMapper;
  * @author ${author}
  * @date ${datetime}
  */
+@Mapper
 public interface ${ClassName}Mapper extends BaseMapper<${ClassName}> {
 
 }

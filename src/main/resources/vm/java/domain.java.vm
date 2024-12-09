@@ -30,7 +30,7 @@ import com.hawk.framework.common.core.base.TreeEntity;
 #end
 @Data
 @EqualsAndHashCode(callSuper = true)
-@Table("${tableName}")
+@Table(name = "${tableName}")
 public class ${ClassName} extends ${Entity} {
 
     private static final long serialVersionUID=1L;
@@ -47,7 +47,7 @@ public class ${ClassName} extends ${Entity} {
     @Version
 #end
 #if($column.pk)
-    @Id(value = "$column.columnName")
+    @Id
 #end
     private $column.javaType $column.javaField;
 #end
