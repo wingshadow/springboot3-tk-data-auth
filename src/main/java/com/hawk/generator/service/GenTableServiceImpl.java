@@ -151,7 +151,7 @@ public class GenTableServiceImpl implements GenTableService {
             for (GenTable table : tableList) {
                 String tableName = table.getTableName();
                 GenUtils.initTable(table, operName);
-                int row = genTableMapper.insert(table);
+                int row = genTableMapper.insertSelective(table);
                 if (row > 0) {
                     // 保存列信息
                     List<GenTableColumn> genTableColumns = genTableColumnMapper.selectDbTableColumnsByName(tableName);
