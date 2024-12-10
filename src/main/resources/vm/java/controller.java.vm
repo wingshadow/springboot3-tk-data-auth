@@ -86,7 +86,8 @@ public class ${ClassName}Controller extends BaseController {
     @PostMapping()
     public R<Void> add(@Validated(AddGroup.class) @RequestBody ${ClassName}Form form) {
         ${ClassName} entity = BeanUtil.copyProperties(form,${ClassName}.class);
-        return toAjax(${ClassName}Service.insert(entity));
+        ${ClassName}Service.insertSelective(entity)
+        return R.ok();
     }
 
     /**
@@ -95,7 +96,9 @@ public class ${ClassName}Controller extends BaseController {
     //@SaCheckPermission("${permissionPrefix}:edit")
     @PutMapping()
     public R<Void> edit(@Validated(EditGroup.class) @RequestBody ${ClassName}Form form) {
-        return toAjax(i${ClassName}Service.updateByBo(bo));
+        ${ClassName} entity = BeanUtil.copyProperties(form,${ClassName}.class);
+        ${ClassName}Service.updateByPrimaryKeySelective(entity)
+        return R.ok();
     }
 
     /**
@@ -107,6 +110,7 @@ public class ${ClassName}Controller extends BaseController {
     @DeleteMapping("/{${pkColumn.javaField}s}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空") @Parameter(description="主键ID")
                           @PathVariable ${pkColumn.javaType}[] ${pkColumn.javaField}s) {
-        return toAjax(i${ClassName}Service.deleteWithValidByIds(Arrays.asList(${pkColumn.javaField}s), true));
+        ${ClassName}Service.deleteBatchByPrimaryKeys(${pkColumn.javaField}s
+        return R.ok();
     }
 }

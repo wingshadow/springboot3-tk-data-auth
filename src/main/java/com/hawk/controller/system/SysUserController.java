@@ -106,8 +106,7 @@ public class SysUserController extends BaseController {
         if (ArrayUtil.contains(userIds, getUserId())) {
             return R.fail("当前用户不能删除");
         }
-        List<Long> idList = Arrays.asList(userIds);
-        userService.deleteBatchByPrimaryKeys(idList);
+        userService.deleteBatchByPrimaryKeys(userIds);
         return R.ok();
     }
 

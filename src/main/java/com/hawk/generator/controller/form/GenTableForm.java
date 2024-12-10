@@ -1,8 +1,12 @@
 package com.hawk.generator.controller.form;
 
 import com.hawk.framework.common.core.form.BasePageForm;
+import com.hawk.generator.entity.GenTableColumn;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * @program: springboot3-tk-data-auth
@@ -10,6 +14,8 @@ import javax.validation.constraints.NotBlank;
  * @author: zhb
  * @create: 2024-11-29 15:31
  */
+@Getter
+@Setter
 public class GenTableForm extends BasePageForm {
 
     /**
@@ -90,4 +96,6 @@ public class GenTableForm extends BasePageForm {
      */
 
     private String genPath;
+
+    private List<GenTableColumnForm> columns;
 }

@@ -86,7 +86,7 @@ public class SysConfigServiceImpl extends BaseServiceImpl<SysConfig> implements 
      */
     @Override
     public boolean selectCaptchaEnabled() {
-        String captchaEnabled = SpringUtils.getAopProxy(this).selectConfigByKey("sys.account.captchaEnabled");
+        String captchaEnabled = this.selectConfigByKey("sys.account.captchaEnabled");
         if (StringUtils.isEmpty(captchaEnabled)) {
             return true;
         }

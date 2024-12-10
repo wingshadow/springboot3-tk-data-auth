@@ -29,5 +29,7 @@ public interface BaseService <T>{
 
     int deleteByPrimaryKey(Long var1);
 
-    void deleteBatchByPrimaryKeys(List<Long> ids);
+    void deleteBatchByPrimaryKeys(Long[] ids);
+
+    void deleteLogicBatchByPrimaryKeys(Long[] ids);
 }

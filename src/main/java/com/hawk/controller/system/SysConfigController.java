@@ -79,7 +79,7 @@ public class SysConfigController extends BaseController {
         if (!configService.checkConfigKeyUnique(config)) {
             return R.fail("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
-        configService.insertConfig(config);
+        configService.insertSelective(config);
         return R.ok();
     }
 
@@ -92,7 +92,7 @@ public class SysConfigController extends BaseController {
         if (!configService.checkConfigKeyUnique(config)) {
             return R.fail("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
-        configService.updateConfig(config);
+        configService.updateByPrimaryKeySelective(config);
         return R.ok();
     }
 
@@ -114,7 +114,7 @@ public class SysConfigController extends BaseController {
     @SaCheckPermission("system:config:remove")
     @DeleteMapping("/{configIds}")
     public R<Void> remove(@PathVariable Long[] configIds) {
-        configService.deleteConfigByIds(configIds);
+        configService.deleteBatchByPrimaryKeys(configIds);
         return R.ok();
     }
 

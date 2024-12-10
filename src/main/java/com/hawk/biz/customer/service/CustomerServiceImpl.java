@@ -6,11 +6,14 @@ import com.hawk.biz.customer.entity.Customer;
 import com.hawk.biz.customer.mapper.CustomerMapper;
 import com.hawk.framework.base.BaseServiceImpl;
 import com.hawk.system.entity.SysDictData;
+import com.hawk.utils.CriteriaUtils;
+import com.hawk.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * 【请填写功能名称】Service业务层处理
@@ -31,6 +34,15 @@ public class CustomerServiceImpl extends BaseServiceImpl<Customer> implements Cu
         PageMethod.startPage(pageNum,pageSize);
         List<Customer> list = baseMapper.selectByExample(example);
         return new PageInfo<>(list);
+    }
+
+    private Example buildQueryExample(Customer entity) {
+        Map<String, Object> params = entity.getParams();
+        Example example = new Example(Customer.class);
+        CriteriaUtils.builder(example.createCriteria())
+                .like(StringUtils.isNotBlank(entity.getName()), Customer::getName, entity.getName())
+                .eq(entity.getIsDeleted() != null, Customer::getIsDeleted, entity.getIsDeleted());
+        return example;
     }
 
     @Override

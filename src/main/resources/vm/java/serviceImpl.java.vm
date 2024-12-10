@@ -51,8 +51,8 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}> imple
         return baseMapper.selectVoList(lqw);
     }
 
-    private String buildQueryExample(${ClassName} entity) {
-        Map<String, Object> params = bo.getParams();
+    private Example buildQueryExample(${ClassName} entity) {
+        Map<String, Object> params = entity.getParams();
         Example example = new Example(${ClassName}.class);
         CriteriaUtils.builder(example.createCriteria())
         #foreach($column in $columns)
@@ -65,24 +65,27 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}> imple
         #set($mpMethod=$column.queryType.toLowerCase())
         #if($queryType != 'BETWEEN')
         #if($javaType == 'String')
-        #set($condition='StringUtils.isNotBlank(bo.get'+$AttrName+'())')
+        #set($condition='StringUtils.isNotBlank(entity.get'+$AttrName+'())')
         #else
-        #set($condition='bo.get'+$AttrName+'() != null')
+        #set($condition='entity.get'+$AttrName+'() != null')
         #end
-                lqw.$mpMethod($condition, ${ClassName}::get$AttrName, bo.get$AttrName());
+                .$mpMethod($condition, ${ClassName}::get$AttrName, entity.get$AttrName());
         #else
-                lqw.between(params.get("begin$AttrName") != null && params.get("end$AttrName") != null,
+                .between(params.get("begin$AttrName") != null && params.get("end$AttrName") != null,
                     ${ClassName}::get$AttrName ,params.get("begin$AttrName"), params.get("end$AttrName"));
         #end
         #end
         #end
-                return lqw;
+        return example;
     }
 
     @Override
     public void deleteBatch(List<Long> ids) {
         baseMapper.deleteBatch(ids);
     }
+
+    public void deleteBatch(List<Long> ids) {
+        baseMapper.deleteBatch(ids);
 
     @Override
     public int updateBatchSelective(List<${ClassName} > list) {

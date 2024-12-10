@@ -3,6 +3,7 @@ package com.hawk.framework.base;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -66,8 +67,12 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     public int deleteByPrimaryKey(Long var1) {
         return baseMapper.deleteByPrimaryKey(var1);
     }
-    @Transactional(rollbackFor = RuntimeException.class)
-    public void deleteBatchByPrimaryKeys(List<Long> ids) {
-        ids.forEach(this::deleteByPrimaryKey);
+
+    public void deleteBatchByPrimaryKeys(Long[] ids) {
+        baseMapper.deleteBatch(Arrays.asList(ids));
+    }
+
+    public void deleteLogicBatchByPrimaryKeys(Long[] ids){
+        baseMapper.deleteLogicBatch(Arrays.asList(ids));
     }
 }
