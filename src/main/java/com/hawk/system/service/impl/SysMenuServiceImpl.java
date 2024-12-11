@@ -160,7 +160,7 @@ public class SysMenuServiceImpl extends BaseServiceImpl<SysMenu> implements SysM
         List<RouterVo> routers = new LinkedList<>();
         for (SysMenu menu : menus) {
             RouterVo router = new RouterVo();
-            router.setHidden(menu.getVisible().equalsIgnoreCase(UserConstants.MENU_DISABLE) ? true : false);
+            router.setHidden(menu.getVisible().equalsIgnoreCase(UserConstants.MENU_VISIBLE) ? false : true);
             router.setName(getRouteName(menu));
             router.setPath(getRouterPath(menu));
             router.setComponent(getComponent(menu));

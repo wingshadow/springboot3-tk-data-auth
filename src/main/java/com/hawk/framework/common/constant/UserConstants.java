@@ -78,12 +78,17 @@ public interface UserConstants {
     /**
      * 菜单正常状态
      */
-    String MENU_NORMAL = "1";
+    String MENU_NORMAL = "0";
 
     /**
      * 菜单停用状态
      */
-    String MENU_DISABLE = "0";
+    String MENU_DISABLE = "1";
+
+    /**
+     * 菜单展示
+     */
+    String MENU_VISIBLE = "1";
 
     /**
      * 菜单类型（目录）

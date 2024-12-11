@@ -85,8 +85,8 @@
                  left join sys_user u on sur.user_id = u.user_id
         where u.user_id = #{userId}
           and m.menu_type in ('M', 'C')
-          and m.status = '1'
-          and ro.status = '1'
+          and m.status = '0'
+          and ro.status = '0'
         order by m.parent_id, m.order_num
     </select>
 
@@ -115,8 +115,8 @@
                  left join sys_role_menu rm on m.menu_id = rm.menu_id
                  left join sys_user_role sur on rm.role_id = sur.role_id
                  left join sys_role r on r.role_id = sur.role_id
-        where m.status = '1'
-          and r.status = '1'
+        where m.status = '0'
+          and r.status = '0'
           and sur.user_id = #{userId}
     </select>
 
@@ -124,7 +124,7 @@
         select distinct m.perms
         from sys_menu m
                  left join sys_role_menu rm on m.menu_id = rm.menu_id
-        where m.status = '1'
+        where m.status = '0'
           and rm.role_id = #{roleId}
     </select>
 </mapper>
