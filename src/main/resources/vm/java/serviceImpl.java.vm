@@ -36,7 +36,7 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}> imple
      */
     @Override
     public PageInfo<${ClassName}> queryPageList(${ClassName} entity, int pageNum, int pageSize) {
-        String whereCause = buildQueryExample(bo);
+        String whereCause = buildQueryExample(entity);
         PageInfo<${ClassName}> result = baseMapper.selectVoPage(whereCause);
         return new PageInfo<>(list);
     }
@@ -78,6 +78,7 @@ public class ${ClassName}ServiceImpl extends BaseServiceImpl<${ClassName}> imple
         #end
         return example;
     }
+
 
     @Override
     public void deleteBatch(List<Long> ids) {

@@ -1,26 +1,26 @@
 package com.hawk.utils;
 
-import tk.mybatis.mapper.entity.Example;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
+/**
+ * 拼接动态sql条件
+ */
 public class SqlUtils {
 
     private final List<String> sqlConditions = new ArrayList<>();
 
-    // 构造方法，初始化 Criteria
+    // 构造方法，初始化 SqlUtils
     private SqlUtils() {
     }
 
     /**
      * 静态方法，创建 CriteriaUtils 对象
      *
-     * @param criteria Example.Criteria 对象
-     * @return CriteriaUtils 实例
+     * @return SqlUtils 实例
      */
     public static SqlUtils build() {
         return new SqlUtils();

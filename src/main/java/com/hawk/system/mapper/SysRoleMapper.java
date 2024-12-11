@@ -32,7 +32,7 @@ public interface SysRoleMapper extends BaseMapper<SysRole> {
             "                        r.menu_check_strictly,\n" +
             "                        r.dept_check_strictly,\n" +
             "                        r.status,\n" +
-            "                        r.del_flag,\n" +
+            "                        r.is_deleted,\n" +
             "                        r.create_time \n" +
             "        from sys_role r " +
             "                 left join sys_user_role sur on sur.role_id = r.role_id " +

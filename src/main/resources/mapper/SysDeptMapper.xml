@@ -8,14 +8,14 @@
     <select id="getAllDeptList" resultType="com.hawk.system.entity.SysDept">
         SELECT *
         FROM sys_dept d
-        WHERE d.del_flag = '0'
+        WHERE d.is_deleted = '0'
             ${params.data_scope}
     </select>
 
     <select id="selectPageDeptList" resultType="com.hawk.system.entity.SysDept">
         select *
         from sys_dept
-        where d.del_flag = '0' ${ew.getCustomSqlSegment}
+        where d.is_deleted = '0' ${ew.getCustomSqlSegment}
     </select>
 
     <select id="selectDeptListByRoleId" resultType="Long">

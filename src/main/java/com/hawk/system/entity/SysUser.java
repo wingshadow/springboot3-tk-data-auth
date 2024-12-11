@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.hawk.framework.common.constant.UserConstants;
 import com.hawk.framework.common.core.base.BaseDataEntity;
+import com.hawk.framework.common.core.base.BaseLogicEntity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
@@ -21,7 +22,7 @@ import java.util.List;
 @Getter
 @Setter
 @Table(name = "sys_user")
-public class SysUser extends BaseDataEntity {
+public class SysUser extends BaseLogicEntity {
 
     @Id
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -60,9 +61,6 @@ public class SysUser extends BaseDataEntity {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Integer status;
-
-    @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Integer delFlag;
 
     @JsonIgnore
     private List<SysRole> sysRoleList;

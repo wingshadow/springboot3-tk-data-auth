@@ -31,7 +31,7 @@ import com.hawk.framework.common.core.base.TreeEntity;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ${ClassName}Bo extends ${Entity} {
+public class ${ClassName}Form extends ${Entity} {
 
 #foreach ($column in $columns)
 #if(!$table.isSuperColumn($column.javaField) && ($column.query || $column.insert || $column.edit))
@@ -58,7 +58,7 @@ public class ${ClassName}Bo extends ${Entity} {
     @NotNull(message = "$column.columnComment不能为空", groups = { $Group })
 #end
 #end
-    private $column.javaType $column.javaField;
+    private String $column.javaField;
 
 #end
 #end

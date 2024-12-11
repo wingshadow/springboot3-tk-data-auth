@@ -35,5 +35,5 @@ public class SysDept extends TreeEntity<SysDept> {
     private Integer status;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private Integer delFlag;
+    private Integer isDeleted;
 }

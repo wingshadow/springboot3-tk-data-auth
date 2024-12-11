@@ -66,7 +66,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
         Map<String, Object> params = user.getParams();
         Example example = new Example(SysUser.class);
         CriteriaUtils.builder(example.createCriteria())
-                .eq(SysUser::getDelFlag, UserConstants.USER_RETAIN)
+                .eq(SysUser::getIsDeleted, UserConstants.USER_RETAIN)
                 .eq(ObjectUtil.isNotNull(user.getUserId()), SysUser::getUserId, user.getUserId())
                 .like(StringUtils.isNotBlank(user.getUserName()), SysUser::getUserName, user.getUserName())
                 .eq(ObjectUtil.isNotEmpty(user.getStatus()), SysUser::getStatus, user.getStatus())
@@ -87,7 +87,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
 
     @Override
     public PageInfo<SysUser> selectAllocatedList(SysUser user, int pageSize, int pageNum) {
-        String whereCause = SqlUtils.build().eq("u.del_flag", UserConstants.USER_RETAIN)
+        String whereCause = SqlUtils.build().eq("u.is_deleted", UserConstants.USER_RETAIN)
                 .eq(ObjectUtil.isNotNull(user.getRoleId()), "r.role_id", user.getRoleId())
                 .like(StringUtils.isNotBlank(user.getUserName()), "u.user_name", user.getUserName())
                 .eq(ObjectUtil.isNotEmpty(user.getStatus()), "u.status", user.getStatus())
@@ -101,7 +101,7 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     @Override
     public PageInfo<SysUser> selectUnallocatedList(SysUser user, int pageSize, int pageNum) {
         List<Long> userIds = userRoleMapper.selectUserIdsByRoleId(user.getRoleId());
-        String whereCause = SqlUtils.build().eq("u.del_flag", UserConstants.USER_RETAIN)
+        String whereCause = SqlUtils.build().eq("u.is_deleted", UserConstants.USER_RETAIN)
                 .and("(r.role_id !=" + user.getRoleId() + " OR r.role_id IS NULL)")
                 .eq(ObjectUtil.isNotNull(user.getRoleId()), "r.role_id", user.getRoleId())
                 .notIn(CollUtil.isNotEmpty(userIds), "u.user_id", userIds)

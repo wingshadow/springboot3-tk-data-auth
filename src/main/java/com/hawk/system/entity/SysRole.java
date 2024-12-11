@@ -53,7 +53,7 @@ public class SysRole extends BaseDataEntity {
     @Transient
     private Long[] deptIds;
 
-    private Integer delFlag;
+    private Integer isDeleted;
 
     public SysRole(Long roleId){
         this.roleId = roleId;

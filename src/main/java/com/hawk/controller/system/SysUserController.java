@@ -83,7 +83,7 @@ public class SysUserController extends BaseController {
             return R.fail("新增用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
         user.setPassword(BCrypt.hashpw(user.getPassword()));
-        return toAjax(userService.insert(user));
+        return toAjax(userService.insertSelective(user));
     }
 
     @PutMapping

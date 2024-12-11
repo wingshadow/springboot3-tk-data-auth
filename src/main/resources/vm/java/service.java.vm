@@ -15,7 +15,7 @@ import java.util.List;
  * @author ${author}
  * @date ${datetime}
  */
-public interface I${ClassName}Service extends BaseService<${ClassName}>  {
+public interface ${ClassName}Service extends BaseService<${ClassName}>  {
 
     /**
      * 查询${functionName}

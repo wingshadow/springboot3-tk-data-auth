@@ -15,6 +15,7 @@ import java.util.Date;
 @Data
 public class BaseDataEntity extends BaseEntity{
 
+
     private String createBy;
 
     /**

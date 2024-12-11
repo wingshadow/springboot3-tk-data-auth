@@ -59,30 +59,19 @@ public class LoginHelper {
      * 获取用户(多级缓存)
      */
     public static LoginUser getLoginUser() {
-        try {
-            LoginUser loginUser = (LoginUser) SaHolder.getStorage().get(LOGIN_USER_KEY);
-            if (loginUser != null) {
-                return loginUser;
-            }
-            Object user = StpUtil.getTokenSession().get(LOGIN_USER_KEY);
-            if (user == null) {
-                return null;
-            }
-            if(user instanceof LoginUser){
-                loginUser = (LoginUser) user;
-                SaHolder.getStorage().set(LOGIN_USER_KEY, loginUser);
-                return loginUser;
-            }
-            loginUser = JSONUtil.toBean((JSONObject) user,LoginUser.class);
+        LoginUser loginUser = (LoginUser) SaHolder.getStorage().get(LOGIN_USER_KEY);
+        if (loginUser != null) {
+            return loginUser;
+        }
+        Object user = StpUtil.getTokenSession().get(LOGIN_USER_KEY);
+        if (user != null && user instanceof LoginUser) {
+            loginUser = (LoginUser) user;
             SaHolder.getStorage().set(LOGIN_USER_KEY, loginUser);
             return loginUser;
-        } catch (Exception e) {
-            e.printStackTrace();
-            if (!StpUtil.isLogin()) {
-                return null;
-            }
         }
-        return null;
+        loginUser = JSONUtil.toBean((JSONObject) user, LoginUser.class);
+        SaHolder.getStorage().set(LOGIN_USER_KEY, loginUser);
+        return loginUser;
     }
 
     public static LoginUser getLoginUser(String token) {

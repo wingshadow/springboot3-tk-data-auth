@@ -77,7 +77,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
         Example example = new Example(SysRole.class);
         Example.Criteria criteria = example.createCriteria();
         CriteriaUtils.builder(criteria)
-                .eq(SysRole::getDelFlag, UserConstants.USER_RETAIN)
+                .eq(SysRole::getIsDeleted, UserConstants.USER_RETAIN)
                 .eq(ObjectUtil.isNotNull(sysRole.getRoleId()), SysRole::getRoleId, sysRole.getRoleId())
                 .like(StringUtils.isNotBlank(sysRole.getRoleName()), SysRole::getRoleName, sysRole.getRoleName());
         return example;

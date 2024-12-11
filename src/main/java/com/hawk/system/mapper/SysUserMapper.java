@@ -40,7 +40,7 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 //            "               u.gender," +
 //            "               u.user_type," +
 //            "               u.status," +
-//            "               u.del_flag," +
+//            "               u.is_deleted," +
 //            "               u.create_by," +
 //            "               u.create_time," +
 //            "               d.dept_name " +

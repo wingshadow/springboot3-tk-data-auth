@@ -78,7 +78,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
         Example.Criteria criteria = example.createCriteria();
         CriteriaUtils.builder(criteria)
                 .eq(SysDept::getParentId, parentDeptId)
-                .eq(SysDept::getDelFlag, "0");
+                .eq(SysDept::getIsDeleted, "0");
 
         deptList.addAll(CollUtil.emptyIfNull(sysDeptMapper.selectByExample(example)).stream().map(SysDept::getDeptId)
                 .toList());
@@ -91,7 +91,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
         Example.Criteria criteria = example.createCriteria();
         CriteriaUtils.builder(criteria)
                 .leftLike(SysDept::getAncestors, ancestors)
-                .eq(SysDept::getDelFlag, "0");
+                .eq(SysDept::getIsDeleted, "0");
 
         return CollUtil.emptyIfNull(sysDeptMapper.selectByExample(example)).stream().map(SysDept::getDeptId)
                 .collect(Collectors.toList());
