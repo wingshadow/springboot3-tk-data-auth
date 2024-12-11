@@ -27,6 +27,7 @@ import tk.mybatis.mapper.entity.Example;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @program: springboot3-mybatis
@@ -72,8 +73,8 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
                 .eq(ObjectUtil.isNotEmpty(user.getStatus()), SysUser::getStatus, user.getStatus())
                 .like(StringUtils.isNotBlank(user.getMobile()), SysUser::getMobile, user.getMobile())
                 .between(params.get("beginTime") != null && params.get("endTime") != null,
-                        "u.create_time", params.get("beginTime"), params.get("endTime"))
-                .in(ObjectUtil.isNotNull(ids), SysUser::getDeptId, ids);
+                        SysUser::getCreateTime, params.get("beginTime"), params.get("endTime"))
+                .in(ObjectUtil.isNotNull(CollUtil.removeNull(ids)), SysUser::getDeptId, ids);
         return SqlBuilder.buildWhereClause(example, "u");
     }
 

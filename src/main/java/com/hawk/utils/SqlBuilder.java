@@ -14,9 +14,15 @@ public class SqlBuilder {
                 .map(criterion -> {
                     String condition = criterion.getCondition();
                     Object value = criterion.getValue();
+                    Object secondValue = criterion.getSecondValue();
                     String sql = "";
 
-                    if (value instanceof String) {
+                    if (condition.contains("between") && value != null && secondValue != null) {
+                        // 处理 BETWEEN 的逻辑
+                        String formattedValue1 = formatValue(value);
+                        String formattedValue2 = formatValue(secondValue);
+                        sql = condition + formattedValue1 + " AND " + formattedValue2;
+                    }  else if (value instanceof String) {
                         // 对 String 类型的值进行适当的转义处理，防止 SQL 注入
                         sql = condition + " '" + escapeString((String) value) + "'";
                     } else if (value instanceof Long || value instanceof Integer || value instanceof BigDecimal) {
