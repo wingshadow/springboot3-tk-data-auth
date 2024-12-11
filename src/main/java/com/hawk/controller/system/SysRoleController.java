@@ -52,7 +52,8 @@ public class SysRoleController extends BaseController {
     }
 
     @PostMapping
-    public R<Void> add(@Validated @RequestBody SysRole role) {
+    public R<Void> add(@Validated @RequestBody SysRoleForm form) {
+        SysRole role = BeanUtil.copyProperties(form,SysRole.class);
         if (!roleService.checkRoleNameUnique(role)) {
             return R.fail("新增角色'" + role.getRoleName() + "'失败，角色名称已存在");
         } else if (!roleService.checkRoleKeyUnique(role)) {
@@ -63,7 +64,8 @@ public class SysRoleController extends BaseController {
     }
 
     @PutMapping
-    public R<Void> edit(@Validated @RequestBody SysRole role) {
+    public R<Void> edit(@Validated @RequestBody SysRoleForm form) {
+        SysRole role = BeanUtil.copyProperties(form,SysRole.class);
         roleService.checkRoleAllowed(role);
         roleService.checkRoleDataScope(role.getRoleId());
         if (!roleService.checkRoleNameUnique(role)) {

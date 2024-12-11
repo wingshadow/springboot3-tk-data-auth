@@ -36,7 +36,7 @@ public class SysConfigController extends BaseController {
     @GetMapping("/list")
     public R<PageInfo<SysConfig>> list(SysConfigForm form) {
         SysConfig config = BeanUtil.copyProperties(form, SysConfig.class);
-        return R.ok(configService.selectPageConfigList(config, form.getPageSize(), form.getPageNum()));
+        return R.ok(configService.selectPageConfigList(config, form.getPageNum(), form.getPageSize()));
     }
 
     /**

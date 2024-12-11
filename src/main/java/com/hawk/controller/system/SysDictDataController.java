@@ -40,7 +40,7 @@ public class SysDictDataController extends BaseController {
     @GetMapping("/list")
     public R<PageInfo<SysDictData>> list(SysDictDataForm form) {
         SysDictData sysDictData = BeanUtil.copyProperties(form,SysDictData.class);
-        return R.ok(dictDataService.selectPageDictDataList(sysDictData, form.getPageSize(),form.getPageNum()));
+        return R.ok(dictDataService.selectPageDictDataList(sysDictData, form.getPageNum(),form.getPageSize()));
     }
 
     /**

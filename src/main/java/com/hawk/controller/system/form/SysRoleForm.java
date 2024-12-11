@@ -1,6 +1,7 @@
 package com.hawk.controller.system.form;
 
 import com.hawk.framework.common.core.form.BasePageForm;
+import jakarta.persistence.Transient;
 import lombok.Data;
 
 /**
@@ -15,6 +16,8 @@ public class SysRoleForm extends BasePageForm {
     private String roleId;
 
     private String roleName;
+
+    private String roleKey;
 
     private String dataScope;
 
@@ -31,4 +34,8 @@ public class SysRoleForm extends BasePageForm {
     private Integer sort;
 
     private Integer status;
+
+    private Long[] menuIds;
+
+    private Long[] deptIds;
 }

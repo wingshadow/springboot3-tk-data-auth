@@ -106,7 +106,7 @@ public class SysDictDataServiceImpl extends BaseServiceImpl<SysDictData> impleme
 //    @CachePut(cacheNames = CacheNames.SYS_DICT, key = "#data.dictType")
     @Override
     public List<SysDictData> insertDictData(SysDictData data) {
-        int row = baseMapper.insert(data);
+        int row = baseMapper.insertSelective(data);
         if (row > 0) {
             return baseMapper.selectDictDataByType(data.getDictType());
         }

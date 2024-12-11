@@ -139,7 +139,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     @Override
     public int insertRole(SysRole role) {
         // 新增角色信息
-        sysRoleMapper.insert(role);
+        sysRoleMapper.insertSelective(role);
         return insertRoleMenu(role);
     }
 
@@ -178,7 +178,7 @@ public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysR
     @Override
     public int updateRole(SysRole role) {
         // 修改角色信息
-        sysRoleMapper.updateByPrimaryKey(role);
+        sysRoleMapper.updateByPrimaryKeySelective(role);
         // 删除角色与菜单关联
         Example example = new Example(SysRoleMenu.class);
         Example.Criteria criteria = example.createCriteria();
