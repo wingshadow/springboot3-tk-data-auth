@@ -28,6 +28,7 @@ public interface UserConstants {
     String USER_NORMAL = "1";
 
     String USER_RETAIN = "0";
+
     String USER_DELETE = "1";
 
     /**
