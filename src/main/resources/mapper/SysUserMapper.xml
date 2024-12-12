@@ -19,8 +19,7 @@
         <result property="createTime" column="create_time"/>
         <result property="updateBy" column="update_by"/>
         <result property="updateTime" column="update_time"/>
-        <association property="dept" column="dept_id" javaType="com.hawk.system.entity.SysDept"
-                     resultMap="deptResult"/>
+        <association property="dept" column="dept_id" javaType="com.hawk.system.entity.SysDept" resultMap="deptResult"/>
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
     </resultMap>
 

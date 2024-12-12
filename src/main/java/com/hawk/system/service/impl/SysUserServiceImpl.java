@@ -83,6 +83,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
         String whereCause = buildQueryExample(sysUser);
         PageMethod.startPage(pageNum, pageSize);
         List<SysUser> list = baseMapper.selectUserList(whereCause);
+        list.forEach(u->{
+            SysDept sysDept = deptMapper.selectByPrimaryKey(u.getDeptId());
+            u.setDept(sysDept);
+        });
         return new PageInfo<>(list);
     }
 
@@ -96,6 +100,10 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
                 .toSQL();
 
         List<SysUser> list = baseMapper.selectAllocatedList(whereCause);
+        list.forEach(u->{
+            SysDept sysDept = deptMapper.selectByPrimaryKey(u.getDeptId());
+            u.setDept(sysDept);
+        });
         return new PageInfo<>(list);
     }
 

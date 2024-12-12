@@ -26,7 +26,6 @@ user:
   password:
     maxRetryCount: 3
     lockTime: 10
-
 # 验证码
 captcha:
   # 页面 <参数设置> 可开启关闭 验证码校验
@@ -85,3 +84,11 @@ security:
 snowflake:
   worker-id: 1
   datacenter-id: 1
+
+mybatis:
+  configuration:
+    jdbc-type-for-null: NULL
+    map-underscore-to-camel-case: true
+    lazy-loading-enabled: true
+    aggressive-lazy-loading: false
+    lazy-load-trigger-methods: " "
