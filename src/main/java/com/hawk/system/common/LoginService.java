@@ -226,6 +226,9 @@ public class LoginService {
         } else if (UserStatus.DISABLE.getCode() == (user.getStatus())) {
             log.info("登录用户：{} 已被停用.", username);
             throw new UserException("user.blocked", username);
+        } else if(UserStatus.DELETED.getCode() == user.getIsDeleted()){
+            log.info("登录用户：{} 已被删除.", username);
+            throw new UserException("user.password.delete", username);
         }
         return addUserAttribute(user);
     }
@@ -291,7 +294,7 @@ public class LoginService {
         LoginUser loginUser = new LoginUser();
         loginUser.setUserId(user.getUserId());
         loginUser.setDeptId(user.getDeptId());
-        loginUser.setUserAccount(user.getUserName());
+        loginUser.setUserAccount(user.getUserAccount());
         loginUser.setUserName(user.getNickName());
         loginUser.setUserType(user.getUserType());
         loginUser.setPhone(user.getMobile());

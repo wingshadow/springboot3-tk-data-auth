@@ -79,7 +79,8 @@ public class SysDictTypeController extends BaseController {
      */
     @SaCheckPermission("system:dict:edit")
     @PutMapping
-    public R<Void> edit(@Validated @RequestBody SysDictType dict) {
+    public R<Void> edit(@Validated @RequestBody SysDictTypeForm form) {
+        SysDictType dict = BeanUtil.copyProperties(form,SysDictType.class);
         if (!dictTypeService.checkDictTypeUnique(dict)) {
             return R.fail("修改字典'" + dict.getDictName() + "'失败，字典类型已存在");
         }

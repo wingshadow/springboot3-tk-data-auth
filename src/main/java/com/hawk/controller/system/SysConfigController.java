@@ -75,7 +75,8 @@ public class SysConfigController extends BaseController {
      */
     @SaCheckPermission("system:config:add")
     @PostMapping
-    public R<Void> add(@Validated @RequestBody SysConfig config) {
+    public R<Void> add(@Validated @RequestBody SysConfigForm form) {
+        SysConfig config = BeanUtil.copyProperties(form,SysConfig.class);
         if (!configService.checkConfigKeyUnique(config)) {
             return R.fail("新增参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }
@@ -88,7 +89,8 @@ public class SysConfigController extends BaseController {
      */
     @SaCheckPermission("system:config:edit")
     @PutMapping
-    public R<Void> edit(@Validated @RequestBody SysConfig config) {
+    public R<Void> edit(@Validated @RequestBody SysConfigForm form) {
+        SysConfig config = BeanUtil.copyProperties(form,SysConfig.class);
         if (!configService.checkConfigKeyUnique(config)) {
             return R.fail("修改参数'" + config.getConfigName() + "'失败，参数键名已存在");
         }

@@ -16,6 +16,7 @@ import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 
 import java.util.Date;
+import java.util.Map;
 
 /**
  * @program: springboot3-tk-data-auth
@@ -29,58 +30,49 @@ import java.util.Date;
 public class CreateAndUpdateMetaObjectInterceptor implements Interceptor {
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        // 获取方法参数
         MappedStatement mappedStatement = (MappedStatement) invocation.getArgs()[0];
         SqlCommandType sqlCommandType = mappedStatement.getSqlCommandType();
         Object metaObject = invocation.getArgs()[1];
-        // 判断操作类型
-        switch (sqlCommandType) {
-            case INSERT -> insertFill(metaObject);
-            case UPDATE -> updateFill(metaObject);
-            default -> {
+
+        // 根据操作类型填充字段
+        try {
+            if (sqlCommandType == SqlCommandType.INSERT) {
+                fillFields(metaObject, true);
+            } else if (sqlCommandType == SqlCommandType.UPDATE) {
+                fillFields(metaObject, false);
             }
+        } catch (Exception e) {
+            throw new ServiceException("自动填充异常 => " + e.getMessage(), HttpStatus.HTTP_UNAUTHORIZED);
         }
+
         return invocation.proceed();
     }
 
-    public void insertFill(Object metaObject) {
-        try {
-            if (ObjectUtil.isNotNull(metaObject) && metaObject instanceof BaseDataEntity) {
-                BaseDataEntity baseEntity = (BaseDataEntity) metaObject;
-                Date current = ObjectUtil.isNotNull(baseEntity.getCreateTime())
-                        ? baseEntity.getCreateTime() : new Date();
-                baseEntity.setCreateTime(current);
-                baseEntity.setUpdateTime(current);
-                String username = StringUtils.isNotBlank(baseEntity.getCreateBy())
-                        ? baseEntity.getCreateBy() : getLoginUsername();
-                // 当前已登录 且 创建人为空 则填充
-                baseEntity.setCreateBy(username);
-                // 当前已登录 且 更新人为空 则填充
-                baseEntity.setUpdateBy(username);
+    /**
+     * 通用字段填充方法
+     *
+     * @param metaObject   参数对象
+     * @param isInsert     是否为插入操作
+     */
+    private void fillFields(Object metaObject, boolean isInsert) {
+        if (metaObject instanceof Map) {
+            Map<?, ?> paramMap = (Map<?, ?>) metaObject;
+            metaObject = paramMap.get("record");
+        }
+
+        if (metaObject instanceof BaseDataEntity) {
+            BaseDataEntity entity = (BaseDataEntity) metaObject;
+            Date current = new Date();
+
+            if (isInsert) {
+                entity.setCreateTime(ObjectUtil.isNotNull(entity.getCreateTime()) ? entity.getCreateTime() : current);
+                entity.setCreateBy(StringUtils.isNotBlank(entity.getCreateBy()) ? entity.getCreateBy() : getLoginUsername());
             }
-        } catch (Exception e) {
-            throw new ServiceException("自动注入异常 => " + e.getMessage(), HttpStatus.HTTP_UNAUTHORIZED);
+
+            entity.setUpdateTime(current);
+            entity.setUpdateBy(StringUtils.isNotBlank(entity.getUpdateBy()) ? entity.getUpdateBy() : getLoginUsername());
         }
     }
-
-    public void updateFill(Object metaObject) {
-        try {
-            if (ObjectUtil.isNotNull(metaObject) && metaObject instanceof BaseDataEntity) {
-                BaseDataEntity baseEntity = (BaseDataEntity) metaObject;
-                Date current = new Date();
-                // 更新时间填充(不管为不为空)
-                baseEntity.setUpdateTime(current);
-                String username = getLoginUsername();
-                // 当前已登录 更新人填充(不管为不为空)
-                if (StringUtils.isNotBlank(username)) {
-                    baseEntity.setUpdateBy(username);
-                }
-            }
-        } catch (Exception e) {
-            throw new ServiceException("自动注入异常 => " + e.getMessage(), HttpStatus.HTTP_UNAUTHORIZED);
-        }
-    }
-
     private String getLoginUsername() {
         LoginUser loginUser;
         try {

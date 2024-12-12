@@ -93,7 +93,8 @@ public class SysDictDataController extends BaseController {
      */
     @SaCheckPermission("system:dict:edit")
     @PutMapping
-    public R<Void> edit(@Validated @RequestBody SysDictData dict) {
+    public R<Void> edit(@Validated @RequestBody SysDictDataForm form) {
+        SysDictData dict = BeanUtil.copyProperties(form,SysDictData.class);
         dictDataService.updateDictData(dict);
         return R.ok();
     }

@@ -272,7 +272,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
         Example.Criteria criteria = example.createCriteria();
         CriteriaUtils.builder(criteria).in(SysDept::getDeptId, Arrays.asList(deptIds));
         // 批量更新指定字段
-        sysDeptMapper.updateByExample(sysDept, example);
+        sysDeptMapper.updateByExampleSelective(sysDept, example);
     }
 
     public void updateDeptChildren(Long deptId, String newAncestors, String oldAncestors) {

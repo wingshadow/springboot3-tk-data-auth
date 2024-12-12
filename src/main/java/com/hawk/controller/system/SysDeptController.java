@@ -1,6 +1,8 @@
 package com.hawk.controller.system;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
+import com.hawk.controller.system.form.SysDeptForm;
 import com.hawk.framework.common.constant.UserConstants;
 import com.hawk.framework.base.BaseController;
 import com.hawk.system.entity.SysDept;
@@ -56,7 +58,8 @@ public class SysDeptController extends BaseController {
     }
 
     @PutMapping
-    public R<Void> edit(@Validated @RequestBody SysDept dept) {
+    public R<Void> edit(@Validated @RequestBody SysDeptForm form) {
+        SysDept dept = BeanUtil.copyProperties(form,SysDept.class);
         Long deptId = dept.getDeptId();
         deptService.checkDeptDataScope(deptId);
         if (!deptService.checkDeptNameUnique(dept)) {

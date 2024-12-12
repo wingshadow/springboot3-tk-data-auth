@@ -219,7 +219,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
         SysDictData sysDictData = new SysDictData();
         sysDictData.setDictType(dict.getDictType());
         dictDataMapper.updateByExampleSelective(sysDictData, example);
-        int row = baseMapper.updateByPrimaryKey(dict);
+        int row = baseMapper.updateByPrimaryKeySelective(dict);
         if (row > 0) {
 //            CacheUtils.evict(CacheNames.SYS_DICT, oldDict.getDictType());
             return dictDataMapper.selectDictDataByType(dict.getDictType());
