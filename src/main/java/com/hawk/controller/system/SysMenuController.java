@@ -1,6 +1,8 @@
 package com.hawk.controller.system;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.tree.Tree;
+import com.hawk.controller.system.form.SysMenuForm;
 import com.hawk.framework.base.BaseController;
 import com.hawk.framework.common.constant.UserConstants;
 import com.hawk.system.entity.SysMenu;
@@ -8,6 +10,7 @@ import com.hawk.framework.web.resp.R;
 import com.hawk.system.service.SysMenuService;
 import com.hawk.utils.StringUtils;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Bean;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -66,7 +69,8 @@ public class SysMenuController extends BaseController {
     }
 
     @PutMapping
-    public R<Void> edit(@Validated @RequestBody SysMenu menu) {
+    public R<Void> edit(@Validated @RequestBody SysMenuForm form) {
+        SysMenu menu = BeanUtil.copyProperties(form,SysMenu.class);
         if (!menuService.checkMenuNameUnique(menu)) {
             return R.fail("修改菜单'" + menu.getMenuName() + "'失败，菜单名称已存在");
         } else if (UserConstants.YES_FRAME.equals(menu.getIsFrame()) && !StringUtils.ishttp(menu.getPath())) {
