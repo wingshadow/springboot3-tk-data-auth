@@ -29,6 +29,7 @@ import java.util.TimeZone;
 
 /**
  * jackson 配置
+ * 序列化配置
  *
  * @author Lion Li
  */
