@@ -7,6 +7,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.github.pagehelper.PageInfo;
 import com.github.pagehelper.page.PageMethod;
 import com.hawk.framework.common.constant.CacheConstants;
+import com.hawk.framework.common.constant.CacheNames;
 import com.hawk.framework.common.constant.UserConstants;
 import com.hawk.framework.base.BaseServiceImpl;
 import com.hawk.system.entity.SysDictData;
@@ -19,6 +20,7 @@ import com.hawk.utils.SpringUtils;
 import com.hawk.utils.CriteriaUtils;
 import com.hawk.utils.StreamUtils;
 import com.hawk.utils.StringUtils;
+import com.hawk.utils.redis.CacheUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -164,7 +166,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
 
         dictDataMap.forEach((k, v) -> {
             List<SysDictData> dictList = StreamUtils.sorted(v, Comparator.comparing(SysDictData::getDictSort));
-//            CacheUtils.put(CacheNames.SYS_DICT, k, dictList);
+            CacheUtils.put(CacheNames.SYS_DICT, k, dictList);
         });
     }
 
@@ -173,7 +175,7 @@ public class SysDictTypeServiceImpl extends BaseServiceImpl<SysDictType> impleme
      */
     @Override
     public void clearDictCache() {
-//        CacheUtils.clear(CacheNames.SYS_DICT);
+        CacheUtils.clear(CacheNames.SYS_DICT);
     }
 
     /**

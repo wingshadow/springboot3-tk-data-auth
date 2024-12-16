@@ -129,6 +129,13 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
     }
 
     @Override
+    public SysUser selectUserByUserName(String userName) {
+        Example example = new Example(SysUser.class);
+        CriteriaUtils.builder(example.createCriteria()).eq(SysUser::getUserAccount,userName);
+        return baseMapper.selectOneByExample(example);
+    }
+
+    @Override
     public void checkUserDataScope(Long userId) {
         if (!LoginHelper.isAdmin()) {
             SysUser user = new SysUser();

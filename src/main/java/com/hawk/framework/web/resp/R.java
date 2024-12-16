@@ -2,6 +2,8 @@ package com.hawk.framework.web.resp;
 
 import lombok.Data;
 
+import static com.hawk.framework.web.resp.RespCode.SUCCESS;
+
 /**
  * @program: springboot3-mybatis
  * @description:
@@ -51,15 +53,18 @@ public class R<T> {
     }
 
     public static <T> R<T> ok() {
-        return new R<T>(RespCode.SUCCESS);
+        return new R<T>(SUCCESS);
     }
 
     public static <T> R<T> ok(T data) {
-        return new R<T>(RespCode.SUCCESS, data);
+        return new R<T>(SUCCESS, data);
     }
 
+    public static <T> R<T> ok(String msg) {
+        return new R<T>( SUCCESS.getValue(), msg,null);
+    }
     public static <T> R<T> ok(String msg, T data) {
-        return new R<T>(RespCode.SUCCESS.getValue(), msg, data);
+        return new R<T>(SUCCESS.getValue(), msg, data);
     }
 
     public static <T> R<T> fail() {

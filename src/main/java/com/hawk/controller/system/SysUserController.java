@@ -9,7 +9,11 @@ import cn.hutool.json.JSONUtil;
 import com.github.pagehelper.PageInfo;
 import com.hawk.controller.system.form.SysUserForm;
 import com.hawk.controller.system.form.UserAddForm;
+import com.hawk.controller.system.listener.SysUserImportListener;
+import com.hawk.controller.system.vo.SysUserExportVO;
+import com.hawk.controller.system.vo.SysUserImportVO;
 import com.hawk.framework.base.BaseController;
+import com.hawk.framework.excel.ExcelResult;
 import com.hawk.system.entity.SysDept;
 import com.hawk.system.entity.SysRole;
 import com.hawk.system.entity.SysUser;
@@ -18,12 +22,16 @@ import com.hawk.framework.web.resp.R;
 import com.hawk.system.service.SysDeptService;
 import com.hawk.system.service.SysRoleService;
 import com.hawk.system.service.SysUserService;
+import com.hawk.utils.ExcelUtil;
 import com.hawk.utils.StreamUtils;
 import com.hawk.utils.StringUtils;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -148,5 +156,25 @@ public class SysUserController extends BaseController {
             dept = LoginHelper.getLoginUser().getDept();
         }
         return R.ok(deptService.selectDeptTreeList(dept));
+    }
+
+    @PostMapping("/export")
+    public void export(SysUser user, HttpServletResponse response) {
+        List<SysUser> list = userService.selectUserList(user);
+        List<SysUserExportVO> listVo = BeanUtil.copyToList(list, SysUserExportVO.class);
+        for (int i = 0; i < list.size(); i++) {
+            SysDept dept = list.get(i).getDept();
+            SysUserExportVO vo = listVo.get(i);
+            if (ObjectUtil.isNotEmpty(dept)) {
+                vo.setDeptName(dept.getDeptName());
+            }
+        }
+        ExcelUtil.exportExcel(listVo, "用户数据", SysUserExportVO.class, response);
+    }
+
+    @PostMapping(value = "/importData", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public R<Void> importData(@RequestPart("file") MultipartFile file, boolean updateSupport) throws Exception {
+        ExcelResult<SysUserImportVO> result = ExcelUtil.importExcel(file.getInputStream(), SysUserImportVO.class, new SysUserImportListener(updateSupport));
+        return R.ok(result.getAnalysis());
     }
 }

@@ -26,6 +26,8 @@ public interface SysUserService extends BaseService<SysUser> {
 
     List<SysUser> selectUserList(SysUser user);
 
+    SysUser selectUserByUserName(String userName);
+
     void checkUserDataScope(Long userId);
 
     boolean checkUserAccountUnique(SysUser user);
