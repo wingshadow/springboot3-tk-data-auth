@@ -15,17 +15,17 @@ public interface UserConstants {
     /**
      * 正常状态
      */
-    String NORMAL = "1";
+    String NORMAL = "0";
 
     /**
      * 异常状态
      */
-    String EXCEPTION = "0";
+    String EXCEPTION = "1";
 
     /**
      * 用户正常状态
      */
-    String USER_NORMAL = "1";
+    String USER_NORMAL = "0";
 
     String USER_RETAIN = "0";
 
@@ -39,12 +39,12 @@ public interface UserConstants {
     /**
      * 角色正常状态
      */
-    String ROLE_NORMAL = "0";
+    String ROLE_NORMAL = "1";
 
     /**
      * 角色封禁状态
      */
-    String ROLE_DISABLE = "1";
+    String ROLE_DISABLE = "0";
 
     /**
      * 部门正常状态
@@ -69,12 +69,12 @@ public interface UserConstants {
     /**
      * 是否菜单外链（是）
      */
-    String YES_FRAME = "1";
+    String YES_FRAME = "0";
 
     /**
      * 是否菜单外链（否）
      */
-    String NO_FRAME = "0";
+    String NO_FRAME = "1";
 
     /**
      * 菜单正常状态
@@ -85,11 +85,6 @@ public interface UserConstants {
      * 菜单停用状态
      */
     String MENU_DISABLE = "1";
-
-    /**
-     * 菜单展示
-     */
-    String MENU_VISIBLE = "1";
 
     /**
      * 菜单类型（目录）

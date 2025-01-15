@@ -107,60 +107,60 @@
         where u.is_deleted = '0' and u.email = #{email}
     </select>
 
-    <select id="selectUserList" resultMap="SysUserResult">
-        select u.user_id,
-        u.dept_id,
-        u.user_name,
-        u.nick_name,
-        u.user_account,
-        u.email,
-        u.avatar,
-        u.mobile,
-        u.gender,
-        u.user_type,
-        u.status,
-        u.is_deleted,
-        u.create_by,
-        u.create_time,
-        d.dept_name
-        from sys_user u
-        left join sys_dept d on u.dept_id = d.dept_id
-<!--        <where>-->
-<!--            <if test="param1 != null and param1 != ''">-->
-<!--                ${param1}-->
-<!--            </if>-->
-<!--        </where>-->
-    </select>
+<!--    <select id="selectUserList" resultMap="SysUserResult">-->
+<!--        select u.user_id,-->
+<!--        u.dept_id,-->
+<!--        u.user_name,-->
+<!--        u.nick_name,-->
+<!--        u.user_account,-->
+<!--        u.email,-->
+<!--        u.avatar,-->
+<!--        u.mobile,-->
+<!--        u.gender,-->
+<!--        u.user_type,-->
+<!--        u.status,-->
+<!--        u.is_deleted,-->
+<!--        u.create_by,-->
+<!--        u.create_time,-->
+<!--        d.dept_name-->
+<!--        from sys_user u-->
+<!--        left join sys_dept d on u.dept_id = d.dept_id-->
+<!--&lt;!&ndash;        <where>&ndash;&gt;-->
+<!--&lt;!&ndash;            <if test="param1 != null and param1 != ''">&ndash;&gt;-->
+<!--&lt;!&ndash;                ${param1}&ndash;&gt;-->
+<!--&lt;!&ndash;            </if>&ndash;&gt;-->
+<!--&lt;!&ndash;        </where>&ndash;&gt;-->
+<!--    </select>-->
 
-    <!--    <select id="selectAllocatedList" resultMap="SysUserResult">-->
-    <!--        select distinct u.user_id,-->
-    <!--                        u.dept_id,-->
-    <!--                        u.user_name,-->
-    <!--                        u.nick_name,-->
-    <!--                        u.email,-->
-    <!--                        u.mobile,-->
-    <!--                        u.status,-->
-    <!--                        u.create_time-->
-    <!--        from sys_user u-->
-    <!--                 left join sys_dept d on u.dept_id = d.dept_id-->
-    <!--                 left join sys_user_role sur on u.user_id = sur.user_id-->
-    <!--                 left join sys_role r on r.role_id = sur.role_id-->
-    <!--            ${ew.getCustomSqlSegment}-->
-    <!--    </select>-->
+<!--        <select id="selectAllocatedList" resultMap="SysUserResult">-->
+<!--            select distinct u.user_id,-->
+<!--                            u.dept_id,-->
+<!--                            u.user_name,-->
+<!--                            u.nick_name,-->
+<!--                            u.email,-->
+<!--                            u.mobile,-->
+<!--                            u.status,-->
+<!--                            u.create_time-->
+<!--            from sys_user u-->
+<!--                     left join sys_dept d on u.dept_id = d.dept_id-->
+<!--                     left join sys_user_role sur on u.user_id = sur.user_id-->
+<!--                     left join sys_role r on r.role_id = sur.role_id-->
+<!--                ${ew.getCustomSqlSegment}-->
+<!--        </select>-->
 
-    <!--    <select id="selectUnallocatedList" resultMap="SysUserResult">-->
-    <!--        select distinct u.user_id,-->
-    <!--                        u.dept_id,-->
-    <!--                        u.user_name,-->
-    <!--                        u.nick_name,-->
-    <!--                        u.email,-->
-    <!--                        u.mobile,-->
-    <!--                        u.status,-->
-    <!--                        u.create_time-->
-    <!--        from sys_user u-->
-    <!--                 left join sys_dept d on u.dept_id = d.dept_id-->
-    <!--                 left join sys_user_role sur on u.user_id = sur.user_id-->
-    <!--                 left join sys_role r on r.role_id = sur.role_id-->
-    <!--            ${ew.getCustomSqlSegment}-->
-    <!--    </select>-->
+<!--        <select id="selectUnallocatedList" resultMap="SysUserResult">-->
+<!--            select distinct u.user_id,-->
+<!--                            u.dept_id,-->
+<!--                            u.user_name,-->
+<!--                            u.nick_name,-->
+<!--                            u.email,-->
+<!--                            u.mobile,-->
+<!--                            u.status,-->
+<!--                            u.create_time-->
+<!--            from sys_user u-->
+<!--                     left join sys_dept d on u.dept_id = d.dept_id-->
+<!--                     left join sys_user_role sur on u.user_id = sur.user_id-->
+<!--                     left join sys_role r on r.role_id = sur.role_id-->
+
+<!--        </select>-->
 </mapper>

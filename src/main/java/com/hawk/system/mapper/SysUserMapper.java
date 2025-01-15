@@ -4,9 +4,11 @@ import com.hawk.framework.annotation.scope.DataScope;
 import com.hawk.framework.base.BaseMapper;
 import com.hawk.system.entity.SysRole;
 import com.hawk.system.entity.SysUser;
+import com.hawk.system.mapper.provider.SysUserProvider;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.SelectProvider;
 import tk.mybatis.mapper.entity.Example;
 
 import java.util.List;
@@ -29,53 +31,15 @@ public interface SysUserMapper extends BaseMapper<SysUser> {
 
     SysUser selectUserByEmail(String email);
     @DataScope(deptAlias = "d")
-//    @Select("select u.user_id," +
-//            "               u.dept_id," +
-//            "               u.user_name," +
-//            "               u.nick_name," +
-//            "               u.user_account," +
-//            "               u.email," +
-//            "               u.avatar," +
-//            "               u.mobile," +
-//            "               u.gender," +
-//            "               u.user_type," +
-//            "               u.status," +
-//            "               u.is_deleted," +
-//            "               u.create_by," +
-//            "               u.create_time," +
-//            "               d.dept_name " +
-//            "        from sys_user u " +
-//            "                 left join sys_dept d on u.dept_id = d.dept_id ")
+    @SelectProvider(type = SysUserProvider.class, method = "selectUserList")
     List<SysUser> selectUserList(@Param("param1") String param1);
 
     @DataScope(deptAlias = "d")
-    @Select("select distinct u.user_id," +
-            "                        u.dept_id," +
-            "                        u.user_name," +
-            "                        u.nick_name," +
-            "                        u.email," +
-            "                        u.mobile," +
-            "                        u.status," +
-            "                        u.create_time" +
-            "        from sys_user u " +
-            "                 left join sys_dept d on u.dept_id = d.dept_id " +
-            "                 left join sys_user_role sur on u.user_id = sur.user_id " +
-            "                 left join sys_role r on r.role_id = sur.role_id ")
+    @SelectProvider(type = SysUserProvider.class, method = "selectAllocatedList")
     List<SysUser> selectAllocatedList(@Param("param1") String param1);
 
     @DataScope(deptAlias = "d")
-    @Select("select distinct u.user_id, " +
-            "                        u.dept_id, " +
-            "                        u.user_name, " +
-            "                        u.nick_name, " +
-            "                        u.email, " +
-            "                        u.mobile, " +
-            "                        u.status, " +
-            "                        u.create_time " +
-            "        from sys_user u " +
-            "                 left join sys_dept d on u.dept_id = d.dept_id " +
-            "                 left join sys_user_role sur on u.user_id = sur.user_id " +
-            "                 left join sys_role r on r.role_id = sur.role_id ")
+    @SelectProvider(type = SysUserProvider.class, method = "selectUnallocatedList")
     List<SysUser> selectUnallocatedList(@Param("param1") String param1);
 
     default boolean exists(Example example) {

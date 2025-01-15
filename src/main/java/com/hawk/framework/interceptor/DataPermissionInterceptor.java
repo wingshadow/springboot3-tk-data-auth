@@ -70,7 +70,8 @@ public class DataPermissionInterceptor implements Interceptor {
 
         Object parameterObject = boundSql.getParameterObject();
         // 查询条件
-        String whereCause = findWhereCause(parameterObject);
+//        String whereCause = findWhereCause(parameterObject);
+        String whereCause = "";
         log.info("whereCause:{}", whereCause);
         // 权限条件
         String permissionSql = buildDataFilterSqlByLoginUser(alias);
