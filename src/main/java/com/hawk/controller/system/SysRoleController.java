@@ -112,9 +112,9 @@ public class SysRoleController extends BaseController {
     }
 
     @GetMapping("/authUser/unallocatedList")
-    public PageInfo<SysUser> unallocatedList(SysUserForm form) {
+    public R<PageInfo<SysUser>> unallocatedList(SysUserForm form) {
         SysUser sysUser = BeanUtil.copyProperties(form, SysUser.class);
-        return userService.selectUnallocatedList(sysUser,form.getPageSize(),form.getPageNum());
+        return R.ok(userService.selectUnallocatedList(sysUser,form.getPageSize(),form.getPageNum()));
     }
 
     @PutMapping("/authUser/cancel")

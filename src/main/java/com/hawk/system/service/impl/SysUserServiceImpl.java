@@ -112,7 +112,6 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
         List<Long> userIds = userRoleMapper.selectUserIdsByRoleId(user.getRoleId());
         String whereCause = SqlUtils.build().eq("u.is_deleted", UserConstants.USER_RETAIN)
                 .and("(r.role_id !=" + user.getRoleId() + " OR r.role_id IS NULL)")
-                .eq(ObjectUtil.isNotNull(user.getRoleId()), "r.role_id", user.getRoleId())
                 .notIn(CollUtil.isNotEmpty(userIds), "u.user_id", userIds)
                 .like(StringUtils.isNotBlank(user.getUserAccount()), "u.user_account", user.getUserAccount())
                 .like(StringUtils.isNotBlank(user.getMobile()), "u.mobile", user.getMobile()).toSQL();
