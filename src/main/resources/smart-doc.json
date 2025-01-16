@@ -1,0 +1,19 @@
+{
+  "serverUrl": "https://api.xxx.com/",
+  "allInOne": true,
+  "allInOneDocFileName": "index.html",
+  "createDebugPage": true,
+  "outPath": "./src/main/resources/static/doc",
+  "projectName": "smart-doc-test",
+  "requestParamsTable": true,
+  "responseParamsTable": true,
+  "style": "atom-one-dark",
+  "requestHeaders": [
+    {
+      "name": "token",
+      "type": "string",
+      "value": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+      "required": true
+    }
+  ]
+}
