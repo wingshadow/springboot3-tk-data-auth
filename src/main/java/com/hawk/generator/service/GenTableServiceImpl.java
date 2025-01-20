@@ -444,7 +444,7 @@ public class GenTableServiceImpl implements GenTableService {
         return genPath + File.separator + VelocityUtils.getFileName(template, table);
     }
 
-    private GenTable getGenTableByName(String tableName){
+    private GenTable getGenTableByName(String tableName) {
         Example example = new Example(GenTable.class);
         CriteriaUtils.builder(example.createCriteria()).eq(GenTable::getTableName, tableName);
         GenTable table = genTableMapper.selectOneByExample(example);
@@ -456,7 +456,7 @@ public class GenTableServiceImpl implements GenTableService {
         return table;
     }
 
-    private GenTable getGenTableById(Long tableId){
+    private GenTable getGenTableById(Long tableId) {
         GenTable table = genTableMapper.selectByPrimaryKey(tableId);
 
         Example columnExample = new Example(GenTableColumn.class);

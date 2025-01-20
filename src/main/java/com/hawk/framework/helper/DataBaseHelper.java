@@ -29,7 +29,7 @@ public class DataBaseHelper {
 //    }
 
     public static boolean isMySql() {
-        return true;
+        return false;
     }
 
     public static boolean isOracle() {
@@ -37,7 +37,7 @@ public class DataBaseHelper {
     }
 
     public static boolean isPostgerSql() {
-        return false;
+        return true;
     }
 
     public static boolean isSqlServer() {
