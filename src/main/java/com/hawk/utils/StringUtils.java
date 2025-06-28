@@ -12,6 +12,8 @@ import org.springframework.util.AntPathMatcher;
 
 import java.util.*;
 import java.util.function.Function;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -324,7 +326,26 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             .collect(Collectors.toList());
     }
 
+    public static List<String> extractBlocks(String input, String delimiter) {
+        List<String> results = new ArrayList<>();
+        if (input == null || delimiter == null || delimiter.length() == 0) {
+            return results;
+        }
+
+        // 使用 Pattern.quote 处理特殊字符（如 $, *, [, 这些正则元字符）
+        String regex = Pattern.quote(delimiter) + "(.*?)" + Pattern.quote(delimiter);
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(input);
+
+        while (matcher.find()) {
+            results.add(matcher.group(1));
+        }
+
+        return results;
+    }
+
     public static void main(String[] args) {
-        System.out.println(LambdaUtil.getFieldName(SysConfig::getConfigKey));
+        String msg = "##0163QN=20200730160101008;TID=123456;VER=11;CP=&&DT=20200730160101;CPS=1,0,2;CNS=1,0,2,1,1,0;MN=1,1;V=225;A=235;H=50.5;T=-20.5;DS=1;P=50;SPD=1;PA=0;FES=0;LES=1;LA=200;HES=1&&be##";
+        System.out.println(StringUtils.extractBlocks(msg,"##").get(0));
     }
 }

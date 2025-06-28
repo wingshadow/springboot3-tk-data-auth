@@ -73,6 +73,8 @@ public class SysUser extends BaseLogicEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private Long roleId;
 
+    @Transient
+    private Long[] roleIds;
     public boolean isAdmin() {
         return UserConstants.ADMIN_ID.equals(this.userId);
     }

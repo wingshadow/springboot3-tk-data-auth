@@ -226,4 +226,18 @@ public class SysUserServiceImpl extends BaseServiceImpl<SysUser> implements SysU
         return baseMapper.insert(user) > 0;
     }
 
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int updateUser(SysUser user) {
+        Long userId = user.getUserId();
+        // 删除用户与角色关联
+        Example example = new Example(SysUserRole.class);
+        CriteriaUtils.builder(example.createCriteria())
+                .eq(SysUserRole::getUserId, userId);
+        userRoleMapper.deleteByExample(example);
+        // 新增用户与角色管理
+        insertUserRole(user.getUserId(),user.getRoleIds());
+        return baseMapper.updateByPrimaryKey(user);
+    }
+
 }

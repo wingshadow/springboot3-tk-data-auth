@@ -48,4 +48,5 @@ public interface SysUserService extends BaseService<SysUser> {
 
     boolean registerUser(SysUser user);
 
+    int updateUser(SysUser user);
 }
