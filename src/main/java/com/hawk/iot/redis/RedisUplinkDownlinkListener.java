@@ -4,6 +4,7 @@ import cn.hutool.json.JSONUtil;
 import com.hawk.iot.cache.ChannelCache;
 import com.hawk.iot.message.DownCommand;
 import com.hawk.iot.message.ReportData;
+import com.hawk.utils.iot.HexUtil;
 import io.netty.channel.socket.SocketChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
@@ -59,7 +60,7 @@ public class RedisUplinkDownlinkListener implements MessageListener {
         SocketChannel channel =  ChannelCache.getInstance().get(cmd.getTid());
         if (channel != null && channel.isActive()) {
             // TODO 命令编码
-            byte[] bytes = new byte[]{};
+            byte[] bytes = HexUtil.decode(cmd.getCmd());
             channel.writeAndFlush(Unpooled.wrappedBuffer(bytes));
         } else {
             log.warn("设备 [{}] 不在线，下行指令发送失败", cmd.getTid());

@@ -18,7 +18,7 @@ public class MyChannelInitializer extends ChannelInitializer<SocketChannel> {
     @Override
     protected void initChannel(SocketChannel socketChannel) throws Exception {
         socketChannel.pipeline().addLast(new IdleStateHandler(
-                30, 0, 0));
+                180, 0, 0));
         ReceiveIotMsgHandler receiveIotMsgHandler = SpringUtil.getBean("receiveIotMsgHandler", ReceiveIotMsgHandler.class);
         socketChannel.pipeline().addLast(receiveIotMsgHandler);
     }

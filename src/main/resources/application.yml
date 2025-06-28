@@ -79,6 +79,7 @@ security:
     - /actuator/**
     # 日常配置
     - /**
+    - /test
 # Spring配置
 
 snowflake:
