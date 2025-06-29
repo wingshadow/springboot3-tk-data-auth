@@ -11,7 +11,10 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 
 /**
  * @program: jp-supv-platform
@@ -25,6 +28,9 @@ import java.util.List;
 public class MsgConsumer {
     @Resource
     private BizHandler handler;
+
+    @Resource
+    private Executor iotExecutor;
 
     @KafkaListener(
             topics = "${spring.kafka1.consumer.upTopics}",
@@ -41,13 +47,36 @@ public class MsgConsumer {
             try {
                 log.info("【上行】topic={}, value={}", record.topic(), record.value());
                 handler.handleUplink(record.value().toString());
+                ack.acknowledge();
             } catch (Exception e) {
                 log.error("处理上行消息失败: topic={}, value={}, error={}", record.topic(), record.value(), e.getMessage(), e);
                 // TODO: 可选记录失败消息到死信队列或重试机制
             }
         }
+    }
 
+    /**
+     * 多线程处理
+     * @param records
+     * @param ack
+     */
+    public void processMultiUpMsg(List<ConsumerRecord<String, String>> records, Acknowledgment ack) {
+        List<CompletableFuture<Void>> futures = new ArrayList<>();
+
+        for (ConsumerRecord<String, String> record : records) {
+            CompletableFuture<Void> future = CompletableFuture.runAsync(() -> {
+                handler.handleUplink(record.value().toString());
+            }, iotExecutor).exceptionally(ex -> {
+                log.error("处理消息异常: {}", record.value(), ex);
+                return null;
+            });
+            futures.add(future);
+        }
+        // 等所有任务完成
+        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
+        // 安全提交
         ack.acknowledge();
+
     }
 
     /**
@@ -68,12 +97,11 @@ public class MsgConsumer {
             try {
                 log.info("【下行】topic={}, value={}", record.topic(), record.value());
                 handler.handleDownlink(record.value().toString());
+                ack.acknowledge();
             } catch (Exception e) {
                 log.error("处理下行消息失败: topic={}, value={}, error={}", record.topic(), record.value(), e.getMessage(), e);
                 // TODO: 可选记录失败消息到死信队列或报警系统
             }
         }
-
-        ack.acknowledge();
     }
 }

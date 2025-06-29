@@ -28,7 +28,6 @@ public class ConsumerConfig {
     @Resource
     private ConsumerConfigProp consumerConfigProp;
 
-    @Bean
     public Map<String, Object> baseConsumerProps(String groupIdOverride) {
         Map<String, Object> props = new HashMap<>();
         props.put(org.apache.kafka.clients.consumer.ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, consumerConfigProp.getBootstrapServers());
