@@ -5,6 +5,7 @@ import cn.hutool.json.JSONUtil;
 import com.hawk.iot.cache.ChannelCache;
 import com.hawk.iot.common.ConvertHandler;
 import com.hawk.iot.common.ProtocolType;
+import com.hawk.iot.kafka.client.MsgProducer;
 import com.hawk.iot.message.ReportData;
 import com.hawk.iot.redis.RedisMessagePublisher;
 import com.hawk.utils.StringUtils;
@@ -21,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -43,6 +45,11 @@ public class ReceiveIotMsgHandler extends ChannelInboundHandlerAdapter implement
     @Qualifier("iotExecutor")
     private Executor iotExecutor;
 
+    @Value("${spring.kafka1.producer.upTopics}")
+    private String topic;
+
+    @Autowired
+    private MsgProducer producer;
     @Autowired
     private RedisMessagePublisher publisher;
 
@@ -121,7 +128,8 @@ public class ReceiveIotMsgHandler extends ChannelInboundHandlerAdapter implement
 
         log.info("Mapped TID [{}] to Channel [{}]", tid, channel.id().asShortText());
         log.info("data:{}", JSONUtil.toJsonStr(reportData));
-        publisher.publishUplink(reportData);
+        producer.sendLocal(topic, JSONUtil.toJsonStr(reportData));
+//        publisher.publishUplink(reportData);
     }
 
     @Override

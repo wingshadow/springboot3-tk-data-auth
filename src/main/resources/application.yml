@@ -22,6 +22,34 @@ spring:
       port: 6379
       database: 0
       password: 123456
+  kafka1:
+    consumer:
+      bootstrap-servers: 61.156.89.212:9092
+      enable-auto-commit: false
+      auto-commit-interval: 100
+      session-timeout-ms: 60000
+      group-id: jx-class-record-consumer
+      auto-offset-reset: earliest
+      max-poll-records: 2
+      max-poll-interval-ms: 120000
+      key-deserializer: org.apache.kafka.common.serialization.StringSerializer
+      value-deserializer: org.apache.kafka.common.serialization.StringSerializer
+      partition: 1
+      upTopics: iot-up-report-queue
+      downTopics: iot-down-cmd-queue
+      replica: 1
+    producer:
+      bootstrap-servers: 61.156.89.212:9092
+      retries: 5
+      batch-size: 16384
+      buffer-memory: 33554432
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      acks: all
+      upTopics: iot-up-report-queue
+      downTopics: iot-down-cmd-queue
+      partition: 1
+      replica: 1
 user:
   password:
     maxRetryCount: 3
@@ -69,7 +97,7 @@ security:
     - /**/*.css
     - /**/*.js
     # 公共路径
-    - /favicon.ico
+#    - /favicon.ico
     - /error
     # swagger 文档配置
     - /*/api-docs
@@ -93,3 +121,7 @@ mybatis:
     lazy-loading-enabled: true
     aggressive-lazy-loading: false
     lazy-load-trigger-methods: " "
+
+
+
+
