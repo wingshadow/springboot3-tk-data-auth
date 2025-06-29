@@ -50,6 +50,16 @@ spring:
       downTopics: iot-down-cmd-queue
       partition: 1
       replica: 1
+  iot:
+    influxdb:
+      url: http://61.156.89.212:8086
+      username: gxxlinflux
+      password: gxxlinfluxpwd
+      database: fnwl
+      retention-policy: autogen
+      batch-size: 200
+      flush-interval-ms: 3000
+
 user:
   password:
     maxRetryCount: 3
