@@ -269,6 +269,50 @@ public class CommandBuilder {
         );
     }
 
+    /**
+     * 配置设备新的序列号
+     * @param deviceSn
+     * @param newDeviceSn
+     * @return
+     */
+    public static String buildConfigTerminalId(int deviceSn,int newDeviceSn){
+        String newSn = HexUtil.intToHex(newDeviceSn,5);
+        return FrameBuilder.buildFrame(
+                "A8",
+                deviceSn,
+                newSn
+        );
+    }
+
+    /**
+     * 配置设备重启时间
+     * @param deviceSn
+     * @param hour 0x18~0xA8
+     * @return
+     */
+    public static String buildConfigTerminalRestartTime(int deviceSn,int hour){
+        String hourStr = HexUtil.intToHex(hour,2);
+        return FrameBuilder.buildFrame(
+                "AB",
+                deviceSn,
+                hourStr
+        );
+    }
+
+    /**
+     * 搜索当前摄像机IP
+     * @param deviceSn
+     * @return
+     */
+    public static String buildSearchCurrentCamera(int deviceSn){
+        String sn = HexUtil.intToHex(1,2);
+        return FrameBuilder.buildFrame(
+                "A9",
+                deviceSn,
+                sn
+        );
+    }
+
     public static void main(String[] args) {
         List<String> list = new ArrayList<>();
         list.add("all##test1.fnwlw.net:6102");
@@ -276,5 +320,6 @@ public class CommandBuilder {
 
         String cmd = CommandBuilder.buildTerminalMac(660968, "00:1A:2B:3C:4D:5E");
         System.out.println(HexUtil.decode(cmd));
+
     }
 }
