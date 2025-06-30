@@ -1,8 +1,6 @@
 package com.hawk.iot.kafka.client;
 
 import com.hawk.iot.kafka.BizHandler;
-import jakarta.annotation.Resource;
-import jakarta.persistence.Access;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
@@ -11,6 +9,7 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;

@@ -61,24 +61,28 @@ public class Test {
     }
 
     public static void main(String[] args) {
-        String hexfw = "F0F011";
-        String SBIDfw = Integer.toHexString(660968);
-        String SBID2fw = pad(SBIDfw, 3);
-        String innerServerHost = "all##test1.fnwlw.net:6102";
-        String outerServerHost = "8157.fnwlw.net:6101";
-        String alldata = innerServerHost + "," + outerServerHost;
-        alldata = strToHexCharCode(alldata);
-        int alldatalength = alldata.length() / 2;
-        String alldatalength16 = Integer.toHexString(alldatalength);
-        System.out.println("length hex:"+ alldatalength16 );
+//        String hexfw = "F0F011";
+//        String SBIDfw = Integer.toHexString(660968);
+//        String SBID2fw = pad(SBIDfw, 3);
+//        String innerServerHost = "all##test1.fnwlw.net:6102";
+//        String outerServerHost = "8157.fnwlw.net:6101";
+//        String alldata = innerServerHost + "," + outerServerHost;
+//        alldata = strToHexCharCode(alldata);
+//        int alldatalength = alldata.length() / 2;
+//        String alldatalength16 = Integer.toHexString(alldatalength);
+//        System.out.println("length hex:"+ alldatalength16 );
+//
+//        alldatalength16 = pad(alldatalength16, 1);
+//        hexfw = hexfw + SBID2fw + "F1FFFFFFFFFFFFFFFF" + alldatalength16 + alldata;
+//        String s = "11" + SBID2fw + "F1FFFFFFFFFFFFFFFF" + alldatalength16 + alldata;
+//        int ccc = CRC8(hexToByte(s), 0, s.length() / 2);
+//        System.out.println(ccc);
+//        String cccs = String.format("%2s", Integer.toHexString(ccc)).replace(" ", "0");
+//        String zhiling = hexfw + cccs + "FFFF";
+//        System.out.println(zhiling);
 
-        alldatalength16 = pad(alldatalength16, 1);
-        hexfw = hexfw + SBID2fw + "F1FFFFFFFFFFFFFFFF" + alldatalength16 + alldata;
-        String s = "11" + SBID2fw + "F1FFFFFFFFFFFFFFFF" + alldatalength16 + alldata;
-        int ccc = CRC8(hexToByte(s), 0, s.length() / 2);
-        System.out.println(ccc);
-        String cccs = String.format("%2s", Integer.toHexString(ccc)).replace(" ", "0");
-        String zhiling = hexfw + cccs + "FFFF";
-        System.out.println(zhiling);
+        double d = 123.456;
+        String hexString = Double.toHexString(d);
+        System.out.println(hexString);
     }
 }
