@@ -1,7 +1,6 @@
 package com.hawk.iot.builder;
 
 import com.hawk.utils.iot.HexUtil;
-
 import java.util.ArrayList;
 import java.util.List;
 
