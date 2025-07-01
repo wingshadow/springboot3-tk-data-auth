@@ -1,11 +1,14 @@
 package com.hawk.iot.handler;
 
+import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.json.JSONUtil;
 import com.hawk.iot.cache.ChannelCache;
 import com.hawk.iot.common.ConvertHandler;
 import com.hawk.iot.common.ProtocolType;
+import com.hawk.iot.influxdb.IotPoint;
 import com.hawk.iot.kafka.client.MsgProducer;
+import com.hawk.iot.message.IotPointData;
 import com.hawk.iot.message.ReportData;
 import com.hawk.iot.redis.RedisMessagePublisher;
 import com.hawk.utils.iot.HexUtil;
@@ -26,6 +29,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executor;
 
 /**
@@ -112,24 +117,24 @@ public class ReceiveIotMsgHandler extends ChannelInboundHandlerAdapter implement
 
     private void handleReportData(ChannelHandlerContext ctx, byte[] bytes) {
         String data = new String(bytes, StandardCharsets.UTF_8);
-        ReportData reportData = ConvertHandler.convertReportData(data);
+//        ReportData reportData = ConvertHandler.convertReportData(data);
 
-        if (ObjectUtil.isNull(reportData)) {
+        IotPointData pointData = ConvertHandler.convertIotPoint(data);
+        if (ObjectUtil.isNull(pointData)) {
             log.warn("Failed to parse report data: {}", data);
             return;
         }
         // 添加socket缓存
-        String tid = reportData.getTid();
+        String tid = pointData.getTid();
         SocketChannel channel = (SocketChannel) ctx.channel();
         if (!ChannelCache.getInstance().isOnline(tid)) {
             // 缓存不存在socket说明第一次上线,更新设备状态为在线
             ChannelCache.getInstance().add(tid, channel);
         }
 
-
         log.info("Mapped TID [{}] to Channel [{}]", tid, channel.id().asShortText());
-        log.info("data:{}", JSONUtil.toJsonStr(reportData));
-        producer.sendLocal(topic, JSONUtil.toJsonStr(reportData));
+        log.info("data:{}", JSONUtil.toJsonStr(pointData));
+        producer.sendLocal(topic, JSONUtil.toJsonStr(pointData));
 //        publisher.publishUplink(reportData);
     }
 

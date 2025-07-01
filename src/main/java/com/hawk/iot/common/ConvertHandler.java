@@ -3,6 +3,7 @@ package com.hawk.iot.common;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.hawk.iot.influxdb.IotPoint;
+import com.hawk.iot.message.IotPointData;
 import com.hawk.iot.message.PowerSupplyStatus;
 import com.hawk.iot.message.ReportData;
 import com.hawk.utils.StringUtils;
@@ -76,9 +77,10 @@ public class ConvertHandler {
         return null;
     }
 
-    public static List<IotPoint> convertIotPoint(String data) {
+    public static IotPointData convertIotPoint(String data) {
         List<String> msglist = StringUtils.extractBlocks(data, "##");
         if (CollUtil.isNotEmpty(msglist)) {
+            IotPointData pointData = new IotPointData();
             String msg = msglist.get(0);
             String msgLengthStr = StringUtils.substring(msg, 0, 3);
             String body = StringUtils.substring(msg, 4, msg.length() - 1);
@@ -304,8 +306,9 @@ public class ConvertHandler {
             minuPoint.getFields().put("value", IotUtils.safeParseInteger(map, "MIU"));
             pointList.add(minuPoint);
 
-
-            return pointList;
+            pointData.setList(pointList);
+            pointData.setTid(map.get("TID"));
+            return pointData;
         }
         return null;
     }
