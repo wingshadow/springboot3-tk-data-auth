@@ -3,6 +3,7 @@ package com.hawk.iot.redis;
 import cn.hutool.json.JSONUtil;
 import com.hawk.iot.cache.ChannelCache;
 import com.hawk.iot.message.DownCommand;
+import com.hawk.iot.message.IotPointData;
 import com.hawk.iot.message.ReportData;
 import com.hawk.utils.iot.HexUtil;
 import io.netty.channel.socket.SocketChannel;
@@ -48,8 +49,9 @@ public class RedisUplinkDownlinkListener implements MessageListener {
 
     private void handleUplink(String json) throws Exception {
         // 反序列化成业务对象（举例）
-        ReportData reportData = JSONUtil.toBean(json,ReportData.class);
-        log.info("处理上行数据: tid={}, 数据={}", reportData.getTid(), reportData);
+//        ReportData reportData = JSONUtil.toBean(json,ReportData.class);
+        IotPointData pointData = JSONUtil.toBean(json,IotPointData.class);
+        log.info("处理上行数据: tid={}, 数据={}", pointData.getTid(), pointData);
         // TODO: 业务处理：存库、更新缓存等
     }
 
