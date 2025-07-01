@@ -101,7 +101,6 @@ public class ReceiveIotMsgHandler extends ChannelInboundHandlerAdapter implement
             if (IotUtils.checkCmdHead(bytes) == ProtocolType.HEARTBEAT) {
                 // 心跳消息,保持长连接,不进行处理
                 log.info("Received heartbeat from {}", ctx.channel().remoteAddress());
-                return;
             } else if (IotUtils.checkCmdHead(bytes) == ProtocolType.DATA_REPORT) {
                 // 解析数据获取终端设备序列号,socketChannel写入缓存
                 handleReportData(ctx, bytes);
@@ -130,6 +129,7 @@ public class ReceiveIotMsgHandler extends ChannelInboundHandlerAdapter implement
         if (!ChannelCache.getInstance().isOnline(tid)) {
             // 缓存不存在socket说明第一次上线,更新设备状态为在线
             ChannelCache.getInstance().add(tid, channel);
+            //更新在线状态
         }
 
         log.info("Mapped TID [{}] to Channel [{}]", tid, channel.id().asShortText());

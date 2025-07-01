@@ -1,6 +1,8 @@
 package com.hawk.framework.common.core.base;
 
-import jakarta.persistence.Transient;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -1,6 +1,5 @@
 package com.hawk.framework.plus.batch.update;
 
-import jakarta.persistence.criteria.CriteriaBuilder;
 import org.apache.ibatis.annotations.UpdateProvider;
 import tk.mybatis.mapper.annotation.RegisterMapper;
 

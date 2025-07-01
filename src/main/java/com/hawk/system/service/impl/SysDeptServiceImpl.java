@@ -81,7 +81,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
                 .eq(SysDept::getIsDeleted, UserConstants.USER_RETAIN);
 
         deptList.addAll(CollUtil.emptyIfNull(sysDeptMapper.selectByExample(example)).stream().map(SysDept::getDeptId)
-                .toList());
+                .collect(Collectors.toList()));
         return deptList;
     }
 

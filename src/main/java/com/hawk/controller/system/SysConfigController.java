@@ -9,11 +9,12 @@ import com.hawk.system.entity.SysConfig;
 import com.hawk.framework.web.resp.R;
 import com.hawk.system.service.SysConfigService;
 import com.hawk.utils.ExcelUtil;
-import jakarta.servlet.http.HttpServletResponse;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -46,7 +47,7 @@ public class SysConfigController extends BaseController {
     @PostMapping("/export")
     public void export(SysConfig config, HttpServletResponse response) {
         List<SysConfig> list = configService.selectConfigList(config);
-        ExcelUtil.exportExcel(list, "参数数据", SysConfig.class, response);
+//        ExcelUtil.exportExcel(list, "参数数据", SysConfig.class, response);
     }
 
     /**

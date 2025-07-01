@@ -6,13 +6,13 @@ import com.hawk.iot.builder.CommandBuilder;
 import com.hawk.iot.kafka.client.MsgProducer;
 import com.hawk.iot.message.DownCommand;
 import com.hawk.iot.redis.RedisMessagePublisher;
-import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
 

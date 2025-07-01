@@ -2,7 +2,9 @@ package com.hawk.controller.system.vo;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hawk.framework.common.core.base.BaseLogicEntity;
-import jakarta.persistence.Id;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.Getter;
 import lombok.Setter;
 

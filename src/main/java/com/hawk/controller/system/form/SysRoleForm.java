@@ -1,7 +1,9 @@
 package com.hawk.controller.system.form;
 
 import com.hawk.framework.common.core.form.BasePageForm;
-import jakarta.persistence.Transient;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.Data;
 
 import javax.validation.constraints.NotBlank;

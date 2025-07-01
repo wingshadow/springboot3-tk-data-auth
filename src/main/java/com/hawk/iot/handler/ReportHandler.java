@@ -35,10 +35,10 @@ public class ReportHandler implements BizHandler {
         // 反序列化成业务对象（举例）
 //        ReportData reportData = JSONUtil.toBean(msg,ReportData.class);
         IotPointData pointData = JSONUtil.toBean(msg,IotPointData.class);
-        log.info("处理上行数据: tid={}, 数据={}", pointData.getTid(), pointData);
+        log.info("处理上行数据: tid={}, 数据={}", pointData.getTid(), JSONUtil.toJsonStr(pointData));
         // TODO: 业务处理：存库、更新缓存等
         // TODO: reportData 转换为 iotPoint
-        influxWriterService.addPoint(null);
+        influxWriterService.addPoint(pointData.getList());
     }
 
     @Override

@@ -4,9 +4,10 @@ import com.hawk.framework.common.core.base.BaseDataEntity;
 import com.hawk.framework.common.core.base.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
 import tk.mybatis.mapper.annotation.LogicDelete;
+
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 
 /**

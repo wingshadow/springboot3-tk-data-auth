@@ -2,8 +2,8 @@ package com.hawk.system.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hawk.framework.common.core.base.BaseDataEntity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

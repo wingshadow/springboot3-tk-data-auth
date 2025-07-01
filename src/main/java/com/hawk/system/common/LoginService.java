@@ -41,6 +41,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 import static com.hawk.framework.common.constant.DataScopeType.*;
 
@@ -317,30 +318,30 @@ public class LoginService {
             for (RoleDTO sysRole : roles) {
                 String sysRoleDataScope = sysRole.getDataScope();
                 switch (sysRoleDataScope) {
-                    case DATA_SCOPE_ALL -> {
-                        // 管理所有部门
-                        List<SysDept> list = deptService.selectAll();
-                        deptIdList.addAll(list.stream().map(SysDept::getDeptId).toList());
-                    }
-                    case DATA_SCOPE_CUSTOM -> {
-                        // 管理自定义部门
-                        SysRoleService sysRoleService = SpringUtils.getBean(SysRoleService.class);
-                        List<SysDept> list = sysRoleService.selectDeptByRoleId(sysRole.getRoleId());
-                        deptIdList.addAll(list.stream().map(SysDept::getDeptId).toList());
-                    }
-                    case DATA_SCOPE_DEPT -> {
-                        // 管理所属部门
-                        deptIdList.add(user.getDeptId());
-                    }
-                    case DATA_SCOPE_DEPT_AND_CHILD -> {
-                        // 管理本部门及子部门
-                        DeptService deptService = SpringUtils.getBean(DeptService.class);
-                        List<Long> idList = deptService.deptByParent(user.getDeptId());
-                        deptIdList.addAll(idList);
-                    }
-                    default -> {
-                        return null;
-                    }
+//                    case DATA_SCOPE_ALL -> {
+//                        // 管理所有部门
+//                        List<SysDept> list = deptService.selectAll();
+//                        deptIdList.addAll(list.stream().map(SysDept::getDeptId).collect(Collectors.toList()));
+//                    }
+//                    case DATA_SCOPE_CUSTOM -> {
+//                        // 管理自定义部门
+//                        SysRoleService sysRoleService = SpringUtils.getBean(SysRoleService.class);
+//                        List<SysDept> list = sysRoleService.selectDeptByRoleId(sysRole.getRoleId());
+//                        deptIdList.addAll(list.stream().map(SysDept::getDeptId).collect(Collectors.toList()));
+//                    }
+//                    case DATA_SCOPE_DEPT -> {
+//                        // 管理所属部门
+//                        deptIdList.add(user.getDeptId());
+//                    }
+//                    case DATA_SCOPE_DEPT_AND_CHILD -> {
+//                        // 管理本部门及子部门
+//                        DeptService deptService = SpringUtils.getBean(DeptService.class);
+//                        List<Long> idList = deptService.deptByParent(user.getDeptId());
+//                        deptIdList.addAll(idList);
+//                    }
+//                    default -> {
+//                        return null;
+//                    }
                 }
             }
         }

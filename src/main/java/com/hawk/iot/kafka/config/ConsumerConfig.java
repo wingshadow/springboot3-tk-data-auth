@@ -1,6 +1,5 @@
 package com.hawk.iot.kafka.config;
 
-import jakarta.annotation.Resource;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +11,7 @@ import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
 import org.springframework.kafka.listener.ConcurrentMessageListenerContainer;
 import org.springframework.kafka.listener.ContainerProperties;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.Map;
 

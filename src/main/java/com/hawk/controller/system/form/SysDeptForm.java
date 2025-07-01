@@ -2,7 +2,9 @@ package com.hawk.controller.system.form;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.hawk.framework.common.core.form.BaseForm;
-import jakarta.persistence.Id;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.Data;
 
 import javax.validation.constraints.Email;

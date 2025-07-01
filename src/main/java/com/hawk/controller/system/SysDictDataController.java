@@ -11,11 +11,11 @@ import com.hawk.framework.web.resp.R;
 import com.hawk.system.service.SysDictDataService;
 import com.hawk.system.service.SysDictTypeService;
 import com.hawk.utils.ExcelUtil;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +50,7 @@ public class SysDictDataController extends BaseController {
     @PostMapping("/export")
     public void export(SysDictData dictData, HttpServletResponse response) {
         List<SysDictData> list = dictDataService.selectDictDataList(dictData);
-        ExcelUtil.exportExcel(list, "字典数据", SysDictData.class, response);
+//        ExcelUtil.exportExcel(list, "字典数据", SysDictData.class, response);
     }
 
     /**

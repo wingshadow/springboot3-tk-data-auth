@@ -2,11 +2,12 @@ package com.hawk.framework.interceptor;
 
 import com.hawk.framework.annotation.database.TableId;
 import com.hawk.framework.genid.IdentifierGenerator;
-import jakarta.persistence.Id;
 import org.apache.ibatis.executor.Executor;
 import org.apache.ibatis.mapping.MappedStatement;
 import org.apache.ibatis.plugin.*;
-
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.lang.reflect.Field;
 import java.util.Map;
 import java.util.Properties;

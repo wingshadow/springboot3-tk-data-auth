@@ -119,7 +119,7 @@ public class ConvertHandler {
                     point.setMeasurement("fnwl");
                     point.setTimestamp(System.currentTimeMillis() / 1000);
                     point.getTags().put("name", map.get("TID") + "_MN_" + i);
-                    point.getFields().put("value", mnList.get(i).intValue());
+                    point.getFields().put("value", mnList.get(i));
                     pointList.add(point);
                 }
             }
@@ -136,7 +136,7 @@ public class ConvertHandler {
                 }
             }
 
-            List<Integer> chvList = IotUtils.safeParseIntegerList(map, "CHV");
+            List<Double> chvList = IotUtils.safeParseDoubleList(map, "CHV");
             if (CollUtil.isNotEmpty(chvList)) {
                 for (int i = 0; i < chvList.size(); i++) {
                     IotPoint point = new IotPoint();
@@ -148,7 +148,7 @@ public class ConvertHandler {
                 }
             }
 
-            List<Integer> chaList = IotUtils.safeParseIntegerList(map, "CHA");
+            List<Double> chaList = IotUtils.safeParseDoubleList(map, "CHA");
             if (CollUtil.isNotEmpty(chaList)) {
                 for (int i = 0; i < chaList.size(); i++) {
                     IotPoint point = new IotPoint();
@@ -160,7 +160,7 @@ public class ConvertHandler {
                 }
             }
 
-            List<Integer> pwerList = IotUtils.safeParseIntegerList(map, "POWER");
+            List<Double> pwerList = IotUtils.safeParseDoubleList(map, "POWER");
             if (CollUtil.isNotEmpty(pwerList)) {
                 for (int i = 0; i < pwerList.size(); i++) {
                     IotPoint point = new IotPoint();
@@ -172,7 +172,7 @@ public class ConvertHandler {
                 }
             }
 
-            List<Integer> elecList = IotUtils.safeParseIntegerList(map, "ELEC");
+            List<Double> elecList = IotUtils.safeParseDoubleList(map, "ELEC");
             if (CollUtil.isNotEmpty(elecList)) {
                 for (int i = 0; i < elecList.size(); i++) {
                     IotPoint point = new IotPoint();
@@ -186,125 +186,158 @@ public class ConvertHandler {
 
 
             // 交流/直流供电
-            String v = map.get("V");
-            IotPoint vPoint = new IotPoint();
-            vPoint.setMeasurement("fnwl");
-            vPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            vPoint.getTags().put("name", map.get("TID") + "_V");
-            vPoint.getFields().put("value", v);
-            pointList.add(vPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseDouble(map, "V"))){
+                IotPoint vPoint = new IotPoint();
+                vPoint.setMeasurement("fnwl");
+                vPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                vPoint.getTags().put("name", map.get("TID") + "_V");
+                vPoint.getFields().put("value", IotUtils.safeParseDouble(map, "V"));
+                pointList.add(vPoint);
+            }
 
-            IotPoint aPoint = new IotPoint();
-            aPoint.setMeasurement("fnwl");
-            aPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            aPoint.getTags().put("name", map.get("TID") + "_A");
-            aPoint.getFields().put("value", IotUtils.safeParseDouble(map, "A"));
-            pointList.add(aPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseDouble(map, "A"))){
+                IotPoint aPoint = new IotPoint();
+                aPoint.setMeasurement("fnwl");
+                aPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                aPoint.getTags().put("name", map.get("TID") + "_A");
+                aPoint.getFields().put("value", IotUtils.safeParseDouble(map, "A"));
+                pointList.add(aPoint);
+            }
 
-            IotPoint hPoint = new IotPoint();
-            hPoint.setMeasurement("fnwl");
-            hPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            hPoint.getTags().put("name", map.get("TID") + "_H");
-            hPoint.getFields().put("value", IotUtils.safeParseDouble(map, "H"));
-            pointList.add(hPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseDouble(map, "H"))){
+                IotPoint hPoint = new IotPoint();
+                hPoint.setMeasurement("fnwl");
+                hPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                hPoint.getTags().put("name", map.get("TID") + "_H");
+                hPoint.getFields().put("value", IotUtils.safeParseDouble(map, "H"));
+                pointList.add(hPoint);
+            }
 
-            IotPoint tPoint = new IotPoint();
-            tPoint.setMeasurement("fnwl");
-            tPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            tPoint.getTags().put("name", map.get("TID") + "_T");
-            tPoint.getFields().put("value", IotUtils.safeParseDouble(map, "T"));
-            pointList.add(tPoint);
+            if(ObjectUtil.isNotNull( IotUtils.safeParseDouble(map, "T"))) {
+                IotPoint tPoint = new IotPoint();
+                tPoint.setMeasurement("fnwl");
+                tPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                tPoint.getTags().put("name", map.get("TID") + "_T");
+                tPoint.getFields().put("value", IotUtils.safeParseDouble(map, "T"));
+                pointList.add(tPoint);
+            }
 
-            IotPoint apowerPoint = new IotPoint();
-            apowerPoint.setMeasurement("fnwl");
-            apowerPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            apowerPoint.getTags().put("name", map.get("TID") + "_APOWER");
-            apowerPoint.getFields().put("value", IotUtils.safeParseDouble(map, "APOWER"));
-            pointList.add(apowerPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseDouble(map, "APOWER"))) {
+                IotPoint apowerPoint = new IotPoint();
+                apowerPoint.setMeasurement("fnwl");
+                apowerPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                apowerPoint.getTags().put("name", map.get("TID") + "_APOWER");
+                apowerPoint.getFields().put("value", IotUtils.safeParseDouble(map, "APOWER"));
+                pointList.add(apowerPoint);
+            }
 
-            IotPoint akwPoint = new IotPoint();
-            akwPoint.setMeasurement("fnwl");
-            akwPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            akwPoint.getTags().put("name", map.get("TID") + "_AKW");
-            akwPoint.getFields().put("value", IotUtils.safeParseDouble(map, "AKW"));
-            pointList.add(akwPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseDouble(map, "AKW"))) {
+                IotPoint akwPoint = new IotPoint();
+                akwPoint.setMeasurement("fnwl");
+                akwPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                akwPoint.getTags().put("name", map.get("TID") + "_AKW");
+                akwPoint.getFields().put("value", IotUtils.safeParseDouble(map, "AKW"));
+                pointList.add(akwPoint);
+            }
 
-            IotPoint dsPoint = new IotPoint();
-            dsPoint.setMeasurement("fnwl");
-            dsPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            dsPoint.getTags().put("name", map.get("TID") + "_DS");
-            dsPoint.getFields().put("value", IotUtils.safeParseInteger(map, "DS"));
-            pointList.add(dsPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseInteger(map, "DS"))) {
+                IotPoint dsPoint = new IotPoint();
+                dsPoint.setMeasurement("fnwl");
+                dsPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                dsPoint.getTags().put("name", map.get("TID") + "_DS");
+                dsPoint.getFields().put("value", IotUtils.safeParseInteger(map, "DS"));
+                pointList.add(dsPoint);
+            }
 
-            IotPoint pPoint = new IotPoint();
-            pPoint.setMeasurement("fnwl");
-            pPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            pPoint.getTags().put("name", map.get("TID") + "_P");
-            pPoint.getFields().put("value", IotUtils.safeParseInteger(map, "P"));
-            pointList.add(pPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseInteger(map, "P"))) {
+                IotPoint pPoint = new IotPoint();
+                pPoint.setMeasurement("fnwl");
+                pPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                pPoint.getTags().put("name", map.get("TID") + "_P");
+                pPoint.getFields().put("value", IotUtils.safeParseInteger(map, "P"));
+                pointList.add(pPoint);
+            }
 
-            IotPoint spdPoint = new IotPoint();
-            spdPoint.setMeasurement("fnwl");
-            spdPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            spdPoint.getTags().put("name", map.get("TID") + "_SPD");
-            spdPoint.getFields().put("value", IotUtils.safeParseInteger(map, "SPD"));
-            pointList.add(spdPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseInteger(map, "SPD"))) {
+                IotPoint spdPoint = new IotPoint();
+                spdPoint.setMeasurement("fnwl");
+                spdPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                spdPoint.getTags().put("name", map.get("TID") + "_SPD");
+                spdPoint.getFields().put("value", IotUtils.safeParseInteger(map, "SPD"));
+                pointList.add(spdPoint);
+            }
 
-            IotPoint paPoint = new IotPoint();
-            paPoint.setMeasurement("fnwl");
-            paPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            paPoint.getTags().put("name", map.get("TID") + "_PA");
-            paPoint.getFields().put("value", IotUtils.safeParseInteger(map, "PA"));
-            pointList.add(paPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseInteger(map, "PA"))) {
+                IotPoint paPoint = new IotPoint();
+                paPoint.setMeasurement("fnwl");
+                paPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                paPoint.getTags().put("name", map.get("TID") + "_PA");
+                paPoint.getFields().put("value", IotUtils.safeParseInteger(map, "PA"));
+                pointList.add(paPoint);
+            }
 
-            IotPoint lesPoint = new IotPoint();
-            lesPoint.setMeasurement("fnwl");
-            lesPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            lesPoint.getTags().put("name", map.get("TID") + "_LES");
-            lesPoint.getFields().put("value", IotUtils.safeParseInteger(map, "LES"));
-            pointList.add(lesPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseInteger(map, "LES"))) {
+                IotPoint lesPoint = new IotPoint();
+                lesPoint.setMeasurement("fnwl");
+                lesPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                lesPoint.getTags().put("name", map.get("TID") + "_LES");
+                lesPoint.getFields().put("value", IotUtils.safeParseInteger(map, "LES"));
+                pointList.add(lesPoint);
+            }
 
-            IotPoint ovPoint = new IotPoint();
-            ovPoint.setMeasurement("fnwl");
-            ovPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            ovPoint.getTags().put("name", map.get("TID") + "_OV");
-            ovPoint.getFields().put("value", IotUtils.safeParseInteger(map, "OV"));
-            pointList.add(ovPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseInteger(map, "OV"))) {
+                IotPoint ovPoint = new IotPoint();
+                ovPoint.setMeasurement("fnwl");
+                ovPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                ovPoint.getTags().put("name", map.get("TID") + "_OV");
+                ovPoint.getFields().put("value", IotUtils.safeParseInteger(map, "OV"));
+                pointList.add(ovPoint);
+            }
 
-            IotPoint ocpsPoint = new IotPoint();
-            ocpsPoint.setMeasurement("fnwl");
-            ocpsPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            ocpsPoint.getTags().put("name", map.get("TID") + "_OCPS");
-            ocpsPoint.getFields().put("value", IotUtils.safeParseInteger(map, "OCPS"));
-            pointList.add(ocpsPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseInteger(map, "OCPS"))) {
+                IotPoint ocpsPoint = new IotPoint();
+                ocpsPoint.setMeasurement("fnwl");
+                ocpsPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                ocpsPoint.getTags().put("name", map.get("TID") + "_OCPS");
+                ocpsPoint.getFields().put("value", IotUtils.safeParseInteger(map, "OCPS"));
+                pointList.add(ocpsPoint);
+            }
 
-            IotPoint batPoint = new IotPoint();
-            batPoint.setMeasurement("fnwl");
-            batPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            batPoint.getTags().put("name", map.get("TID") + "_BAT");
-            batPoint.getFields().put("value", IotUtils.safeParseInteger(map, "BAT"));
-            pointList.add(batPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseInteger(map, "BAT"))) {
+                IotPoint batPoint = new IotPoint();
+                batPoint.setMeasurement("fnwl");
+                batPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                batPoint.getTags().put("name", map.get("TID") + "_BAT");
+                batPoint.getFields().put("value", IotUtils.safeParseInteger(map, "BAT"));
+                pointList.add(batPoint);
+            }
 
-            IotPoint simPoint = new IotPoint();
-            simPoint.setMeasurement("fnwl");
-            simPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            simPoint.getTags().put("name", map.get("TID") + "_SIM");
-            simPoint.getFields().put("value", IotUtils.safeParseInteger(map, "SIM"));
-            pointList.add(simPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseInteger(map, "SIM"))) {
+                IotPoint simPoint = new IotPoint();
+                simPoint.setMeasurement("fnwl");
+                simPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                simPoint.getTags().put("name", map.get("TID") + "_SIM");
+                simPoint.getFields().put("value", IotUtils.safeParseInteger(map, "SIM"));
+                pointList.add(simPoint);
+            }
 
-            IotPoint waterPoint = new IotPoint();
-            waterPoint.setMeasurement("fnwl");
-            waterPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            waterPoint.getTags().put("name", map.get("TID") + "_WATER");
-            waterPoint.getFields().put("value", IotUtils.safeParseInteger(map, "WATER"));
-            pointList.add(waterPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseInteger(map, "WATER"))) {
+                IotPoint waterPoint = new IotPoint();
+                waterPoint.setMeasurement("fnwl");
+                waterPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                waterPoint.getTags().put("name", map.get("TID") + "_WATER");
+                waterPoint.getFields().put("value", IotUtils.safeParseInteger(map, "WATER"));
+                pointList.add(waterPoint);
+            }
 
-            IotPoint minuPoint = new IotPoint();
-            minuPoint.setMeasurement("fnwl");
-            minuPoint.setTimestamp(System.currentTimeMillis() / 1000);
-            minuPoint.getTags().put("name", map.get("TID") + "_MIU");
-            minuPoint.getFields().put("value", IotUtils.safeParseInteger(map, "MIU"));
-            pointList.add(minuPoint);
+            if(ObjectUtil.isNotNull(IotUtils.safeParseInteger(map, "MIU"))) {
+                IotPoint minuPoint = new IotPoint();
+                minuPoint.setMeasurement("fnwl");
+                minuPoint.setTimestamp(System.currentTimeMillis() / 1000);
+                minuPoint.getTags().put("name", map.get("TID") + "_MIU");
+                minuPoint.getFields().put("value", IotUtils.safeParseInteger(map, "MIU"));
+                pointList.add(minuPoint);
+            }
 
             pointData.setList(pointList);
             pointData.setTid(map.get("TID"));

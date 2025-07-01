@@ -9,11 +9,11 @@ import com.hawk.system.entity.SysDictType;
 import com.hawk.framework.web.resp.R;
 import com.hawk.system.service.SysDictTypeService;
 import com.hawk.utils.ExcelUtil;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**

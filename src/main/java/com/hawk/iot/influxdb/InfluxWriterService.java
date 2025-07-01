@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.Queue;
@@ -44,7 +45,8 @@ public class InfluxWriterService {
     private final Queue<Point> pointQueue = new ConcurrentLinkedQueue<>();
 
 
-    public InfluxWriterService() {
+    @PostConstruct
+    public void init() {
         // 延时每隔5秒执行一次
         singleThreadTaskScheduler.scheduleAtFixedRate(this::flush, MAX_WAIT_MS);
     }
@@ -64,9 +66,9 @@ public class InfluxWriterService {
         influxDB.write(batchPoints);
     }
 
-    public void addPoint(IotPoint iotPoint) {
-        Point point = PointConverter.toInfluxPoint(iotPoint);
-        pointQueue.add(point);
+    public void addPoint(List<IotPoint> list) {
+        List<Point> point = PointConverter.toInfluxPoints(list);
+        pointQueue.addAll(point);
         if (pointQueue.size() >= BATCH_SIZE) {
             flush();
         }
@@ -77,8 +79,8 @@ public class InfluxWriterService {
             return;
         }
 
-        BatchPoints batchPoints = BatchPoints.database("iot_db")
-                .retentionPolicy("autogen")
+        BatchPoints batchPoints = BatchPoints.database(database)
+                .retentionPolicy(retentionPolicy)
                 .consistency(InfluxDB.ConsistencyLevel.ONE)
                 .build();
 

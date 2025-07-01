@@ -2,8 +2,9 @@ package com.hawk.generator.entity;
 
 import com.hawk.framework.common.core.base.BaseDataEntity;
 import com.hawk.utils.StringUtils;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;

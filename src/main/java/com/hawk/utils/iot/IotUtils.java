@@ -44,7 +44,7 @@ public class IotUtils {
      */
     public static Map<String, String> parseKeyValueString(String input) {
         if (input == null || input.isEmpty()) {
-            return Map.of();
+            return null;
         }
 
         // 找到 CP=&& 标志
