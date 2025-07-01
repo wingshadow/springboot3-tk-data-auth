@@ -2,6 +2,7 @@ package com.hawk.iot.handler;
 
 import cn.hutool.json.JSONUtil;
 import com.hawk.iot.cache.ChannelCache;
+import com.hawk.iot.influxdb.InfluxWriterService;
 import com.hawk.iot.kafka.BizHandler;
 import com.hawk.iot.message.DownCommand;
 import com.hawk.iot.message.ReportData;
@@ -10,6 +11,8 @@ import io.netty.buffer.Unpooled;
 import io.netty.channel.socket.SocketChannel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.Resource;
 
 /**
  * @program: springboot3-tk-data-auth
@@ -20,12 +23,17 @@ import org.springframework.stereotype.Component;
 @Slf4j
 @Component
 public class ReportHandler implements BizHandler {
+
+    @Resource
+    private InfluxWriterService influxWriterService;
     @Override
     public void handleUplink(String msg) {
         // 反序列化成业务对象（举例）
         ReportData reportData = JSONUtil.toBean(msg,ReportData.class);
         log.info("处理上行数据: tid={}, 数据={}", reportData.getTid(), reportData);
         // TODO: 业务处理：存库、更新缓存等
+        // TODO: reportData 转换为 iotPoint
+        influxWriterService.addPoint(null);
     }
 
     @Override

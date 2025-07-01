@@ -64,7 +64,8 @@ public class InfluxWriterService {
         influxDB.write(batchPoints);
     }
 
-    public void addPoint(Point point) {
+    public void addPoint(IotPoint iotPoint) {
+        Point point = PointConverter.toInfluxPoint(iotPoint);
         pointQueue.add(point);
         if (pointQueue.size() >= BATCH_SIZE) {
             flush();

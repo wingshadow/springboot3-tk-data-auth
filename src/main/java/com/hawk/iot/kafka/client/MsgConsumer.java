@@ -55,7 +55,7 @@ public class MsgConsumer {
     }
 
     /**
-     * 多线程处理
+     * 多线程处理上行队列
      * @param records
      * @param ack
      */

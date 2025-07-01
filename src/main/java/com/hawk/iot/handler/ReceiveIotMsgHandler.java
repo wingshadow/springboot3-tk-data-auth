@@ -8,11 +8,9 @@ import com.hawk.iot.common.ProtocolType;
 import com.hawk.iot.kafka.client.MsgProducer;
 import com.hawk.iot.message.ReportData;
 import com.hawk.iot.redis.RedisMessagePublisher;
-import com.hawk.utils.StringUtils;
 import com.hawk.utils.iot.HexUtil;
 import com.hawk.utils.iot.IotUtils;
 import io.netty.buffer.ByteBuf;
-import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.socket.SocketChannel;
@@ -58,10 +56,13 @@ public class ReceiveIotMsgHandler extends ChannelInboundHandlerAdapter implement
      */
     @Override
     public void userEventTriggered(ChannelHandlerContext ctx, Object evt) throws Exception {
-        if (evt instanceof IdleStateEvent idleEvent && idleEvent.state() == IdleState.READER_IDLE) {
-            // 执行close触发channelInactive
-            ctx.close();
-            // todo 更新设备在线状态
+        if (evt instanceof IdleStateEvent ) {
+            IdleStateEvent e = (IdleStateEvent) evt;
+            if(e.state() == IdleState.READER_IDLE){
+                // 执行close触发channelInactive
+                ctx.close();
+                // todo 更新设备在线状态
+            }
         } else {
             super.userEventTriggered(ctx, evt);
         }
@@ -111,7 +112,7 @@ public class ReceiveIotMsgHandler extends ChannelInboundHandlerAdapter implement
 
     private void handleReportData(ChannelHandlerContext ctx, byte[] bytes) {
         String data = new String(bytes, StandardCharsets.UTF_8);
-        ReportData reportData = ConvertHandler.convert(data);
+        ReportData reportData = ConvertHandler.convertReportData(data);
 
         if (ObjectUtil.isNull(reportData)) {
             log.warn("Failed to parse report data: {}", data);
